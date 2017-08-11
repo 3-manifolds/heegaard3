@@ -1,0 +1,444 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+/*    #define DEBUGGING            */
+/*    #define MICRO_PRINT          */
+    #define PRINT
+/*    #define PRINT_CYCLES         */    
+/*    #define PRINT_LINKS   	   */      
+
+
+#define Size size_t
+
+#define LoWord(x) ((short)(x))
+#define charCodeMask        0x000000FF
+
+#define ANNULUS_EXISTS      53100                 
+#define BANDSUM             5
+#define BDRY_UNKNOWN        100
+#define BEEN_USED			2999
+#define BEGIN               1
+#define BIG_NUMBER          1000000
+#define BYTES_AVAILABLE		41943040L
+#define CAN_NOT_DELETE      9996
+#define DELETED_RELATOR     50200
+#define DONE                50000
+#define DUALIZE             2
+#define EOS                 '\0'
+#define ERROR               0.1
+#define ESSENTIAL_TORUS		60700
+#define FALSE               0
+#define FATAL_ERROR         99999
+#define FOUND_ELSEWHERE     60100
+#define FULL_HOUSE			51234
+#define GENERIC_LENS_SPACE  59000
+#define INFINITE            65535
+#define INITIAL_PRES        0
+#define INTERRUPT			61234
+#define KNOWN_LENS_SPACE    60200
+#define MAXCOUNT            5
+#define MAXNUMCOMPONENTS 	VERTICES
+#define MAXLENGTH           16000
+#define MAXNUMDUPS          1000
+#define MAXNUMGENERATORS    26    
+#define MAXNUMRELATORS      30
+#define MAX_MIN_GEN_PRES	50000
+#define MAX_SAVED_LEVELS    1000
+#define MAX_SAVED_PRES      50003
+#define MISSING_GEN_DONE1   60350
+#define MISSING_GEN_DONE2   60360
+#define MY_MAX_NUM_DIAGRAMS 100000000
+#define MY_MAX_SAVED_PRES_2 4*MAX_SAVED_PRES
+#define NO_ERROR            0
+#define NON_PLANAR          3300
+#define NORMAL              6
+#define NOT_CONNECTED       52000
+#define NON_UNIQUE_1        50500
+#define NON_UNIQUE_2        50600
+#define NON_UNIQUE_3        50700
+#define NON_UNIQUE_4        50800
+#define ONE_HS_REP			62000
+#define QUIT_FLAG			62345
+#define REDUCE_GENUS        13
+#define RERUN               3
+#define RESET               14
+#define S1_X_D2             60300
+#define S1_X_S2             60400
+#define S1_X_X2             50900
+#define SEP_PAIRS           51000
+#define SPLIT            	53000
+#define STOP                1
+#define THREE_SPHERE        60600
+#define TOO_LONG            64000
+#define TOO_MANY_COMPONENTS 9997
+#define TRUE                1
+#define UNKNOWN             59999
+#define V2_ANNULUS_EXISTS   51100
+#define VERTICES            2*MAXNUMGENERATORS                            
+
+/******************************* List of Function Prototypes **********************************/
+
+extern int		AlexanderPolynomial(unsigned char*);								/* In Heegaard21.c	*/
+extern int		AlexanderPolynomial_Freely_Reduce(unsigned char*, unsigned int);	/* In Heegaard21.c	*/
+extern unsigned int	AlexanderPolynomial_GCD(unsigned int, unsigned int);			/* In Heegaard21.c	*/
+extern int		Annulus(unsigned int,unsigned int,int,int);							/* In Heegaard7.c	*/
+extern int		BatchProcessing(void);												/* In Heegaard14.c	*/
+extern int 		Batch_Report(int*);													/* In Heegaard12.c	*/
+extern int		Been_Seen(void);													/* In Heegaard7.c	*/
+extern int		Canonical_Rewrite(unsigned char ***,int,int);						/* In Heegaard5.c	*/
+extern int		Check_Bridge_Interlacing(unsigned int,unsigned int);				/* In Heegaard3.c	*/ 
+extern int		Check_Connected(void);												/* In Heegaard3.c	*/ 
+extern int 		Check_C_Robustness(char,char);										/* In Heegaard28.c  */
+extern int      CheckDualRelator(char,int);											/* In Heegaard19.c	*/
+extern int		CheckForAltExpSigns(char,char);										/* In Heegaard19.c	*/ 
+extern int		Check_for_Big_SF(int,int,unsigned int);								/* In Heegaard25.c	*/
+extern int		Check_For_Primitives(int,int);										/* In Heegaard6.c	*/
+extern int		Check_HS_Disjoint_Curves(int,int*,char*);							/* In Heegaard18.c	*/
+extern int   	Check_HS_Reducibility(int,int*,char*);								/* In Heegaard18.c	*/
+extern int      Check_HS_Reps(int,int*);											/* In Heegaard18.c	*/
+extern int      Check_HS_Simple_Circuits(int,int*,char*);							/* In Heegaard18.c	*/
+extern int    	Check_HS_Strong_Irreducibility(int,int*,char*);						/* In Heegaard18.c	*/
+extern int 		Check_HS_Strong_IrreducibilityS1(void);								/* In Heegaard18.c	*/
+extern int 		Check_HS_Strong_IrreducibilityS2(unsigned char,int*,unsigned char**,
+				unsigned char**);													/* In Heegaard18.c	*/
+extern void		Check_HS_Uniqueness(int,int*);										/* In Heegaard18.c	*/
+extern int		Check_HS_Uniqueness_Sub1(int,int);									/* In Heegaard18.c	*/
+extern int		Check_HS_Weak_Reducibility(int,int*,char*);							/* In Heegaard18.c	*/
+extern int 		Check_If_Fibered(unsigned char*);									/* In Heegaard21.c  */
+extern int		Check_Level_Transformations(void);									/* In Heegaard2.c	*/
+extern void		CheckPolySymmetry(int *, unsigned int);								/* In Heegaard21.c	*/
+extern int		CheckPrimitivity(void);												/* In Heegaard2.c	*/
+extern int 		Check_R1_Positivity(void);											/* In Heegaard28.c  */
+extern int		Check_Realizability_Of_The_Initial_Presentation(void);				/* In Heegaard1.c	*/
+extern int		Compare(unsigned char *);											/* In Heegaard4.c	*/
+extern int		Compare_Dual_Pres(int);												/* In Heegaard1.c	*/
+extern int		Compare_Input_Pres(void);											/* In Heegaard1.c	*/
+extern int		Compare_Pres(int);													/* In Heegaard1.c	*/
+extern int		Compare_Str(unsigned char *,unsigned char *,unsigned long);			/* In Heegaard4.c	*/
+extern void		ComputeAlexanderPolynomial(void);									/* In Heegaard21.c	*/
+extern unsigned long	Compute_Homology(char);										/* In Heegaard16.c	*/
+extern void		ComputePrimitives(unsigned int,unsigned int,unsigned int,
+				unsigned int);														/* In Heegaard21.c	*/
+extern int		ComputeValences_A(void);											/* In Heegaard2.c	*/
+extern int		Connected_(unsigned int,unsigned int);								/* In Heegaard3.c	*/ 
+extern int		Connected_AJ3(unsigned int,unsigned int);							/* In Heegaard2.c	*/
+extern int		CountMaxMins(char *);												/* In Heegaard21.c	*/
+extern unsigned int	Count_Sep_Pairs(unsigned int);									/* In Heegaard7.c	*/
+extern int  	CP_Check_Simple_Paths(unsigned int,int*,int,unsigned char**,
+					unsigned char**);												/* In Heegaard5.c   */
+extern int  	CHSP_Check_Simple_Circuits(unsigned int,int*,int,unsigned char**,
+					unsigned char**);												/* In Heegaard18.c  */					
+extern void		CP_Concatenate_Paths(unsigned char **,unsigned char **,int);		/* In Heegaard5.c	*/
+extern int		CP_Do_Aut(unsigned int,char);										/* In Heegaard5.c	*/
+extern void		CP_Fill_AA(char);													/* In Heegaard5.c	*/
+extern int		CP_Find_Primitives(char);											/* In Heegaard5.c	*/
+extern int		Cutting_Disk_Surgery_Diagram_7(void);								/* In Heegaard10.c	*/
+extern void		Debug(void);														/* In Heegaard4.c	*/
+extern int		Defining_Relator(int,int,int,int);									/* In Heegaard6.c	*/
+extern int		Defining_Relator_SPC(void);											/* In Heegaard17.c	*/
+extern int		Delete_Dups(void);													/* In Heegaard1.c	*/
+extern void		Delete_Old_Presentations(void);										/* In Heegaard1.c	*/
+extern void		Delete_Old_PresentationsSLP(void);									/* In Heegaard18.c	*/
+extern void		Delete_Old_PresentationsSMGP(int,unsigned int *);					/* In Heegaard18.c	*/
+extern int		Delete_Redundant_Relators(void);									/* In Heegaard4.c	*/
+extern int		Delete_Trivial_Generators(int);										/* In Heegaard7.c	*/
+extern int		Diagram_1(void);													/* In Heegaard4.c	*/
+extern int		Diagram_2(void);													/* In Heegaard4.c	*/
+extern void		Diagram_3(void);													/* In Heegaard4.c	*/
+extern void		Diagram_4(void);													/* In Heegaard4.c	*/
+extern unsigned int	Diagram_5(void);												/* In Heegaard4.c	*/
+extern void		Diagram_6(void);													/* In Heegaard4.c	*/
+extern unsigned int	Diagram_7(void);												/* In Heegaard4.c	*/
+extern int		Diagram_Data(int,int,int,int,int);									/* In Heegaard3.c	*/ 
+extern void		Diagram_Data_for_Graphviz(int,int,int);								/* In Heegaard3.c	*/
+extern unsigned int	Diagram_Main(void);												/* In Heegaard4.c	*/
+extern int		DisAmbiguity_Q(char);												/* In Heegaard22.c  */
+extern int		Display_A_Diagram(int,int,int);										/* In Heegaard12.c	*/
+extern void		Display_Diagrams(void);												/* In Heegaard12.c	*/
+extern void		Display_Diagram_Of_The_Initial_Presentation(void);					/* In Heegaard1.c	*/
+extern int		Display_HS_Diagrams(int,int*);										/* In Heegaard18.c	*/
+extern int		Do_Aut(unsigned int,unsigned int,int);								/* In Heegaard2.c	*/
+extern int		Do_Auts(unsigned int,unsigned int,unsigned int);					/* In Heegaard2.c	*/
+extern int		Do_Aut_L(void);														/* In Heegaard7.c	*/
+extern int		Do_Aut_L_Long(int,int,int);											/* In Heegaard7.c	*/
+extern int		Do_Aut_L_Long_2(int V1,int V2,int TheComp);							/* In Heegaard7.c	*/
+extern int		Do_Aut_SF(int);														/* In Heegaard19.c	*/            
+extern int		Do_Initialization(void);											/* In Heegaard15.c	*/      
+extern int		Do_LT(unsigned int,int,int);										/* In Heegaard13.c	*/
+extern int		Empty_Relator_BS(void);												/* In Heegaard8.c	*/
+extern int		Empty_Relator_D(void);												/* In Heegaard8.c	*/
+extern int 		Exponential_Rewrite(void);											/* In Heegaard1.c	*/
+extern void		Fatal_Error(void);													/* In Heegaard12.c	*/
+extern int 		FiberedCheck(void);													/* In Heegaard21.c	*/
+extern int		Final_Rewrite(unsigned char ***);									/* In Heegaard5.c	*/
+extern void		Fill_A(int);														/* In Heegaard2.c	*/
+extern void 	Fill_A2AJ1(void);													/* In Heegaard3.c	*/
+extern void		Fill_AA(int);														/* In Heegaard2.c	*/
+extern void		Fill_DRA(void);														/* In Heegaard4.c	*/
+extern void		Find_Cancellation_Paths(int,int,int);								/* In Heegaard5.c	*/
+extern int		Find_Canonical_Orbit_Reps(int *,int,int,int,char);					/* In Heegaard18.c	*/
+extern int		Find_Canonical_Orbit_Reps_S1(int*,int,int,int);						/* In Heegaard12.c  */
+extern int		Find_Cut_Vertices(void);											/* In Heegaard3.c	*/ 
+extern int		Find_Flow_A(int,int);												/* In Heegaard2.c	*/
+extern int		Find_Flow_B(unsigned int);											/* In Heegaard6.c	*/
+extern int 		Find_Flow_D(char);													/* In Heegaard24.c	*/
+extern int		Find_Level_Flow(unsigned int);										/* In Heegaard13.c	*/
+extern int		Find_Level_Transformations(int,int);								/* In Heegaard13.c	*/
+extern int		Find_Level_Transformations_Of_The_Initial_Presentation(void);		/* In Heegaard1.c	*/
+extern unsigned int	Find_Minimal_Path(void);										/* In Heegaard3.c	*/ 
+extern int		FindMinExpAndContext(char,unsigned int);							/* In Heegaard28.c	*/
+extern int		Find_Path(int,int,int,int);											/* In Heegaard7.c	*/
+extern int		Find_Primitives(int);												/* In Heegaard2.c	*/
+extern int 		Find_Simple_Circuits(void);											/* In Heegaard18.c	*/
+extern int		Find_Symmetries(int);												/* In Heegaard5.c	*/
+extern int		Freely_Reduce(void);												/* In Heegaard2.c	*/
+extern void		Freely_Reduce_Nr(void);												/* In Heegaard5.c	*/
+extern void		Gauss_Seidel(void);													/* In Heegaard3.c	*/ 
+extern unsigned long	gcd(unsigned long,unsigned long);							/* In Heegaard16.c	*/
+extern unsigned int	GCD(unsigned int,unsigned int);									/* In Heegaard4.c	*/
+extern int 		Genus_Two_Essential_Tori(int,int,char);								/* In Heegaard19.c	*/
+extern int 		Genus_Two_Essential_Torus_Betas(char);								/* In Heegaard19.c	*/
+extern int		Genus_Two_Meridian_Reps(int,int);									/* In Heegaard20.c	*/
+extern int		Genus_Two_Meridian_Reps_Sub(unsigned char*, unsigned char*);		/* In Heegaard20.c	*/
+extern int		Genus_Two_One_Relator_Annuli_And_Tori(char);						/* In Heegaard28.c  */
+extern int		Genus_Two_One_Relator_Annuli_And_Tori_S1 (void);					/* In Heegaard28.c  */
+extern int 		Genus_Two_One_Relator_Annuli_And_Tori_S2(unsigned int,unsigned int,
+				unsigned int,unsigned int,unsigned int,unsigned int,char);			/* In Heegaard28.c  */
+extern int		Genus_Two_Seifert_Fibered(int,char);								/* In Heegaard19.c	*/
+extern int		Genus3ET(int,int,char);												/* In Heegaard19.c	*/
+extern int 		Get_2_Gen_SF_EXPS1(unsigned char);									/* In Heegaard25.c	*/
+extern int		Get2BKorLPs(char,char,unsigned int*,unsigned int*);					/* In Heegaard19.c	*/
+extern int		GetAlpha2(char,char);												/* In Heegaard19.c	*/
+extern int		GetAlpha2Sub1(char,char);											/* In Heegaard19.c	*/
+extern int		GetAlpha2Sub2(char,char);											/* In Heegaard19.c	*/
+extern void		Get_Bdry_Comps(int,int,unsigned int);								/* In Heegaard4.c	*/
+extern int		Get_Betas2(char, char);												/* In Heegaard19.c	*/
+extern void		Get_Components(void);												/* In Heegaard7.c	*/
+extern int		Get_Connected_Components(void);										/* In Heegaard6.c	*/
+extern int		Get_Diagrams(void);													/* In Heegaard2.c	*/
+extern int 		Get_Sep_Disk_Dual(char);											/* In Heegaard28.c  */
+extern int 		Get_Gen_SF_EXPS2(unsigned char,int*,int*,int*,int*);				/* In Heegaard25.c	*/
+extern int 		Get_Genus_Two_Commutators(char);									/* In Heegaard28.c  */
+extern int		Get_Genus_2_EXPS(void);												/* In Heegaard19.c	*/
+extern int		Get_Genus_2_SF_EXPS1(void);											/* In Heegaard19.c	*/
+extern int		Get_Genus_2_SF_EXPS2(void);											/* In Heegaard19.c	*/
+extern int		Get_Initial_Diagram(int);											/* In Heegaard1.c	*/
+extern int 		Get_LTs(unsigned int,int,int);										/* In Heegaard13.c	*/
+extern int		Get_Matrix(void);													/* In Heegaard3.c	*/ 
+extern unsigned int	Get_MinExp(unsigned int,int);									/* In Heegaard2.c	*/
+extern int      Get_Next_Presentation_From_File(char);								/* In Heegaard18.c	*/
+extern int		Get_Min_Length_Parameter(void);										/* In Heegaard14.c	*/
+extern int		Get_Presentation_From_File(void);									/* In Heegaard1.c	*/
+extern int		Get_Presentation_From_KeyBoard(void);								/* In Heegaard1.c	*/
+extern int 		Get_Relators1_Diagram(void);										/* In Heegaard18.c	*/
+extern int		Get_Relators_From_SUR(int);											/* In Heegaard2.c	*/
+extern int		Get_SF_Alphas1(int);												/* In Heegaard19.c	*/
+extern int		Get_SF_Alphas2(int);												/* In Heegaard19.c	*/
+extern int		Get_SF_Invariants(int,char);										/* In Heegaard19.c 	*/
+extern void		Get_Simplification_Parameters_From_User(int,int);					/* In Heegaard1.c	*/
+extern int		Get_Universal_Minimizer_Waves(char);								/* In Heegaard28.c  */
+extern int		Get_Universal_Minimizer_Waves_S1(unsigned char);					/* In Heegaard28.c  */
+extern int		Get_User_Input_SPC(char);											/* In Heegaard17.c	*/		
+extern void		Heegaard_Splash_Screen(void);										/* In Heegaard10.c	*/
+extern int		ID_A_PMQPM(unsigned int i);											/* In Heegaard18.c	*/
+extern void		ID_PMQPM(int, char*, unsigned int*);								/* In Heegaard18.c	*/
+extern int 		Init_Find_Canonical_Orbit_Reps(int*,int,int);						/* In Heegaard18.c	*/
+extern int 		Init_Genus_Two_Essential_Tori(int*,int,int,char);					/* In Heegaard19.c	*/
+extern int 		Init_Genus_Two_Seifert_Fibered(int*,int,int);						/* In Heegaard19.c	*/
+extern int 		Init_Genus_Three_Essential_Tori(int*,int,int,char);					/* In Heegaard19.c	*/
+extern int 		Init_Get_Universal_Minimizer_Waves(int,int*);						/* In Heegaard28.c	*/
+extern unsigned int	In_File(void);	     	      									/* In Heegaard9.c	*/
+extern unsigned int	In_File2(int, unsigned char ***);								/* In Heegaard18.c	*/
+extern int		Initial_Realizability_Check(void);									/* In Heegaard1.c	*/
+extern int		Init_Find_Level_Transformations(int);								/* In Heegaard9.c	*/
+extern void		Init_G_Variables(void);												/* In Heegaard1.c	*/
+extern void		Init_SCdfsR(void);													/* In Heegaard13.c	*/
+extern void		Init_TCR(void);														/* In Heegaard13.c	*/
+extern void		Inverse(unsigned char *);											/* In Heegaard4.c	*/
+extern void		Inverse_Nr(unsigned char *);										/* In Heegaard5.c	*/
+extern int 		Is_IP_In_HS_Reps(int,int*);											/* In Heegaard18.c	*/
+extern int		Is_Knot_Relator(void);	 											/* In Heegaard20.c	*/
+extern int		Is_Sep_Pair(unsigned int,unsigned int,unsigned int);				/* In Heegaard7.c	*/
+extern int		Just_Delete_Primitives(char,char);	  	       						/* In Heegaard17.c	*/
+extern unsigned int	 Lens_Space(void);												/* In Heegaard6.c	*/
+extern int		Lens_Space_D(int,char);												/* In Heegaard6.c	*/
+extern int		Level_Transformations(int,int,int);									/* In Heegaard7.c	*/
+extern int		Level_Transformations_2(int,int,int,unsigned int);					/* In Heegaard7.c	*/
+extern int		Level_Trans_Reset(unsigned int,unsigned int,unsigned int);			/* In Heegaard7.c	*/
+extern unsigned long	LGCD(unsigned long, unsigned long);		   					/* In Heegaard6.c	*/
+extern int		Long_Mult(unsigned char,unsigned char,unsigned int,unsigned int,
+			    unsigned int,unsigned int,unsigned int,unsigned int,
+			    unsigned int,long int,unsigned long);								/* In Heegaard5.c	*/
+extern int 		Look_For_Disjoint_Genus_2_Curves(char);								/* In Heegaard28.c  */		    
+extern int		Look_For_PP_SF_Curves(unsigned char,char,char);						/* In Heegaard28.c  */		    
+extern int		main(int argv, char **argc);	 									/* In Heegaard1.c	*/
+extern void		Mark_As_Found_Elsewhere(int);										/* In Heegaard2.c	*/
+extern void		Mem_Error(void);													/* In utils.c		*/
+extern void		MergeHegSpl(unsigned int,unsigned int);								/* In Heegaard18.c	*/
+extern int		MG_Bdry_Comp_Data(unsigned int);									/* In Heegaard4.c	*/
+extern void		Micro_Print_Bandsum(void);											/* In Heegaard12.c	*/
+extern void		Micro_Print_Do_Aut(unsigned int,unsigned int);						/* In Heegaard12.c	*/
+extern void		Micro_Print_Dualize(void);		 									/* In Heegaard12.c	*/
+extern void		Micro_Print_Freely_Reduce(unsigned long,unsigned long);				/* In Heegaard12.c	*/
+extern void		Micro_Print_Level_Transformations(unsigned int,unsigned int,
+	                                                  unsigned int,unsigned int);	/* In Heegaard7.c	*/
+extern void		Micro_Print_Level_Transformations_Reset(unsigned int);				/* In Heegaard7.c	*/
+extern void		Micro_Print_Reset(void);			 								/* In Heegaard12.c	*/
+extern void 	Micro_Print_Whitehead_Graph_Return_Value(unsigned int);				/* In Heegaard12.c	*/
+extern int		Missing_Gen(void);				 									/* In Heegaard8.c	*/
+extern char		mykbhit(void);														/* In Heegaard1.c	*/
+extern int		New_Relator(int);													/* In Heegaard5.c	*/ 
+extern int		Non_Unique(void);													/* In Heegaard4.c	*/
+extern int		Non_Unique_Initial_Diagram(void);									/* In Heegaard1.c	*/
+extern unsigned int	Offset(void);													/* In Heegaard4.c	*/
+extern unsigned int	OffsetSub(unsigned int,unsigned int,unsigned int,unsigned int,
+			    unsigned int,unsigned int);											/* In Heegaard4.c	*/
+extern int		OneGenerator_SPC(unsigned char);									/* In Heegaard17.c	*/
+extern int		OneRelator_SPC(unsigned char);										/* In Heegaard17.c	*/
+extern unsigned int	On_File(void);													/* In Heegaard1.c	*/
+extern int 		P_and_PP_Curves_Disjoint_From_Relators(char);						/* In Heegaard28.c	*/
+extern int		Planar(int,int);													/* In Heegaard3.c	*/ 
+extern int		Planar_Connected_(unsigned int);								    /* In Heegaard3.c	*/	
+extern int		PM_Check_When_Bdry_Exists(char);			  						/* In Heegaard24.c  */
+extern int 		Pos_Relator_Check_Do_Auts(unsigned int,unsigned int, unsigned int, 
+	unsigned int,unsigned int,unsigned int);										/* In Heegaard 28.c */
+extern int 		Pos_Relator_Check_Min_Exp(char,char,char,char);						/* In Heegaard 28.c */	
+extern void		Print_Bdry_Comp_Info(int,int,int);									/* In Heegaard3.c	*/ 
+extern void		Print_Bdry_Data(unsigned int);										/* In Heegaard12.c	*/
+extern void		Print_Bdry_Data2(unsigned int);										/* In Heegaard12.c	*/
+extern void		Print_DelRelators(void);											/* In Heegaard12.c	*/
+extern void		Print_DualRelators(int,int,int,int);								/* In Heegaard12.c	*/
+extern int 		Print_ET_Data(int);													/* In Heegaard19.c	*/
+extern int		Print_Graph(int,int,int,int);										/* In Heegaard3.c	*/ 
+extern int 		Print_Orbit_Reps(int,int,unsigned int*);							/* In Heegaard18.c	*/
+extern void		Print_OutRelators(int,int,int,int);									/* In Heegaard12.c	*/
+extern void		Print_Realizability(int,unsigned int);								/* In Heegaard1.c	*/
+extern void		Print_Relators(unsigned char ***,int);								/* In Heegaard12.c	*/
+extern void		Print_Relators2(unsigned char ***,int);								/* In Heegaard12.c	*/
+extern void		Print_Relators3(unsigned char ***,int);								/* In Heegaard12.c	*/
+extern int		Print_SFComp(int);													/* In Heegaard12.c	*/
+extern void		Print_SLR(int,int);	      											/* In Heegaard12.c	*/
+extern unsigned int	Proper_Power(void);												/* In Heegaard6.c	*/
+extern void		Prune_Search_Tree(void);											/* In Heegaard16.c	*/
+extern void		qksort1(unsigned int);												/* In qksort.c		*/
+extern void		qksort2(int,int,int,unsigned int*);									/* In Heegaard18.c	*/
+extern int		qkst1a_compare(int,int);		    		      	       	    	/* In Heegaard12.c	*/
+extern int		qkst_compare2(int,int,int,unsigned int*);							/* In Heegaard18.c	*/
+extern void		qkst1a_swap(int,int);		   										/* In Heegaard12.c	*/
+extern void		qkst_swap2(int,int);												/* In Heegaard18.c	*/
+extern int		Random_Sep_Pair(unsigned int);										/* In Heegaard7.c	*/
+extern void		Realization_Warning(void);											/* In Heegaard1.c	*/
+extern unsigned long	Recip_Mod_P(unsigned long,unsigned long);					/* In Heegaard6.c	*/
+extern unsigned int	Reduce_Genus(int,int,int);	   									/* In Heegaard6.c	*/
+extern int		Reduce_The_Initial_Presentation_To_Minimal_Length(int);				/* In Heegaard1.c	*/
+extern int		Reduce_The_Initial_Presentation_To_Minimal_Length_SPC(void);		/* In Heegaard17.c	*/
+extern int		Report(long,long,unsigned int,unsigned int,unsigned char,unsigned char,
+			    unsigned char,unsigned char,unsigned char,unsigned char *);			/* In Heegaard12.c	*/
+extern int		Report_SPC(int *);	     		  	       	    					/* In Heegaard17.c	*/
+extern int 		Report_Sorted_Readable(int *);										/* In Heegaard17.c	*/
+extern void		Report_Symmetries(unsigned char *,int,int);							/* In Heegaard5.c	*/
+extern int		ReRun_A_Bunch();													/* In Heegaard1.c	*/
+extern int		ReRun_A_Bunch2();													/* In Heegaard27.c	*/
+extern int 		ReRun_A_Bunch_Sub(char,char,unsigned int,char);						/* In Heegaard1.c	*/
+extern int 		ReRun_A_Bunch2_Sub1(int);											/* In Heegaard27.c	*/
+extern int		ReRun_A_Presentation(void);											/* In Heegaard1.c	*/
+extern int 		ReRun_Batches_Of_Bunches(void);										/* In Heegaard26.c	*/
+extern int 		ReRun_Batches_Of_Bunches2(void);									/* In Heegaard27.c	*/
+extern int		Resolve(unsigned int,unsigned int,unsigned long);					/* In Heegaard8.c	*/
+extern int		Restore_Saved_Input(void);											/* In Heegaard1.c   */
+extern int		Rewrite_Input(void);	      		   								/* In Heegaard1.c	*/
+extern int		Rewrite_Orbit_Reps(int,int,unsigned int*);							/* In Heegaard18.c	*/
+extern int 		Rewrite_Orbit_Reps2(int,int,unsigned int);							/* In Heegaard25.c	*/
+extern int 		RewriteProperPowers(char,unsigned int,char,unsigned int*,
+				unsigned int*);														/* In Heegaard22.c	*/
+extern void		ReWrite_WaveGuides(unsigned char*);									/* In Heegaard28.c  */
+extern int 		Save_Copy_Of_Input(void);											/* In Heegaard1.c   */
+extern int 		Save_P_or_PP(unsigned char**,unsigned int);							/* In Heegaard28.c  */
+extern int		Save_Pres(unsigned int,unsigned int,unsigned long,int,int,int,
+				unsigned char,char);												/* In Heegaard1.c	*/
+extern int		Save_Pres2(void);													/* In Heegaard18.c	*/
+extern void		SCdfsR(unsigned char);												/* In Heegaard13.c	*/
+extern int		Search_For_Non_Minimal_UnStabilized_Splittings(char,int);			/* In Heegaard18.c	*/
+extern int		Sep_Pairs(int,int,int);												/* In Heegaard3.c	*/ 
+extern int		Sep_Pairs_Sub(int,int);												/* In Heegaard3.c	*/ 
+extern int		Sep_Surface(void);													/* In Heegaard4.c	*/
+extern void		SetLimits(void);													/* In Heegaard14.c	*/
+extern int 		Set_Up_SF_Check(int,unsigned char*,unsigned int*,char,char);		/* In Heegaard28.c  */
+extern int 		Set_Up_Simplification_Parameters(int *,int *,int *, int *);			/* In Heegaard14.c	*/
+extern int 		Set_Up_Simplification_Parameters_S1(void);							/* In Heegaard14.c	*/
+extern int 		Set_Up_Simplification_Parameters_S2(void);							/* In Heegaard26.c	*/
+extern int		SetUp_TopOfChain(void);												/* In Heegaard2.c	*/
+extern int		SF_Sort_And_Print(int,int,int,int,int,int,int,int,int,int*);		/* In Heegaard19.c	*/
+extern unsigned int	Slide_LComp(unsigned int, unsigned int,int,int,unsigned int,int,
+				int,int);															/* In Heegaard7.c	*/
+extern int		Slide_ValenceTwo_Comp(int,unsigned int,unsigned int,unsigned int);	/* In Heegaard7.c	*/
+extern int		SnapPy2Heegaard(void);												/* In Heegaard14.c	*/
+extern int		Sort_Presentations_In_Memory(int);			     					/* In Heegaard12.c	*/
+extern unsigned int	Split_At_Empty_Relators(int);									/* In Heegaard6.c	*/
+extern void		Split_At_Empty_Relators_Sub1(void);									/* In Heegaard6.c	*/
+extern int		Split_At_Empty_Relators_Sub2(int,int);								/* In Heegaard6.c	*/
+extern void		Split_Relators(unsigned char);										/* In Heegaard3.c	*/ 
+extern int		Splitting_Pres_On_File(int,int);									/* In Heegaard6.c	*/
+extern int 		SPM_Compare_Pres_SUR(int);											/* In Heegaard23.c	*/
+extern int 		SPM_ComputeDeMerits(char);											/* In Heegaard23.c	*/
+extern int 		SPM_Count_Primitives(void);											/* In Heegaard23.c	*/
+extern void 	SPM_Do_Initialization(void);										/* In Heegaard23.c	*/
+extern void 	SPM_Free_Storage(void);												/* In Heegaard23.c	*/
+extern int 		SPM_Get_Initial_Values_From_User(void);								/* In Heegaard23.c	*/
+extern int 		SPM_Get_Diagrams(void);												/* In Heegaard23.c	*/
+extern int 		SPM_LocateMaxDeMerits(void);										/* In Heegaard23.c	*/
+extern int		SPM_Read_PM_Data(void);												/* In Heegaard23.c	*/
+extern int		SPM_Sep_Pairs(int,int,int);											/* In Heegaard23.c	*/
+extern void 	SPM_SetUpInitialDemerits(void);										/* In Heegaard23.c	*/
+extern void 	SPM_Input_Form_Warning(char);										/* In Heegaard23.c	*/
+extern int 		SPM_main(void);														/* In Heegaard23.c	*/
+extern unsigned int SPM_On_File(void);												/* In Heegaard23.c	*/
+extern int		Stabilize(char);													/* In Heegaard10.c	*/
+extern int 		Stow_ET_Data(int,char,int,int,int,int,int,int,int,int,int);			/* In Heegaard19.c	*/
+extern int 		Stow_Relators(unsigned char*,unsigned int,int);						/* In Heegaard28.c  */
+extern int		Sub_Str(unsigned char *,unsigned char *);							/* In Heegaard8.c	*/
+extern void		TCdfsR(unsigned char);		      									/* In Heegaard13.c	*/
+extern void		Test_LT_For_Pseudo_Min(void);										/* In Heegaard9.c	*/
+extern int		Test_New_Pres(void);												/* In Heegaard2.c	*/
+extern void		Test_Sub_Str(unsigned int);											/* In Heegaard8.c	*/
+extern void		Test_Transverse(void);												/* In Heegaard19.c	*/
+extern void 	Too_Many_Components_ALert(void);									/* In Heegaard11.c	*/
+extern void 	Translate_2_Dual_Pres(unsigned char*);								/* In Heegaard28.c  */
+extern int		Transverse(unsigned char *);										/* In Heegaard6.c	*/
+extern int		Try_Cutting_Disk_Surgery(void);										/* In Heegaard10.c	*/
+extern int		Try_Exponent_Surgery(void);											/* In Heegaard10.c	*/
+extern void		Turn_Micro_Print_On(void);											/* In Heegaard1.c	*/
+extern void		Update_Bdry_Data(void);												/* In Heegaard12.c	*/
+extern void		UpDate_Fill_A(void);												/* In Heegaard2.c	*/
+extern int		User_Says_Quit(void);												/* In Heegaard11.c	*/
+extern unsigned int	Valence_Two(int);												/* In Heegaard8.c	*/
+extern int		Valence_Two_Annulus(void);											/* In Heegaard8.c	*/
+extern int		Verify_Length(unsigned char ***,int);								/* In Heegaard17.c	*/
+extern char		WaitkbHit(void);													/* In Heegaard1.c	*/
+extern unsigned int	Whitehead_Graph(void);											/* In Heegaard3.c	*/			  
+extern int		Wirtinger(void);													/* In Heegaard10.c	*/ 
+
+
+#ifndef MAC
+/* From utils.c	*/
+extern int    SysBeep(int seconds);
+extern char   **NewHandle(size_t);
+extern void   DisposeHandle(char **);
+extern void   ReallocateHandle(char **, size_t);
+extern size_t GetHandleSize(char **);
+extern void   HUnlock(char **);
+extern void   *NewPtr(size_t);
+extern void   DisposePtr(void *);
+extern size_t GetPtrSize(void *);
+extern void   ReadDateTime(unsigned long *);
+extern char   *ReadString(char *buffer, int size);
+#endif
+
+/*
+ * Local Variables:
+ * mode: c
+ * c-basic-offset: 4
+ * fill-column: 78
+ * End:
+ */
