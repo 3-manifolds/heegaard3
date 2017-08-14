@@ -15,7 +15,7 @@ L 2942 Check_HS_Reps(int NumHSReps,int* HSRepL)
 L 2272 Check_HS_Simple_Circuits(int NumHSReps,int* HSRepL,char* HSL2)
 L 3857 Check_HS_Strong_Irreducibility(int NumHSReps,int* HSRepL,char* HSL2)
 L 3954 Check_HS_Strong_IrreducibilityS1(void)
-L 4706 Check_HS_Strong_IrreducibilityS2(unsigned char NumPathsInWave,int * PathsInWave,
+L 4708 Check_HS_Strong_IrreducibilityS2(unsigned char NumPathsInWave,int * PathsInWave,
 	   unsigned char ** PP,unsigned char ** PM)
 L 2012 Check_HS_Uniqueness(int NumHSReps,int* HSRepL)
 L 2087 Check_HS_Uniqueness_Sub1(int MyHSNum,int MyPresNum)
@@ -4097,7 +4097,7 @@ int Check_HS_Strong_IrreducibilityS1(void)
 	for(d = 1; d <= 2*NumEdges; d++) EL[d] = d;
 	NumPaths = 0;
 	printf("\n");
-	if(Micro_Print == 6) printf("\nListing all 'disjoint-wave' and 'disjoint-loop candidates which traverse a face at most once.");				
+	if(Micro_Print == 6) printf("\nListing all 'disjoint-wave' and 'disjoint-loop' candidates which traverse a face at most once.");				
 	for(ss = 2*NumEdges; ss > 0; ss --)
 		{		
 		/**************************************************************************************
@@ -4652,7 +4652,9 @@ int Check_HS_Strong_IrreducibilityS1(void)
 			}	
 		}
 		 
-	if(Micro_Print == 6 || Micro_Print == 7) printf("\nFound %u possible waves.",NumPossibleWavesFound);
+	if(Micro_Print == 6)
+		printf("\nFound %u 'disjoint-wave' or 'disjoint-loop' candidates which traverse a face at most once.",NumPossibleWavesFound);
+	if(Micro_Print == 7) printf("\nFound %u minimal 'disjoint-wave or 'disjoint-loop' candidates.",NumPossibleWavesFound);
 
 FOUND_WAVE:
 		
