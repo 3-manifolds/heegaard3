@@ -4483,7 +4483,7 @@ int Check_HS_Strong_IrreducibilityS1(void)
 						NumPossibleWavesFound ++;
 						if(Micro_Print == 5 || Micro_Print == 6)
 							{
-							printf("\nFound a possible 'disjoint-loop': %s \n",(char *) *Relators[1]);
+							printf("\n%u) Found a possible 'disjoint-loop': %s \n",NumPossibleWavesFound,(char *) *Relators[1]);
 							printf("with Faces and Paths: ");
 							for(j = 1; j <= NumPathsInWave; j++) 
 								printf("F%d,P%d,",FacesVisitedList[j],PathsInWave[j]);
@@ -4603,7 +4603,7 @@ int Check_HS_Strong_IrreducibilityS1(void)
 								{
 								if(Micro_Print == 5)
 									{
-									printf("\nFound a possible 'disjoint-wave': %s \n",(char *) *Relators[1]);
+									printf("\n%u) Found a possible 'disjoint-wave': %s \n",NumPossibleWavesFound,(char *) *Relators[1]);
 									printf("with Faces and Paths: ");
 									for(j = 1; j <= NumPathsInWave; j++) 
 										printf("F%d,P%d,",FacesVisitedList[j],PathsInWave[j]);
@@ -4623,7 +4623,7 @@ int Check_HS_Strong_IrreducibilityS1(void)
 							NumPossibleWavesFound ++;
 							if(kk && kk != TOO_LONG)
 								{
-								printf("\nFound a possible 'disjoint-wave': %s \n",(char *) *Relators[1]);
+								printf("\n%u) Found a possible 'disjoint-wave': %s \n",NumPossibleWavesFound,(char *) *Relators[1]);
 								printf("with Faces and Paths: ");
 								for(j = 1; j <= NumPathsInWave; j++) 
 									printf("F%d,P%d,",FacesVisitedList[j],PathsInWave[j]);
