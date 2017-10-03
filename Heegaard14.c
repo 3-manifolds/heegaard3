@@ -71,7 +71,7 @@ printf("\nVARIOUS INITIAL PRESENTATION CHECKS:");
 	printf("\n	sequence of handle-slides of the initial presentation P yields a presentation P' with |P'| < |P|.)");
 	printf("\n	HIT 'd' TO SEE DATA FOR HEEGAARD DIAGRAMS OF PRESENTATIONS.");
 	printf("\n	HIT 'D' TO SEE THE DUAL RELATORS OF EACH REALIZABLE PRESENTATION'S DIAGRAM.");
-	printf("\n	HIT 'e' TO CHECK REALIZABILITY OF PRESENTATIONS.");
+	printf("\n	HIT 'g' TO CHECK REALIZABILITY OF PRESENTATIONS.");
 	printf("\n	HIT 'h' TO FIND THE INTEGRAL FIRST HOMOLOGY OF PRESENTATIONS.");
 	printf("\n	HIT 'l' TO FIND |LTs|, |Orbit|, |WoSepVert| AND |PseudoMin| UNDER LEVEL TRANSFORMATIONS.");
 	printf("\n	HIT 'L' TO LOOK FOR NON-MINIMAL, UNSTABILIZED SPLITTINGS.");
@@ -230,14 +230,7 @@ GET_RESPONSE3:
 				fprintf(H_Results,"\n\nThe relators dual to each realizable initial presentation should appear below.");
 				}
 			break;
-			
-		case 'e':
-			Batch = 3;
-			BNumIndeterminate = BNumNotRealizable = BNumNotConnected = BNumEmpty = BNumTooLong = NumRealizable = 0;
-			H_Results = fopen("Heegaard_Results","a+");
-			if(H_Results != NULL) fprintf(H_Results,"\nBatch option 'e' ");
-			break;
-		
+					
 		case 'E':
 			Batch = 57;
 			H_Results = fopen("Heegaard_Results","a+");
@@ -255,7 +248,14 @@ GET_RESPONSE3:
 				fprintf(H_Results,"e.g. G has more than 2-generators, or R abelianizes to (0,0) etc.");
 				}
 			break;
-											
+
+		case 'g':
+			Batch = 3;
+			BNumIndeterminate = BNumNotRealizable = BNumNotConnected = BNumEmpty = BNumTooLong = NumRealizable = 0;
+			H_Results = fopen("Heegaard_Results","a+");
+			if(H_Results != NULL) fprintf(H_Results,"\nBatch option 'g' ");
+			break;
+														
 		case 'h':
 			Batch = 6;
 			H_Results = fopen("Heegaard_Results","a+");
