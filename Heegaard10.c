@@ -1760,7 +1760,7 @@ void Heegaard_Splash_Screen(void)
 {
 	fprintf(Gvizdata, "graph G{layout = neato; model = circuit; size = \04210.0,8.0\042; ratio = fill;");
 	fprintf(Gvizdata, "\nlabel = \042A genus 21 Heegaard diagram.\042"); 
-	fprintf(Gvizdata, "\nnode [shape = circle, fontsize = 10, height = 0.1, style = white]");
+	fprintf(Gvizdata, "\nnode [shape = square, fontsize = 8, height = 0.1, style = white]");
 	fprintf(Gvizdata, "\nA [pos = \04230,30!\042]; a [pos = \04299,63!\042]; B [pos = \042149,93!\042]; b [pos = \04283,350!\042];");
 	fprintf(Gvizdata, "\nC [pos = \04297,381!\042]; c [pos = \042550,264!\042]; D [pos = \042550,342!\042]; d [pos = \042412,337!\042];"); 
 	fprintf(Gvizdata, "\nE [pos = \042550,420!\042]; e [pos = \042236,175!\042]; F [pos = \042303,110!\042]; f [pos = \042290,30!\042];"); 
@@ -1772,7 +1772,7 @@ void Heegaard_Splash_Screen(void)
 	fprintf(Gvizdata, "\nQ [pos = \042378,336!\042]; q [pos = \042550,186!\042]; R [pos = \042319,395!\042]; r [pos = \042507,218!\042];");
 	fprintf(Gvizdata, "\nS [pos = \042341,281!\042]; s [pos = \042238,420!\042]; T [pos = \042203,30!\042]; t [pos = \04276,170!\042];"); 	
 	fprintf(Gvizdata, "\nU [pos = \042107,188!\042]; u [pos = \042116,30!\042];"); 
-	fprintf(Gvizdata, "\nedge [fontsize = 10]; { A -- a ; A -- h ; A -- u ; a -- B ; a -- u ; B -- e ; B -- h ;"); 
+	fprintf(Gvizdata, "\nedge [fontsize = 8]; { A -- a ; A -- h ; A -- u ; a -- B ; a -- u ; B -- e ; B -- h ;"); 
 	fprintf(Gvizdata, "\nB -- T ; B -- u ; b -- C ; b -- P ; C -- i ; C -- J ; c -- D ; c -- q ; c -- r ; D -- E ;"); 
 	fprintf(Gvizdata, "\nD -- r ; d -- E ; d -- Q ; d -- S ; E -- k ; e -- F ; e -- j ; e -- S ; F -- f ; F -- o ;");
 	fprintf(Gvizdata, "\nf -- G ; f -- T ; G -- m ; G -- o ; g -- H ; g -- i ; g -- P ; H -- I ; H -- K ; h -- I ;");

@@ -2231,7 +2231,7 @@ void Diagram_Data_for_Graphviz(int F2,int Pres,int HS)
 			fprintf(Gvizdata,"} \n");
 			}	
 		
-		fprintf(Gvizdata,"node [shape = circle, fontsize = 10, height = 0.1, style = white] \n");
+		fprintf(Gvizdata,"node [shape = square, fontsize = 8, height = 0.1, style = white] \n");
 
 		for(i = 0; i < Vertices; i++) if(Flags[i] == 1 || Flags[i] == 2)
 			{
@@ -2240,7 +2240,7 @@ void Diagram_Data_for_Graphviz(int F2,int Pres,int HS)
 			fprintf(Gvizdata,"%c [pos = \042%d,%d!\042]; ",x,X[i],Y[i]);	
 			}
 	
-		fprintf(Gvizdata,"\n edge [fontsize = 10]; { ");
+		fprintf(Gvizdata,"\n edge [fontsize = 8]; { ");
 	
 		for(i = 0; i < Vertices - 1; i++)
 			{
@@ -2271,7 +2271,7 @@ void Diagram_Data_for_Graphviz(int F2,int Pres,int HS)
 			printf("} \n");
 			}	
 		
-		printf("node [shape = circle, fontsize = 10, height = 0.1, style = white] \n");
+		printf("node [shape = square, fontsize = 8, height = 0.1, style = white] \n");
 
 		for(i = 0; i < Vertices; i++) if(Flags[i] == 1 || Flags[i] == 2)
 			{
@@ -2280,7 +2280,7 @@ void Diagram_Data_for_Graphviz(int F2,int Pres,int HS)
 			printf("%c [pos = \042%d,%d!\042]; ",x,X[i],Y[i]);	
 			}
 	
-		printf("\n edge [fontsize = 10]; { ");
+		printf("\n edge [fontsize = 8]; { ");
 	
 		for(i = 0; i < Vertices - 1; i++)
 			{
