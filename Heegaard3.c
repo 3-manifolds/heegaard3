@@ -1673,30 +1673,30 @@ int Print_Graph(int F1,int F2,int Pres,int HS)
     Error = Diagram_Data(1,F1,F2,Pres,HS);	
     if(Error == 1) 
     	{
-    	printf("\n\nCan't display the diagram of Presentation %d. Sorry!",WhichInput + 1);
+    	printf("\n\nCan't display the diagram of Presentation %d. Sorry!\n",WhichInput + 1);
     	return(1);
     	}    
     if(!Connected)
     	{
     	printf("\n The diagram is not connected! Heegaard will only display data for connected diagrams! ");
-    	printf("\n Rerun the offending presentation and Heegaard should divide it into connected summands.");
+    	printf("\n Rerun the offending presentation and Heegaard should divide it into connected summands.\n");
     	return(0);
     	}    
     if(NumGenerators == 1 || Vertices == 2)
     	{
     	printf("\n The diagram has only one generator and two vertices!");
-    	printf("\n Heegaard will not display data for such diagrams!");
+    	printf("\n Heegaard will not display data for such diagrams!\n");
     	return(0);
     	}
     if(NumEdges > 3*(Vertices - 2))
     	{
     	printf("\n The reduced Whitehead graph has too many edges, i.e. E > 3V - 6.");
-    	printf("\n Since the Diagram is obviously nonplanar, it will not be displayed.");
+    	printf("\n Since the Diagram is obviously nonplanar, it will not be displayed.\n");
     	return(0);
     	}	 	
     if(MaxLength > VERTICES)
     	{
-    	printf("\n The Diagram is nonplanar, and will not be displayed.");
+    	printf("\n The Diagram is nonplanar, and will not be displayed.\n");
     	return(0);
     	}	
     
