@@ -2,9 +2,9 @@
 #include "Heegaard_Dec.h"
 
 /****************************** Functions in Heegaard8.c ***********************************
-L 1271 Empty_Relator_BS(void)
-L 1140 Empty_Relator_D(void)
-L  923 Missing_Gen(void)
+L 1272 Empty_Relator_BS(void)
+L 1141 Empty_Relator_D(void)
+L  924 Missing_Gen(void)
 L  198 Resolve(unsigned int i,unsigned int j,unsigned long max)
 L  579 Sub_Str(unsigned char *S1,unsigned char *S2)
 L  499 Test_Sub_Str(unsigned int j)
@@ -636,18 +636,18 @@ int Valence_Two_Annulus(void)
 							
 	unsigned long	HS;						
 	
-	/******************************************************************************************
-		First find a vertex of valence two to start things off. Then proceed from that vertex
-		and trace out the path of the annulus. Any vertex of valence two that we encounter is
-		swallowed by the annulus. The other vertices that we meet are part of the path of the
-		centerline of the annulus. The routine traces out the path of the annulus twice. The
-		first run is done only to determine how long the path of the centerline is. We are
-		doing this because otherwise it seems we would have to allocate a handle or pointer
-		large enough to hold a string of length equal to the sum of the lengths of all the
-		relators in order to guarantee that it would hold the string that represents the 
-		centerline of the annulus. By making a dry run first we can avoid having to ask for 
+	/********************************************************************************************
+		First find an ambiguous vertex of valence two to start things off. Then proceed from 
+		that vertex and trace out the path of the annulus. Any ambiguous vertex of valence two 
+		that we encounter is swallowed by the annulus. The other vertices that we meet are part 
+		of the path of the centerline of the annulus. The routine traces out the path of the 
+		annulus twice. The first run is done only to determine how long the path of the 
+		centerline is. We are doing this because otherwise it seems we would have to allocate a 
+		handle or pointer large enough to hold a string of length equal to the sum of the lengths 
+		of all the relators in order to guarantee that it would hold the string that represents 
+		the centerline of the annulus. By making a dry run first we can avoid having to ask for 
 		such a large chunk of memory.
-	******************************************************************************************/
+	*********************************************************************************************/
 	
 	Error = FALSE;
 	for(i = 0; i < Vertices && !GV2[i >> 1]; i++) ;
@@ -697,9 +697,10 @@ int Valence_Two_Annulus(void)
 	/*****************************************************************************************
 		If length1 >= Vertices - 2, then all but a single inverse pair of vertices are
 		swallowed by this annulus. Since this is a trivial situation, we quit and return.
+		We also quit and return if length1 = 1 and Vertices = 4.
 	*****************************************************************************************/
 		
-	if(length1 >= (long)(Vertices - 2)) return(NO_ERROR);
+	if((length1 >= (long)(Vertices - 2)) || (length1 == 1 && Vertices == 4)) return(NO_ERROR);
 	
 	if(TestRealizability3) return(TRUE);
 				

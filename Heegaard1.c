@@ -416,7 +416,7 @@ int main(int argv, char **argc)
     printf("\n\n                                 HEEGAARD");
     printf("\n                               BY JOHN BERGE");
     printf("\n                             jberge@charter.net");
-    printf("\n                                 8/10/17\n");
+    printf("\n                                 12/24/17\n");
     printf("\n A PROGRAM FOR STUDYING 3-MANIFOLDS VIA PRESENTATIONS AND HEEGAARD DIAGRAMS.\n");
     printf("\n        Copyright 1995-2018 by John Berge, released under GNU GPLv2+.");
  	printf("\n\n               With thanks to Marc Culler and Nathan Dunfield.");
@@ -1925,7 +1925,7 @@ _RESTART:
                 }    
             if(Flag3 != 5)
                 {                
-                printf("\n\n                    All Whitehead graphs are planar, but unable to remove all separating pairs of vertices by Sep_Vert_Slides.");
+                printf("\n\n                    Unable to remove all separating pairs of vertices by Sep_Vert_Slides.");
                 if(Flag3 != 7) printf("\n                    (Heegaard probably found an annulus in the diagram of Presentation %u",NumFilled);
                 printf("\n                    which becomes an inessential disk, annulus or S^2 in M.)");
                 if((Batch != 4 && Batch != 10 && Batch != 11) && Do_Not_Reduce_Genus) return(1);
@@ -1935,7 +1935,8 @@ _RESTART:
                 		{
 						printf("\n\nHeegaard would like to try to reduce the genus of the presentation. However, while deleting primitives\n");
 						printf("from realizable presentations always preserves realizability, it is possible deleting primitives will convert\n");
-						printf("an unrealizable presentation into a realizable presentation.\n"); 
+						printf("an unrealizable presentation into a realizable presentation. However, all Whitehead graphs checked have been\n"); 
+						printf("planar. This suggests the presentation is realizable.\n"); 
 						printf("Since Sep_Vert_Slides are done randomly, one alternative is to abort and rerun the initial presentation.\n"); 
 						printf("Another alternative is to abort, rerun the initial presentation, reduce the initial presentation to minimal-\n");
 						printf("length, have Heegaard compute the full orbit of the initial presentation under level-transformations, and\n");
@@ -2122,8 +2123,7 @@ _RESTART:
 					Print_Relators(Relators,NumRelators);
 					goto _RESTART;
 					}
-				}
-                    
+				}                    
         printf("\n\n                    Unable to determine whether the presentation is realizable.");
         printf("\n\nTry computing the orbit of this presentation under level-transformations. Then check members of");
         printf("\nthe orbit for the absence of separating pairs of vertices. If such presentations exist, Heegaard");
