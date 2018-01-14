@@ -2,24 +2,24 @@
 #include "Heegaard_Dec.h"
 
 /****************************** Functions in Heegaard2.c ************************************
-L 3706 Check_Level_Transformations(void)
-L 3117 CheckPrimitivity(void)
-L 2696 ComputeValences_A(void)
-L 2662 Connected_AJ3(unsigned int i,unsigned int k)i,k)
-L 2733 Do_Aut(unsigned int Source,unsigned int NumReps,int NumRelators)
-L 2838 Do_Auts(unsigned int Source,unsigned int NumReps,unsigned int NumRelators)
-L 1909 Fill_A(int MyNumRelators)
-L 1961 Fill_AA(int NumRelators)
-L 2083 Find_Flow_A(int Input,int F1)
-L 2332 Find_Primitives(int flag)
-L 3051 Freely_Reduce(void)
+L 3657 Check_Level_Transformations(void)
+L 3068 CheckPrimitivity(void)
+L 2647 ComputeValences_A(void)
+L 2613 Connected_AJ3(unsigned int i,unsigned int k)i,k)
+L 2684 Do_Aut(unsigned int Source,unsigned int NumReps,int NumRelators)
+L 2789 Do_Auts(unsigned int Source,unsigned int NumReps,unsigned int NumRelators)
+L 1860 Fill_A(int MyNumRelators)
+L 1912 Fill_AA(int NumRelators)
+L 2034 Find_Flow_A(int Input,int F1)
+L 2283 Find_Primitives(int flag)
+L 3002 Freely_Reduce(void)
 L   28 Get_Diagrams(void)
-L 3793 Get_MinExp(unsigned int Source,int MyNumRelators)
-L 3908 Get_Relators_From_SUR(int MyReadPres)
-L 3866 Mark_As_Found_Elsewhere(TheComp)
-L 3881 SetUp_TopOfChain(void)
-L 3148 Test_New_Pres(void)
-L 2012 UpDate_Fill_A(void)
+L 3744 Get_MinExp(unsigned int Source,int MyNumRelators)
+L 3857 Get_Relators_From_SUR(int MyReadPres)
+L 3817 Mark_As_Found_Elsewhere(TheComp)
+L 3830 SetUp_TopOfChain(void)
+L 3099 Test_New_Pres(void)
+L 1963 UpDate_Fill_A(void)
 ********************************************************************************************/
 
 #define MAX_COUNT   5                    
@@ -34,8 +34,6 @@ int Get_Diagrams(void)
                     **Temp;
     
     int           	DistinctNonEmpty,
-                    hh,
-                    jj,
                     SMicro_Print_F,
                     SRNumGenerators,
                     SRNumRelators,
@@ -1268,17 +1266,6 @@ _RESET:
  
  			if(DepthFirstSearch) for(h = i = 0,MinNG = VERTICES,MinLength = BIG_NUMBER; i < NumFilled; i++)
                 {
-                if(UDV[i] == SPLIT && CS[ComponentNum[i]] < 2)
-                    {
-                    jj = ComponentNum[Daughters[i]];
-                    hh = jj + NCS[i];
-                    for( ; jj < hh && CS[jj] == 2; jj++) ;
-                    if(jj >= hh)
-                        {
-                        Mark_As_Found_Elsewhere(ComponentNum[i]);
-                        goto RESTART;
-                        }
-                    }
                 MaxUDV = 6*NG[i];      
                 if(UDV[i] < MaxUDV)
                     {
@@ -1331,19 +1318,7 @@ _RESET:
                 }    
                             
             if(BreadthFirstSearch) for(i = SSReadPres; i < NumFilled; i++)
-                {
-                if(UDV[i] == SPLIT && CS[ComponentNum[i]] < 2)
-                    {
-                    jj = ComponentNum[Daughters[i]];
-                    hh = jj + NCS[i];
-                    for( ; jj < hh && CS[jj] == 2; jj++) ;
-                    if(jj >= hh)
-                        {
-                        Mark_As_Found_Elsewhere(ComponentNum[i]);
-                        goto RESTART;
-                        }
-                    } 
-                    
+                {   
                 MaxUDV = 6*NG[i];
                 if(Batch == 4 || Check_If_HS_Rep) MaxUDV *= 2;
  				if(UDV[i] >= MaxUDV && UDV[i] < DONE) UDV[i] = DONE;               
@@ -1406,39 +1381,16 @@ _RESET:
             else
                 MaxTotalLength  = SURL[ReadPres] << 3;    
                         
-            if(CS[CurrentComp] >= 2) goto RESTART;
-            
-            if(CS[TheComp] == 1)
-                {
-                for(i = 0; i < NumFilled; i++) if(UDV[i] == SPLIT && ComponentNum[i] == TheComp)
-                    {
-                    jj = ComponentNum[Daughters[i]];
-                    hh = jj + NCS[i];
-                    for( ; jj < hh && CS[jj] == 2; jj++) ;
-                    if(jj >= hh) break;
-                    }
-                if(i < NumFilled)    
-                    {
-                    Mark_As_Found_Elsewhere(TheComp);
-                    goto RESTART;    
-                    }
-                else
-                    {
-                    printf("\n    Rechecking presentations of Summand %u. This Summand previously 'split'.",
-                        TheComp);
-                    CS[TheComp] = EOS;    
-                    }    
-                }
+            if(CSF[CurrentComp] >= 2) goto RESTART;
                 
             From_BANDSUM = 0;    
             From_DUALIZE = 0; 
             SSSReadPres = ReadPres;   
             
-            /**********************************************************************************
-                If this is a new presentation, as indicated by the fact that UDV[ReadPres] =
-                0, then call Test_New_Pres() to run some initializing routines on this
-                presentation.
-            **********************************************************************************/    
+            /**************************************************************************************
+                If this is a new presentation, as indicated by the fact that UDV[ReadPres] = 0,
+                then call Test_New_Pres() to run some initializing routines on this presentation.
+            ***************************************************************************************/    
             
             if(UDV[ReadPres] == 0)
             	{
@@ -3341,7 +3293,7 @@ int Test_New_Pres(void)
                     Boundary = TRUE;
                     }
                 for(i = 0; (CBC[CurrentComp][i] = BCWG[i]) < BDRY_UNKNOWN; i++) ;
-                if(CS[CurrentComp + 1] == 3) MG_Bdry_Comp_Data(ReadPres);        
+                if(CSF[CurrentComp + 1] == 3) MG_Bdry_Comp_Data(ReadPres);        
                 if((BCWG[0] > 1 || (BCWG[0] && NumBdryComps > BCWG[0]))
                     && Delete_Redundant_Relators()) return(RESET);
                 ER[ReadPres] = 0;        
@@ -3867,10 +3819,8 @@ void Mark_As_Found_Elsewhere(TheComp)
     int        i;
     
     for(i = 0; i < NumFilled; i++)
-    if(ComponentNum[i] == TheComp && UDV[i] <= DONE)
-        UDV[i] = FOUND_ELSEWHERE;
-    CS[TheComp] = 2;
-    if(CS[TheComp + 1] == 3)
+    if(ComponentNum[i] == TheComp && UDV[i] <= DONE) UDV[i] = FOUND_ELSEWHERE;
+    if(CSF[TheComp + 1] == 3)
         {
         for(i = 0; i < NumFilled; i++) if(ComponentNum[i] == TheComp) break;
         if(i < NumFilled) MG_Bdry_Comp_Data(i);

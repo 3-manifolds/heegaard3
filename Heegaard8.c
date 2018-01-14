@@ -991,7 +991,7 @@ int Missing_Gen(void)
 				{
 				UDV[NumFilled - 1] = S1_X_S2;
 				Mark_As_Found_Elsewhere(CurrentComp);
-				CS[CurrentComp] = 2;
+				CSF[CurrentComp] = 2;
 				if(CBC[CurrentComp][0] == BDRY_UNKNOWN)
 					{
 					CBC[CurrentComp][0] = 1;
@@ -1013,7 +1013,7 @@ int Missing_Gen(void)
 			case V2_ANNULUS_EXISTS:
 				return(NO_ERROR);
 			}
-		if(!CS[CurrentComp]) CS[CurrentComp] = TRUE;
+		CS[CurrentComp] = TRUE;
 
 		if(NumFilled >= MAX_SAVED_PRES - 3) return(TOO_LONG);
 										
@@ -1038,11 +1038,11 @@ int Missing_Gen(void)
         if(NumGenerators == 1)
         	{
         	UDV[NumFilled] = GENERIC_LENS_SPACE;
-        	LSP[NumFilled] = Length;
+        	LSP[NumFilled] = GetHandleSize((char **) Relators[1]) - 1;
         	LSQ[NumFilled] = 1;
         	}	    
 	    for(i = 0; i < NumFilled; i++) 
-	    	if(ComponentNum[i] == ComponentNum[ReadPres] && UDV[i] < DONE) UDV[i] = DONE;
+	    	if(ComponentNum[i] == ComponentNum[ReadPres] && UDV[i] < DONE) UDV[i] = FOUND_ELSEWHERE;
 		
 		for(i = 1; i <= NumRelators; i++)
 			{
@@ -1111,7 +1111,7 @@ int Missing_Gen(void)
 			{
 			BDY[NumFilled] = FALSE;
 			UDV[NumFilled] = S1_X_S2;
-			CS[TotalComp] = 2;
+			CSF[TotalComp] = 2;
 			CBC[TotalComp - 1][0] = 1;
 			CBC[TotalComp - 1][1] = BDRY_UNKNOWN;
 			CBC[TotalComp][0] = 1;
@@ -1120,7 +1120,7 @@ int Missing_Gen(void)
 		else
 			{		
 			UDV[NumFilled] = S1_X_X2;
-			CS[TotalComp] = 3;
+			CSF[TotalComp] = 3;
 			}	
 		NumFilled ++;
 		SaveMinima = TRUE;
@@ -1205,7 +1205,7 @@ int Empty_Relator_D(void)
 	
 	Length	= SaveMyLength;
 	SaveUDV = UDV[ReadPres];
-	SaveCS	= CS[CurrentComp];	
+	SaveCS	= CSF[CurrentComp];	
 	switch(SaveUDV)
 		{
 		case SPLIT:
@@ -1238,8 +1238,8 @@ int Empty_Relator_D(void)
 	switch(Find_Flow_A(NORMAL,FALSE))
 		{
 		case TOO_LONG:
-			UDV[ReadPres] 	= SaveUDV;
-			CS[CurrentComp] = SaveCS;
+			UDV[ReadPres] 	 = SaveUDV;
+			CSF[CurrentComp] = SaveCS;
 			ReadPres = SReadPres;
 			return(TOO_LONG);
 		case 1:
@@ -1247,13 +1247,13 @@ int Empty_Relator_D(void)
 			switch(Missing_Gen())
 				{
 				case TOO_LONG:
-					UDV[ReadPres] 	= SaveUDV;
-					CS[CurrentComp] = SaveCS;
+					UDV[ReadPres] 	 = SaveUDV;
+					CSF[CurrentComp] = SaveCS;
 					ReadPres = SReadPres;
 					return(TOO_LONG);
 				case TOO_MANY_COMPONENTS:
-					UDV[ReadPres] 	= SaveUDV;
-					CS[CurrentComp] = SaveCS;
+					UDV[ReadPres] 	 = SaveUDV;
+					CSF[CurrentComp] = SaveCS;
 					ReadPres = SReadPres;
 					return(TOO_MANY_COMPONENTS);
 				case NO_ERROR:

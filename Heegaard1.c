@@ -9,42 +9,43 @@ struct termios normal_termio;
 #endif
 
 /****************************** Functions in Heegaard1.c **********************************
-L 3190 Check_Realizability_Of_The_Initial_Presentation(void)
-L 1392 Compare_Dual_Pres(int k)
-L 1337 Compare_Input_Pres(void)
-L 1365 Compare_Pres(int k)
-L 1255 Delete_Dups(void)
-L 2724 Delete_Old_Presentations(void)
-L 3213 Display_Diagram_Of_The_Initial_Presentation(void)
-L 4147 ExponentialRewrite(void)
-L 3508 Find_Level_Transformations_Of_The_Initial_Presentation(void)
-L 1418 Get_Initial_Diagram(int PrintFlag)
-L 2992 Get_Presentation_From_File(void)
-L 3123 Get_Presentation_From_KeyBoard(void)
-L 3308 Get_Simplification_Parameters_From_User(int Flag1,int Flag2)
-L 2639 Init_G_Variables(void)
-L 3778 Initial_Realizability_Check(void)
-L  377 main(int argv, char **argc)
-L 3843 mykbhit(void)
-L 2414 Non_Unique_Initial_Diagram(void)
-L 2546 On_File(void)
-L 3808 Print_Realizability(int Del_Only_Triv_Rel, unsigned int WhichPres)
-L 3836 Realization_Warning(void)
-L 3684 Reduce_The_Initial_Presentation_To_Minimal_Length(int)																				
-L 3898 ReRun_A_Bunch(void)
-L 4076 ReRun_A_Bunch_Sub(char Flag1,char Flag2, unsigned int j,char NumStabs)
-L 2744 ReRun_A_Presentation(void)
-L 4216 Restore_Saved_Input(void)
-L 1122 Rewrite_Input(void)
-L 4191 Save_Copy_Of_Input(void)
-L 2171 Save_Pres(unsigned int From,unsigned int Daut,unsigned long Len,int F1,int F2,
+L 3192 Check_Realizability_Of_The_Initial_Presentation(void)
+L 1395 Compare_Dual_Pres(int k)
+L 1340 Compare_Input_Pres(void)
+L 1368 Compare_Pres(int k)
+L 1258 Delete_Dups(void)
+L 2726 Delete_Old_Presentations(void)
+L 3215 Display_Diagram_Of_The_Initial_Presentation(void)
+L 4149 ExponentialRewrite(void)
+L 3510 Find_Level_Transformations_Of_The_Initial_Presentation(void)
+L 1421 Get_Initial_Diagram(int PrintFlag)
+L 2994 Get_Presentation_From_File(void)
+L 3125 Get_Presentation_From_KeyBoard(void)
+L 3310 Get_Simplification_Parameters_From_User(int Flag1,int Flag2)
+L 2641 Init_G_Variables(void)
+L 3780 Initial_Realizability_Check(void)
+L  380 main(int argv, char **argc)
+L 3845 mykbhit(void)
+L 2416 Non_Unique_Initial_Diagram(void)
+L 2548 On_File(void)
+L 3810 Print_Realizability(int Del_Only_Triv_Rel, unsigned int WhichPres)
+L 3838 Realization_Warning(void)
+L 3686 Reduce_The_Initial_Presentation_To_Minimal_Length(int)																				
+L 3900 ReRun_A_Bunch(void)
+L 4078 ReRun_A_Bunch_Sub(char Flag1,char Flag2, unsigned int j,char NumStabs)
+L 2746 ReRun_A_Presentation(void)
+L 4218 Restore_Saved_Input(void)
+L 1125 Rewrite_Input(void)
+L 4193 Save_Copy_Of_Input(void)
+L 2173 Save_Pres(unsigned int From,unsigned int Daut,unsigned long Len,int F1,int F2,
 	   int F3,unsigned char F4,char F5)
-L 3466 Turn_Micro_Print_On(void)
-L 3876 WaitkbHit(void)
+L 3468 Turn_Micro_Print_On(void)
+L 3878 WaitkbHit(void)
 ********************************************************************************************/
 
 FILE 
     *H_Results,
+    *H_Results_2,
     *Gvizdata,
     *input_relators;
 
@@ -88,6 +89,7 @@ unsigned char
     **Copy_Of_Rel_2[MAXNUMRELATORS + 1],
     **Copy_Of_Rel_3[MAXNUMRELATORS + 1],			
     *CS,
+    *CSF,
     *DD,
     *DeletedEdgePtr,
     *DeletedEdges,
@@ -416,7 +418,7 @@ int main(int argv, char **argc)
     printf("\n\n                                 HEEGAARD");
     printf("\n                               BY JOHN BERGE");
     printf("\n                             jberge@charter.net");
-    printf("\n                                 12/24/17\n");
+    printf("\n                                  1/10/18\n");
     printf("\n A PROGRAM FOR STUDYING 3-MANIFOLDS VIA PRESENTATIONS AND HEEGAARD DIAGRAMS.\n");
     printf("\n        Copyright 1995-2018 by John Berge, released under GNU GPLv2+.");
  	printf("\n\n               With thanks to Marc Culler and Nathan Dunfield.");
@@ -2159,7 +2161,7 @@ _RESTART:
             Boundary = TRUE;
             }
         for(i = 0; (CBC[CurrentComp][i] = BCWG[i]) < BDRY_UNKNOWN; i++) ;
-        if(CS[ComponentNum[This_Pres] + 1] == 3) MG_Bdry_Comp_Data(This_Pres);    
+        if(CSF[ComponentNum[This_Pres] + 1] == 3) MG_Bdry_Comp_Data(This_Pres);    
         if(BCWG[0] > 1 || (BCWG[0] && NumBdryComps > BCWG[0]))
             Delete_Redundant_Relators();
         for(i = 0; i < NumFilled - 1; i++) ER[i] = -1;
@@ -2237,7 +2239,7 @@ int Save_Pres(unsigned int From,unsigned int Daut,unsigned long Len,int F1,int F
 	if(NumGenerators == 1)
 		{
 		UDV[NumFilled] = GENERIC_LENS_SPACE;
-		LSP[NumFilled] = GetHandleSize((char **) SUR[NumFilled][1]) - 1;
+		LSP[NumFilled] = GetHandleSize((char **) MyRelators[1]) - 1;
 		LSQ[NumFilled] = 1;
 		}   
     if(NumFilled && NG[ReadPres] == NumGenerators && ComponentNum[ReadPres] == CurrentComp)
@@ -2482,7 +2484,7 @@ int Non_Unique_Initial_Diagram(void)
                     Boundary = TRUE;
                     }
                 for(i = 0; (CBC[CurrentComp][i] = BCWG[i]) < BDRY_UNKNOWN; i++) ;
-                if(CS[ComponentNum[This_Pres] + 1] == 3) MG_Bdry_Comp_Data(This_Pres);    
+                if(CSF[ComponentNum[This_Pres] + 1] == 3) MG_Bdry_Comp_Data(This_Pres);    
                 if(BCWG[0] > 1 || (BCWG[0] && NumBdryComps > BCWG[0]))
                     Delete_Redundant_Relators();
                 for(i = 0; i < NumFilled - 1; i++) ER[i] = -1;
@@ -2717,7 +2719,7 @@ void Init_G_Variables(void)
     for(i = 0; i <  MAXNUMCOMPONENTS; i++)
     for(j = 1; j <= MAXNUMGENERATORS; j++) MLC[i][j] = BIG_NUMBER;
     for(i = 0; i <  MAXNUMCOMPONENTS; i++) CBC[i][0] = BDRY_UNKNOWN;
-    for(i = 0; i <= MAXNUMCOMPONENTS; i++) CS[i] = EOS;
+    for(i = 0; i <= MAXNUMCOMPONENTS; i++) CS[i] = CSF[i] = EOS;
     
 }
 

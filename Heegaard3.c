@@ -348,7 +348,7 @@ int Check_Connected(void)
             Length += GetHandleSize((char **) Relators[i]);
         Length -= NumRelators;
         
-        if(!CS[CurrentComp]) CS[CurrentComp] = TRUE;
+        CS[CurrentComp] = TRUE;
         
         TotalComp                       ++;
         UDV[ReadPres]                   = SPLIT;
@@ -371,7 +371,7 @@ int Check_Connected(void)
         if(NumGenerators == 1)
         	{
         	UDV[NumFilled] = GENERIC_LENS_SPACE;
-        	LSP[NumFilled] = Length;
+        	LSP[NumFilled] = GetHandleSize((char **) Relators[1]) - 1;
         	LSQ[NumFilled] = 1;
         	}
         

@@ -30,8 +30,8 @@ unsigned int	MaxLengthReduction,
 unsigned long	SSSSLength;
 
 /******************************* Functions in Heegaard24.c ********************************	
-L 996 Find_Flow_D(char Flag)
-L 37  PM_Check_When_Bdry_Exists(char Flag)
+L 1033 Find_Flow_D(char Flag)
+L   37 PM_Check_When_Bdry_Exists(char Flag)
 ******************************************************************************************/												
 					
 int PM_Check_When_Bdry_Exists(char Flag)

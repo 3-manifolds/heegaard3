@@ -1839,7 +1839,7 @@ int MG_Bdry_Comp_Data(unsigned int WhichPres)
     CNumPres1 = ComponentNum[Pres1];
     CNumPres2 = ComponentNum[Pres2];
     CNumPres3 = ComponentNum[Pres3];
-    if(CS[CNumPres3] != 3) return(FALSE);
+    if(CSF[CNumPres3] != 3) return(FALSE);
     if(CBC[CNumPres1][0] < BDRY_UNKNOWN)
         {
         NumEmtyHand = NG[Pres3];
@@ -1861,18 +1861,18 @@ int MG_Bdry_Comp_Data(unsigned int WhichPres)
             Num1H = BdryComps2 - BdryComps1;
         else
             {
-            CS[CNumPres3] = 4;
+            CSF[CNumPres3] = 4;
             return(FALSE);
             }
         if(Num1H > NumEmtyHand)
             {
-            CS[CNumPres3] = 4;
+            CSF[CNumPres3] = 4;
             return(FALSE);            
             }
         NumS1XD2 = NumEmtyHand - Num1H;
         if(TGenus1 - TGenus2 != NumS1XD2)
             {
-            CS[CNumPres3] = 4;
+            CSF[CNumPres3] = 4;
             return(FALSE);            
             }        
                     
@@ -1897,7 +1897,7 @@ int MG_Bdry_Comp_Data(unsigned int WhichPres)
                 {
                 if(PS2[i] < PS1[i])
                     {
-                    CS[CNumPres3] = 4;
+                    CSF[CNumPres3] = 4;
                     return(FALSE);    
                     }
                 if(j && PS2[i] > PS1[i])
@@ -1913,7 +1913,7 @@ int MG_Bdry_Comp_Data(unsigned int WhichPres)
             CBC[CNumPres3][1]      = NumS1XD2;
             CBC[CNumPres3][2]      = BDRY_UNKNOWN;
             UDV[Pres3]             = MISSING_GEN_DONE2;
-            CS[CNumPres3]          = 2;
+            CSF[CNumPres3]         = 2;
             return(TRUE);            
             }
         
@@ -1933,7 +1933,7 @@ int MG_Bdry_Comp_Data(unsigned int WhichPres)
             CBC[CNumPres3][1] = BDRY_UNKNOWN;
             }            
         
-        CS[CNumPres3] = 2;        
+        CSF[CNumPres3] = 2;        
         UDV[Pres3] = MISSING_GEN_DONE1;
         return(TRUE);
         }
@@ -1955,12 +1955,12 @@ int MG_Bdry_Comp_Data(unsigned int WhichPres)
             Num1H = BdryComps2 - BdryComps1;
         else
             {
-            CS[CNumPres3] = 4;
+            CSF[CNumPres3] = 4;
             return(FALSE);            
             }    
         if(Num1H > NumEmtyHand)
             {
-            CS[CNumPres3] = 4;
+            CSF[CNumPres3] = 4;
             return(FALSE);            
             }            
         NumS1XD2 = NumEmtyHand - Num1H;
@@ -1983,7 +1983,7 @@ int MG_Bdry_Comp_Data(unsigned int WhichPres)
             CBC[CNumPres3][i+1] = BDRY_UNKNOWN;
             UDV[Pres3] = MISSING_GEN_DONE1;
             }
-        CS[CNumPres3] = 2;                
+        CSF[CNumPres3] = 2;                
         return(TRUE);
         }
     return(FALSE);            

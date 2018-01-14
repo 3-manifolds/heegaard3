@@ -179,6 +179,7 @@ extern void		Fill_DRA(void);														/* In Heegaard4.c	*/
 extern void		Find_Cancellation_Paths(int,int,int);								/* In Heegaard5.c	*/
 extern int		Find_Canonical_Orbit_Reps(int *,int,int,int,char);					/* In Heegaard18.c	*/
 extern int		Find_Canonical_Orbit_Reps_S1(int*,int,int,int);						/* In Heegaard12.c  */
+extern int		Find_Canonical_Orbit_Reps_S2(int*,int,int,int);						/* In Heegaard12.c  */
 extern int		Find_Cut_Vertices(void);											/* In Heegaard3.c	*/ 
 extern int		Find_Flow_A(int,int);												/* In Heegaard2.c	*/
 extern int		Find_Flow_B(unsigned int);											/* In Heegaard6.c	*/
@@ -317,6 +318,7 @@ extern void		Print_Realizability(int,unsigned int);								/* In Heegaard1.c	*/
 extern void		Print_Relators(unsigned char ***,int);								/* In Heegaard12.c	*/
 extern void		Print_Relators2(unsigned char ***,int);								/* In Heegaard12.c	*/
 extern void		Print_Relators3(unsigned char ***,int);								/* In Heegaard12.c	*/
+extern void		Print_Relators4(unsigned char ***,int);								/* In Heegaard12.c	*/
 extern int		Print_SFComp(int);													/* In Heegaard12.c	*/
 extern void		Print_SLR(int,int);	      											/* In Heegaard12.c	*/
 extern unsigned int	Proper_Power(void);												/* In Heegaard6.c	*/

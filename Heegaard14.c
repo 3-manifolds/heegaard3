@@ -4,12 +4,12 @@
 
 /****************************** Functions in Heegaard14.c **********************************
 L   15 BatchProcessing(void)
-L 1480 Get_Min_Length_Parameter(void)
-L 1120 Set_Up_Simplification_Parameters(int* SFormBandsums, int* SOnlyReducingBandsums,
+L 1507 Get_Min_Length_Parameter(void)
+L 1124 Set_Up_Simplification_Parameters(int* SFormBandsums, int* SOnlyReducingBandsums,
 	   int* SDelete_Only_Short_Primitives, int* SDo_Not_Reduce_Genus)
-L 1239 Set_Up_Simplification_Parameters_S1(void)
-L 1339 SetLimits(void)
-L 1386 SnapPy2Heegaard(void)
+L 1243 Set_Up_Simplification_Parameters_S1(void)
+L 1367 SetLimits(void)
+L 1413 SnapPy2Heegaard(void)
 ********************************************************************************************/
 
 int BatchProcessing(void)
@@ -39,7 +39,7 @@ int BatchProcessing(void)
     long            Scratch;
  
 OPTIONS:  
-	H_Results = NULL;
+	H_Results = H_Results_2 = NULL;
 	MyMaxNumDiagrams = MY_MAX_NUM_DIAGRAMS;
 	  
     if((input_relators = fopen("Heegaard_Input_Presentations","r+")) == NULL)
@@ -1097,6 +1097,11 @@ END:
 		fclose(H_Results);
 		H_Results = NULL;
 		}
+	if(H_Results_2 != NULL) 
+		{
+		fclose(H_Results_2);
+		H_Results_2 = NULL;
+		}	
 	SysBeep(5);	
 	printf("\n\nHIT 'B' TO CONTINUE IN 'BATCH' MODE. HIT 'q' TO QUIT RUNNING IN BATCH MODE.    ");
 	GET_RESPONSE4:
@@ -1328,7 +1333,31 @@ int Set_Up_Simplification_Parameters_S1(void)
 			}
         }
     else
-		printf("\n	5) UNAVAILABLE WHEN REPLY TO 2) or 3) is 'y'.");    
+		printf("\n	5) UNAVAILABLE WHEN REPLY TO 2) or 3) is 'y'.");   
+		
+	if(B10B11Recognized)
+		{
+		printf("\n\nSAVE COPIES OF UNRECOGNIZED PRESENTATIONS TO 'Heegaard_Results_2' FOR FURTHER CHECKING?\n");
+		printf("HIT 'y' OR 'n'.    ");
+		GET_RESPONSE4:
+		switch(WaitkbHit())
+			{
+			case 'y':
+				if(H_Results_2 != NULL) fclose(H_Results_2);
+				H_Results_2 = fopen("Heegaard_Results_2","a+");
+				if(H_Results_2 == NULL)
+				    {
+					SysBeep(5);
+					printf("\nUnable to open the file 'Heegaard_Results_2'.");
+					}
+				break;
+			case 'n':
+				break;
+			default:
+				SysBeep(5);
+				goto GET_RESPONSE4;
+			}
+		}	 
                           		   	  
 	SetLimits();
 		

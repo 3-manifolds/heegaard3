@@ -1,6 +1,7 @@
 
 extern FILE
 	*H_Results,
+	*H_Results_2,
 	*Gvizdata,
 	*input_relators;
 	
@@ -43,6 +44,7 @@ extern unsigned char
     **Copy_Of_Rel_2[MAXNUMRELATORS + 1],
     **Copy_Of_Rel_3[MAXNUMRELATORS + 1],			
     *CS,
+    *CSF,
     *DD,
     *DeletedEdgePtr,
     *DeletedEdges,

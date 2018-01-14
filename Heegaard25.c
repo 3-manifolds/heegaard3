@@ -604,7 +604,7 @@ int Check_for_Big_SF(int MyHS,int MyOrbit,unsigned int MyOrbitLength)
 	if(k < 3)
 		{	
 		FoundBigSF = TRUE;
-		printf("\n\n Mfld = SF( %d, %ld | ",SFGenus,e);
+		printf("\n\n SF( %d, %ld | ",SFGenus,e);
 		for(i = 0; i <= NumGenerators; i++) if(Alphas[i] > 1) printf("%d/%d ",Betas[i],Alphas[i]);
 		printf(") OR ");	
 		printf("SF( %d, %ld | ",SFGenus,NumExceptionalFibers - e);
@@ -624,14 +624,14 @@ int Check_for_Big_SF(int MyHS,int MyOrbit,unsigned int MyOrbitLength)
 		{
 		FoundBigSF = TRUE;
 		printf("\n\nThere is an Euler number ambiguity! Either:");
-		printf("\nMfld = SF( %d, %ld | ",SFGenus,e1);
+		printf("\nSF( %d, %ld | ",SFGenus,e1);
 		for(i = 0; i <= NumGenerators; i++) if(Alphas[i] > 1) printf("%d/%d ",Betas[i],Alphas[i]);
 		printf(") OR ");	
 		printf("SF( %d, %ld | ",SFGenus,NumExceptionalFibers - e1);
 		for(i = 0; i <= NumGenerators; i++) if(Alphas[i] > 1) printf("%d/%d ",Alphas[i]-Betas[i],Alphas[i]);
 		printf(")");	
 		printf("\nOr perhaps:");
-		printf("\nMfld = SF( %d, %ld | ",SFGenus,e2);
+		printf("\nSF( %d, %ld | ",SFGenus,e2);
 		for(i = 0; i <= NumGenerators; i++) if(Alphas[i] > 1) printf("%d/%d ",Betas[i],Alphas[i]);
 		printf(") OR ");	
 		printf("SF( %d, %ld | ",SFGenus,NumExceptionalFibers - e2);

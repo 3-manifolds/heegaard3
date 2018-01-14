@@ -2,32 +2,32 @@
 #include "Heegaard_Dec.h"
 				
 /****************************** Functions in Heegaard19.c *****************************************
-L 4266 CheckDualRelator(char MissingGen,int MyCompNum)
-L 3529 CheckForAltExpSigns(char WhichRelator, char WhichGen)
+L 4269 CheckDualRelator(char MissingGen,int MyCompNum)
+L 3532 CheckForAltExpSigns(char WhichRelator, char WhichGen)
 L  743 Do_Aut_SF(int Num)
-L 4182 Genus3ET(int OrbitNum,int MyCompNum,char F1)
-L 2165 Genus_Two_Essential_Tori(int OrbitNum,int MyCompNum,char F1)
-L 2879 Genus_Two_Essential_Torus_Betas(char F2)
+L 4185 Genus3ET(int OrbitNum,int MyCompNum,char F1)
+L 2168 Genus_Two_Essential_Tori(int OrbitNum,int MyCompNum,char F1)
+L 2882 Genus_Two_Essential_Torus_Betas(char F2)
 L  123 Genus_Two_Seifert_Fibered(int OrbitNum,char F1)
-L 3595 Get2BKorLPs(char WhichRelator,char WhichGen,unsigned int* Ptr1,unsigned int* Ptr2)
-L 3199 Get_Betas2(char WhichRelator,char WhichSquare)
+L 3597 Get2BKorLPs(char WhichRelator,char WhichGen,unsigned int* Ptr1,unsigned int* Ptr2)
+L 3202 Get_Betas2(char WhichRelator,char WhichSquare)
 L  495 Get_Genus_2_SF_EXPS1(void)
 L  623 Get_Genus_2_SF_EXPS2(void)
-L 2691 Get_Genus_2_EXPS(void)
+L 2694 Get_Genus_2_EXPS(void)
 L  932 Get_SF_Alphas1(int Num)
-L 1388 Get_SF_Alphas2(int Num)
+L 1391 Get_SF_Alphas2(int Num)
 L 1182 Get_SF_Invariants(int OrbitNum,char F1)
-L 3686 GetAlpha2(char WhichRelator,char WhichGen)
-L 3742 GetAlpha2Sub1(char WhichRelator,char WhichGen)
-L 3946 GetAlpha2Sub2(char WhichRelator,char WhichGen)
-L 4128 Init_Genus_Three_Essential_Tori(int* MyTable,int MyStart,int MyCompNum,char F1)
-L 2123 Init_Genus_Two_Essential_Tori(int* MyTable,int MyStart,int MyCompNum,char F1)
+L 3689 GetAlpha2(char WhichRelator,char WhichGen)
+L 3745 GetAlpha2Sub1(char WhichRelator,char WhichGen)
+L 3949 GetAlpha2Sub2(char WhichRelator,char WhichGen)
+L 4131 Init_Genus_Three_Essential_Tori(int* MyTable,int MyStart,int MyCompNum,char F1)
+L 2126 Init_Genus_Two_Essential_Tori(int* MyTable,int MyStart,int MyCompNum,char F1)
 L   33 Init_Genus_Two_Seifert_Fibered(int* MyTable,int MyStart,int MyCompNum)
-L 3387 Print_ET_Data(int MyCompNum)
-L 1860 SF_Sort_And_Print(int H1, int n, int A1, int A2, int A3, int B1, int B2, int B3,
+L 3390 Print_ET_Data(int MyCompNum)
+L 1863 SF_Sort_And_Print(int H1, int n, int A1, int A2, int A3, int B1, int B2, int B3,
 	   int NumSolns, int* SolV)
-L 3326 Stow_ET_Data(int MyCompNum,char FET,int P0,int P1,int P2,int P3,int P4,int P5,int P6,int P7,int P8)
-L 2100 Test_Transverse(void)
+L 3329 Stow_ET_Data(int MyCompNum,char FET,int P0,int P1,int P2,int P3,int P4,int P5,int P6,int P7,int P8)
+L 2103 Test_Transverse(void)
 ********************************************************************************************/				
 
 int Init_Genus_Two_Seifert_Fibered(int* MyTable,int MyStart,int MyCompNum)
@@ -47,7 +47,7 @@ int Init_Genus_Two_Seifert_Fibered(int* MyTable,int MyStart,int MyCompNum)
 	for(n = MyStart,NumSFChecked = NumSFFound = MultipleSolns = 0; n >= 0; n--) 
 		{
 		ReadPres 		= MyTable[n];
-		if(CS[ReadPres] > 0) continue;
+		if(CS[ComponentNum[ReadPres]] == 1) continue;
 		if(ComponentNum[ReadPres] >  MyCompNum) continue;
 		if(ComponentNum[ReadPres] <  MyCompNum) return(n);
 		NumGenerators 	= NG[ReadPres];
@@ -1200,16 +1200,19 @@ int			A1,
 			SumAR2,
 			SumBR2;
 	
-	if(F1 == 0)
+	if(Batch == FALSE)
 		{
-		i = OrbitNum - 1;		
-		printf("\n\nPresentation %d  of Summand %u:  Gen  %d  Rel  %d  Length  %lu  From Pres %u. \n",
-        	i+1,ComponentNum[i],NG[i],NR[i],SURL[i],FR[i]+1);
-        Print_Relators(SUR[i],NR[i]);	
-        printf("\n\npresents:");		
+		if(F1 == 0)
+			{
+			i = OrbitNum - 1;		
+			printf("\n\nPresentation %d  of Summand %u:  Gen  %d  Rel  %d  Length  %lu  From Pres %u. \n",
+				i+1,ComponentNum[i],NG[i],NR[i],SURL[i],FR[i]+1);
+			Print_Relators(SUR[i],NR[i]);	
+			printf("\n\npresents:");		
+			}	
+		if(F1 == 1) printf("\n\nThe Manifolds of Orbit %4d are:", OrbitNum);
+		if(F1 == 2) printf("\n\nThe manifold H'[R] is");
 		}	
-	if(F1 == 1) printf("\n\nThe Manifolds of Orbit %4d are:", OrbitNum);
-	if(F1 == 2) printf("\n\nThe manifold H'[R] is");
 
 	if(NumRelators == 1)
 		{
@@ -2134,7 +2137,7 @@ int Init_Genus_Two_Essential_Tori(int* MyTable,int MyStart,int MyCompNum,char F1
 	for(n = MyStart,NumPresChecked = 0; n >= 0; n--) 
 		{
 		ReadPres 		= MyTable[n];
-		if(CS[ReadPres] > 0) continue;
+		if(CS[ComponentNum[ReadPres]] == 1) continue;
 		if(ComponentNum[ReadPres] >  MyCompNum) continue;
 		if(ComponentNum[ReadPres] <  MyCompNum) return(n);
 		NumGenerators 	= NG[ReadPres];
@@ -2460,7 +2463,7 @@ int Genus_Two_Essential_Tori(int OrbitNum,int MyCompNum,char F1)
 				if(!F1) printf("\n\n Found an essential torus in the diagram of Orbit %d. ", OrbitNum);
 				if(F1)  printf("\n\n Found an essential torus in the diagram of Presentation %d Length %lu. ", OrbitNum,SURL[OrbitNum - 1]);
 				}
-			if(Batch == 10 || Batch == 11) printf("\n\nHas an ET.   ");
+			if(Batch == 10 || Batch == 11) printf("Has an ET.   ");
 			switch(FET)
 				{
 				case 1:
@@ -4146,7 +4149,7 @@ int Init_Genus_Three_Essential_Tori(int* MyTable,int MyStart,int MyCompNum,char 
 	for(n = MyStart,NumPresChecked = 0,MyNumGens = MyNumRels = 0; n >= 0; n--) 
 		{
 		ReadPres 		= MyTable[n];
-		if(CS[ReadPres] > 0) continue;
+		if(CS[ComponentNum[ReadPres]] == 1) continue;
 		if(ComponentNum[ReadPres] >  MyCompNum) continue;
 		if(ComponentNum[ReadPres] <  MyCompNum) return(n);
 		if(MyNumGens == 0) MyNumGens = NG[ReadPres];

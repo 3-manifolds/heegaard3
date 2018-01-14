@@ -9,41 +9,42 @@
 *******************************************************************************************/
 
 /****************************** Functions in Heegaard18.c *****************************************
-L 3665 Check_HS_Disjoint_Curves(int NumHSReps,int* HSRepL,char* HSL2)
-L 3413 Check_HS_Reducibility(int NumHSReps,int* HSRepL,char* HSL2)
-L 2942 Check_HS_Reps(int NumHSReps,int* HSRepL)
-L 2272 Check_HS_Simple_Circuits(int NumHSReps,int* HSRepL,char* HSL2)
-L 3857 Check_HS_Strong_Irreducibility(int NumHSReps,int* HSRepL,char* HSL2)
-L 3954 Check_HS_Strong_IrreducibilityS1(void)
-L 4708 Check_HS_Strong_IrreducibilityS2(unsigned char NumPathsInWave,int * PathsInWave,
+L 3465 Check_HS_Disjoint_Curves(int NumHSReps,int* HSRepL,char* HSL2)
+L 3213 Check_HS_Reducibility(int NumHSReps,int* HSRepL,char* HSL2)
+L 2742 Check_HS_Reps(int NumHSReps,int* HSRepL)
+L 2072 Check_HS_Simple_Circuits(int NumHSReps,int* HSRepL,char* HSL2)
+L 3657 Check_HS_Strong_Irreducibility(int NumHSReps,int* HSRepL,char* HSL2)
+L 3754 Check_HS_Strong_IrreducibilityS1(void)
+L 4508 Check_HS_Strong_IrreducibilityS2(unsigned char NumPathsInWave,int * PathsInWave,
 	   unsigned char ** PP,unsigned char ** PM)
-L 2012 Check_HS_Uniqueness(int NumHSReps,int* HSRepL)
-L 2087 Check_HS_Uniqueness_Sub1(int MyHSNum,int MyPresNum)
-L 3527 Check_HS_Weak_Reducibility(int NumHSReps,int* HSRepL,char* HSL2)
-L 2843 CHSP_Check_Simple_Circuits(unsigned int,int*,int,unsigned char**,unsigned char**)
-L 1565 Delete_Old_PresentationsSLP(void)
-L 1589 Delete_Old_PresentationsSMGP(int MyNumSavedPres,unsigned int* SUR_Num)
-L 1956 Display_HS_Diagrams(int NumHSReps,int* HSRepL)
-L   64 Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1)
-L 2373 Find_Simple_Circuits(void)
-L 3017 Get_Next_Presentation_From_File(char Flag)
-L 3776 Get_Relators1_Diagram(void)
-L 1750 ID_A_PMQPM(unsigned int i)
-L 1686 ID_PMQPM(int MyNumSavedPres,char* PMQPML,unsigned int* SUR_Num)
-L 1439 In_File2(int Test,unsigned char ***MyRelators)
-L   50 Init_Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum)
-L 3170 Is_IP_In_HS_Reps(int NumHSReps,int* HSRepL)
-L 1911 MergeHegSpl(unsigned int i,unsigned int j)
-L 1877 Print_Orbit_Reps(int MyNumRelators,int NumOrbits,unsigned int* OrbitNum2SLRNum)
-L 1610 qksort2(int first,int last,int NumRelators,unsigned int* SUR_Num)
-L 1642 qkst_compare2(int i,int j,int NumRelators,unsigned int* SUR_Num)
-L 1677 qkst_swap2(int i,int j)
-L 1807 Rewrite_Orbit_Reps(int MyNumRelators,int NumOrbits,unsigned int* OrbitNum2SLRNum)
-L 1533 Save_Pres2(void)
-L 3250 Search_For_Non_Minimal_UnStabilized_Splittings(char F1,int TargetNumGenerators)
+L 1812 Check_HS_Uniqueness(int NumHSReps,int* HSRepL)
+L 1887 Check_HS_Uniqueness_Sub1(int MyHSNum,int MyPresNum)
+L 3327 Check_HS_Weak_Reducibility(int NumHSReps,int* HSRepL,char* HSL2)
+L 2643 CHSP_Check_Simple_Circuits(unsigned int,int*,int,unsigned char**,unsigned char**)
+L 1364 Delete_Old_PresentationsSLP(void)
+L 1388 Delete_Old_PresentationsSMGP(int MyNumSavedPres,unsigned int* SUR_Num)
+L 1756 Display_HS_Diagrams(int NumHSReps,int* HSRepL)
+L   65 Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1)
+L 2173 Find_Simple_Circuits(void)
+L 2817 Get_Next_Presentation_From_File(char Flag)
+L 3576 Get_Relators1_Diagram(void)
+L 1550 ID_A_PMQPM(unsigned int i)
+L 1485 ID_PMQPM(int MyNumSavedPres,char* PMQPML,unsigned int* SUR_Num)
+L 1238 In_File2(int Test,unsigned char ***MyRelators)
+L   51 Init_Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum)
+L 2970 Is_IP_In_HS_Reps(int NumHSReps,int* HSRepL)
+L 1711 MergeHegSpl(unsigned int i,unsigned int j)
+L 1677 Print_Orbit_Reps(int MyNumRelators,int NumOrbits,unsigned int* OrbitNum2SLRNum)
+L 1409 qksort2(int first,int last,int NumRelators,unsigned int* SUR_Num)
+L 1441 qkst_compare2(int i,int j,int NumRelators,unsigned int* SUR_Num)
+L 1476 qkst_swap2(int i,int j)
+L 1607 Rewrite_Orbit_Reps(int MyNumRelators,int NumOrbits,unsigned int* OrbitNum2SLRNum)
+L 1332 Save_Pres2(void)
+L 3050 Search_For_Non_Minimal_UnStabilized_Splittings(char F1,int TargetNumGenerators)
 ********************************************************************************************/
 
-int     NumSplittings,
+int     MaxNumPMQPM = 100,
+		NumSplittings,
 		*Table2 = NULL,
 		*Table3 = NULL;
 
@@ -63,12 +64,10 @@ int Init_Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum)
 
 int Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char Try_2_Recognize)
 {
-	char			F2,
-					*HSL2 = NULL,
+	char			*HSL2 = NULL,
 					*PMQPML = NULL,
 					PrintAster = FALSE,
-					QuitFlag = FALSE,
-					ReTry;
+					QuitFlag = FALSE;
 
 	unsigned char	OrbitTooLarge = FALSE,
 					*p,
@@ -120,219 +119,17 @@ int Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char
 	unsigned long	TotalLevelTrans = 0L,
 					TotalOrbitSizes = 0L;	
 					
-	LastPresRead = MyStart;
-	
-	F2 = FALSE;
-	if(Batch && B10B11Recognized && H_Results) F2 = TRUE;
-			
-	MyMinNumGenerators = NG[MyTable[MyStart]];
-	if(MyMinNumGenerators == 0)
-		{
-		if(TotalComp == 1 && F2) fprintf(H_Results," has no generators!");
-		if(TotalComp > 1) 
-			{
-			if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-			if(F2) fprintf(H_Results," has no generators!");
-			}
-		return(TOO_LONG);
-		}
-	MyMinNumRelators = NR[MyTable[MyStart]];
-	if(MyMinNumRelators == 0)
-		{
-		if(TotalComp == 1 && F2) fprintf(H_Results," is free of rank %d.",MyMinNumGenerators);
-		if(TotalComp > 1) 
-			{
-			if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-			if(F2) fprintf(H_Results," is free of rank %d",MyMinNumGenerators);
-			}
-		return(TOO_LONG);
-		}
-		
-	if(Try_2_Recognize && F1 != 2) switch(UDV[MyTable[MyStart]])
-		{
-		case SPLIT:
-			return(TOO_LONG);
-		case GENERIC_LENS_SPACE:
-			i = MyTable[MyStart];
-			if(LSP[i] > 4)
-				{
-				if(TotalComp == 1 && F2) fprintf(H_Results," L(%lu,Q)",LSP[i]);
-				if(TotalComp > 1) 
-					{
-					if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-					if(F2) fprintf(H_Results," L(%lu,Q)",LSP[i]);
-					}
-				}
-			else
-				{
-				if(LSP[i] == 1)
-					{
-					if(TotalComp == 1 && F2) fprintf(H_Results," S^3");
-					if(TotalComp > 1) 
-						{
-						if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-						if(F2) fprintf(H_Results," S^3");
-						}
-					}
-				else
-					{
-					if(TotalComp == 1 && F2) fprintf(H_Results," L(%lu,1)",LSP[i]);
-					if(TotalComp > 1) 
-						{
-						if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-						if(F2) fprintf(H_Results," L(%lu,1)",LSP[i]);
-						}
-					}
-				}							
-			return(TOO_LONG);	
-		case THREE_SPHERE:
-			if(TotalComp == 1 && F2) fprintf(H_Results," S^3");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," S^3");
-				}
-			return(TOO_LONG);
-		case NOT_CONNECTED:	
-			if(TotalComp == 1 && F2) fprintf(H_Results," NOT_CONNECTED");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," NOT_CONNECTED");
-				}
-			return(TOO_LONG);		
-		case S1_X_S2:
-			if(TotalComp == 1 && F2) fprintf(H_Results," S1_X_S2");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," S1_X_S2");
-				}
-			return(TOO_LONG);	
-		case S1_X_D2:
-			if(TotalComp == 1 && F2) fprintf(H_Results," S1_X_D2");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," S1_X_D2");
-				}
-			return(TOO_LONG);	
-		case S1_X_X2:
-			if(TotalComp == 1 && F2) fprintf(H_Results," S1_X_X2");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," S1_X_X2");
-				}
-			return(TOO_LONG);	
-		case MISSING_GEN_DONE2:
-			if(TotalComp == 1 && F2) fprintf(H_Results," MISSING_GEN_DONE2");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," MISSING_GEN_DONE2");
-				}
-			return(TOO_LONG);	
-		case MISSING_GEN_DONE1:
-			if(TotalComp == 1 && F2) fprintf(H_Results," MISSING_GEN_DONE1");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," MISSING_GEN_DONE1");
-				}
-			return(TOO_LONG);					
-		case KNOWN_LENS_SPACE: 
-			i = MyTable[MyStart];
-			switch(LSP[i])
-				{
-				case 0L:
-					if(TotalComp == 1 && F2) fprintf(H_Results," S1 X S2");
-					if(TotalComp > 1) 
-						{
-						if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-						if(F2) fprintf(H_Results," S1 X S2");
-						}
-					break; 
-				case 1L:
-					if(TotalComp == 1 && F2) fprintf(H_Results," S^3");
-					if(TotalComp > 1) 
-						{
-						if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-						if(F2) fprintf(H_Results," S^3");
-						}
-					break;
-				default:
-					if(TotalComp == 1 && F2) fprintf(H_Results," L(%lu,%lu)",LSP[i],LSQ[i]);
-					if(TotalComp > 1) 
-						{
-						if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-						if(F2) fprintf(H_Results," L(%lu,%lu)",LSP[i],LSQ[i]);
-						}
-					break;
-				}					
-			return(TOO_LONG);	
-		case ANNULUS_EXISTS:
-			if(TotalComp == 1 && F2) fprintf(H_Results," ANNULUS_EXISTS");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," ANNULUS_EXISTS");
-				}
-			return(TOO_LONG);	
-		case V2_ANNULUS_EXISTS:
-			if(TotalComp == 1 && F2) fprintf(H_Results," V2_ANNULUS_EXISTS");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," V2_ANNULUS_EXISTS");
-				}
-			return(TOO_LONG);
-		case NON_UNIQUE_4:
-			if(TotalComp == 1 && F2) fprintf(H_Results," NON_UNIQUE_4");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," NON_UNIQUE_4");
-				}
-			return(TOO_LONG);
-		case NON_UNIQUE_3:
-			if(TotalComp == 1 && F2) fprintf(H_Results," NON_UNIQUE_3");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," NON_UNIQUE_3");
-				}
-			return(TOO_LONG);	
-		case NON_UNIQUE_2:
-			if(TotalComp == 1 && F2) fprintf(H_Results," NON_UNIQUE_2");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," NON_UNIQUE_2");
-				}
-			return(TOO_LONG);	
-		case NON_UNIQUE_1:
-			if(TotalComp == 1 && F2) fprintf(H_Results," NON_UNIQUE_1");
-			if(TotalComp > 1) 
-				{
-				if(F2 && MyCompNum < TotalComp) fprintf(H_Results," #");
-				if(F2) fprintf(H_Results," NON_UNIQUE_1");
-				}
-			return(TOO_LONG);		
-		default:
-			break;                                                                                      
-		}	
-	
-	MissingPres = FALSE;
+	LastPresRead 		= MyStart;			
+	MyMinNumGenerators 	= NG[MyTable[MyStart]];
+	MyMinNumRelators 	= NR[MyTable[MyStart]];
+	MissingPres 		= FALSE;
 	MissingCanonicalRep = FALSE;
-	SNumFilled = NumFilled;
+	SNumFilled 			= NumFilled;
 
 	/******************************************************************************************
 		Copy the Presentations of the current component on MyMinNumGenerators into SMGP[ ].
 	******************************************************************************************/
-	
-	ReTry = FALSE;
-_RETRY:
+
 	for(n = MyStart, MyNumSavedPres = 0; n >= 0; n--)
 		{
 		if(MyNumSavedPres >= MAX_MIN_GEN_PRES)
@@ -357,7 +154,12 @@ _RETRY:
 			break;
 			}
 		NumRelators = NR[ReadPres];
-		if(F1 != 2 && !ReTry && ID_A_PMQPM(ReadPres) == FALSE) continue;
+		if(F1 != 2) 
+			{
+			i = ID_A_PMQPM(ReadPres);
+			if(i == FALSE) continue;
+			if(i == 2 && MyNumSavedPres > 200) continue;
+			}
 		if(NumRelators == 0)
 			{
 			printf("\n\nThe initial presentation was: %s",PresName);
@@ -380,13 +182,11 @@ _RETRY:
 		MyNumSavedPres++;
 		}
 		
-	/*********************************************************************************************** 
-		Normally, only presentations on MyMinNumGenerators and MyMinNumRelators marked PM or QPM by 
-	Heegaard are used here. If there are no presentations marked PM or QPM, we abandon that 
-	requirement and go to RETRY.
-	***********************************************************************************************/
+	/********************************************************************************** 
+		Normally, only the first MaxNumPMQPM presentations on MyMinNumGenerators and 
+		MyMinNumRelators in addition to presentations marked PM or QPM are used here. 
+	**********************************************************************************/
 		
-	if(MyNumSavedPres == 0 && ++ReTry == 1) goto _RETRY;
 	if(MyNumSavedPres == 0)
 		{
 		printf("\n\nThe initial presentation was: %s",PresName);
@@ -508,8 +308,9 @@ _RETRY:
 			ReadPres ++;
 			}
 		while(ReadPres < NumFilled);
-		
+
 NEXT_PRES:
+		
     	OrbitSize[n] = NumFilled;
     	TotalOrbitSizes += NumFilled;
 	
@@ -921,11 +722,9 @@ REPORT_RESULTS:
 
  	if(Check_for_1_HS && NumSplittings > 1 && Check_HS_Reducibility(NumHSReps,HSRepL,HSL2) == 1) printf("\nEach HS is reducible!");	
 		
-	if(Check_for_1_HS) goto END;	
-	
-	/* If Batch = 10 or Batch = 11, find and print the largest HSNum that appears. */
+	if(Check_for_1_HS) goto END;
 		
-	if(Batch == 10 || Batch == 11)
+	if(B10B11HSReps || Batch == 53) /* If B10B11HSReps or Batch == 53, find and print the largest HSNum that appears. */
 		{
 		for(i = 0,MaxHSNum = 0; i < NumOrbits; i++) 
 		if(HSN[i] > MaxHSNum) MaxHSNum = HSN[i];
@@ -938,7 +737,8 @@ REPORT_RESULTS:
 		
 	if(Batch == FALSE && MyCompNum == 1) printf("\n\nThe initial presentation was: %s",PresName);
 
-	if(MyCompNum > 1) printf("\n\nThe initial presentation was: Pres %d of Summand %d of %s",MyStart+1,MyCompNum,PresName);
+	if(Batch == FALSE && MyCompNum > 1)
+	printf("\n\nThe initial presentation was: Pres %d of Summand %d of %s",MyStart+1,MyCompNum,PresName);
 
 	if(Batch == FALSE)
 		{			
@@ -1012,7 +812,6 @@ REPORT_RESULTS:
 	if(Try_2_Recognize)
 		{	
 		FoundFiniteSF = FoundSF = FoundBigSF = FoundEssentialTorus = NumSFFound = 0;
-		
 		if(HSL2) DisposePtr((char*) HSL2);
 		HSL2 = (char *) NewPtr((sizeof(char)*(NumSplittings + 1)));
 		if(HSL2 == NULL) Mem_Error();
@@ -1048,15 +847,14 @@ REPORT_RESULTS:
 							p = *SMGP[m][i];
 							q = *Relators[i];
 							while((*q++ = *p++)) ;						
-							}						
-						n = Check_for_Big_SF(l,k,OrbitLength[k-1]);
+							}
+						Check_for_Big_SF(l,k,OrbitLength[k-1]);
 						if(FoundBigSF) break;
 						}
 					if(FoundBigSF) break;
 					}
 				}
 			}
-		
 		if(B10B11Recognized && FoundBigSF) goto END;			
 		
 		if((Batch == 10 || Batch == 11) && !B10B11Recognized) goto END;
@@ -1175,6 +973,7 @@ REPORT_RESULTS:
 				printf("\n\n Note 1) Heegaard only checks for Seifert fibrations of manifolds in Orbit 1 and manifolds");
 				printf("\n in other orbits for which the 'Canonical Rep Presentation' is marked 'pseudo-minimal' or");
 				printf("\n 'quasi-pseudo-minimal' or the 'Canonical Rep Presentation' is missing from the orbit list.");
+				printf("\n or in Orbits < 100 with UDV[] == DONE.");
 				printf("\n Note 2) Heegaard recognizes a Seifert manifold M from special features of M's presentation. Since");
 				printf("\n only some presentations of M may exhibit these features, Heegaard looks at multiple presentations.");
 				}
@@ -1257,8 +1056,8 @@ REPORT_RESULTS:
 									}
 								} 							
 							if(NumRelators == 2 && NumGenerators == 2) 
-								{
-								m = Genus_Two_Essential_Tori(k + 1,1,0);
+								{							
+								m = Genus_Two_Essential_Tori(k + 1,MyCompNum,0);
 								if(m == 1) n++;
 								if(m == 2)
 									{
@@ -1276,7 +1075,7 @@ REPORT_RESULTS:
 				}
 			
 	FOUND_TORUS:
-			
+
 			/******************************************************************************************
 				If !Batch and no essential tori were found in diagrams of HS Reps, broaden the search.
 			*******************************************************************************************/
@@ -1744,6 +1543,7 @@ void ID_PMQPM(int MyNumSavedPres,char* PMQPML,unsigned int* SUR_Num)
 					break;
 					}                                                                                
 				}
+		if(n < MaxNumPMQPM && 0 < UDV[i] && UDV[i] <= DONE && PMQPML[n] == FALSE) PMQPML[n] = 2;		
 		}
 }
 
@@ -1764,10 +1564,9 @@ int ID_A_PMQPM(unsigned int i)
 		case MISSING_GEN_DONE2:		
 		case MISSING_GEN_DONE1:		
 		case KNOWN_LENS_SPACE:
-			break;	
+			return(FALSE);	
 		case SEP_PAIRS:
-			if(PRIM[i] >= 100) return(TRUE);	                    
-			break;	
+			if(PRIM[i] >= 100) return(TRUE);	
 		case ANNULUS_EXISTS:	
 		case V2_ANNULUS_EXISTS:                	
 		case DELETED_RELATOR:	
@@ -1775,7 +1574,7 @@ int ID_A_PMQPM(unsigned int i)
 		case NON_UNIQUE_3:	
 		case NON_UNIQUE_2:	
 		case NON_UNIQUE_1:
-			break;        	
+			return(FALSE);        	
 		default:
 			{
 			j = PRIM[i];
@@ -1801,6 +1600,7 @@ int ID_A_PMQPM(unsigned int i)
 			break;
 			}                                                                                
 		}
+	if(0 < UDV[i] && UDV[i] <= DONE) return(2);
 	return(FALSE);	
 }
 
@@ -1822,7 +1622,8 @@ int Rewrite_Orbit_Reps(int MyNumRelators,int NumOrbits,unsigned int* OrbitNum2SL
 	ptr = (char*) NewPtr(sizeof(char)*100);	
     if(ptr == NULL) Mem_Error();
              
-    printf("\n\nEnter orbit reps 1 X 1 from 1 to %d you want rewritten while hitting 'return', or enter '0' and hit 'return' to exit.    \n\n", NumOrbits);
+    printf("\n\nEnter the number of an 'Orbit Rep' between 1 and %d you want rewritten. Then hit 'return'.", NumOrbits);
+	printf("\nEnter 0 and hit 'return' to exit.\n\n    ");
 START: 
 	printf("Orbit ");   
 GET_RESPONSE1:        
@@ -1833,8 +1634,7 @@ GET_RESPONSE1:
     	DisposePtr((char *) ptr);
     	return(0);
     	}
-    if(MyOrbit < 1 || MyOrbit > NumOrbits) goto GET_RESPONSE1;
-    
+    if(MyOrbit < 1 || MyOrbit > NumOrbits) goto GET_RESPONSE1;   
     j = OrbitNum2SLRNum[MyOrbit];
     MyRelators = SMGP[j];
     printf("\nRep of Orbit %d:", MyOrbit);

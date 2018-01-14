@@ -92,6 +92,8 @@ int Do_Initialization()
 	if(ComponentNum == NULL) Mem_Error();
 	CS				= (unsigned char *)  NewPtr(sizeof(char)*(MAXNUMCOMPONENTS + 1));
 	if(CS 			== NULL) Mem_Error();
+	CSF				= (unsigned char *)  NewPtr(sizeof(char)*(MAXNUMCOMPONENTS + 1));
+	if(CSF 			== NULL) Mem_Error();
 	Daughters 		= (unsigned int  *)	 NewPtr(sizeof(int)*MAX_SAVED_PRES);
 	if(Daughters 	== NULL) Mem_Error();
 	DeletedEdges	= (unsigned char *)	 NewPtr(sizeof(char)*6*VERTICES);

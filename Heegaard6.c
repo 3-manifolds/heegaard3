@@ -2,21 +2,21 @@
 #include "Heegaard_Dec.h"            
 
 /****************************** Functions in Heegaard6.c ***********************************
-L  978 Check_For_Primitives(int Input,int MyNumRelators)
-L  225 Defining_Relator(int h,int Input,int InitPres,int F1)
-L 1754 Find_Flow_B(unsigned int Source)
-L 1874 Get_Connected_Components(void)
-L 1260 Lens_Space(void)
-L 1072 Lens_Space_D(int Prim,char F1)
-L 1913 LGCD(unsigned long p,unsigned long q)
-L  605 Proper_Power(void)
-L 1721 Recip_Mod_P(unsigned long p,unsigned long q)
+L  977 Check_For_Primitives(int Input,int MyNumRelators)
+L  224 Defining_Relator(int h,int Input,int InitPres,int F1)
+L 1753 Find_Flow_B(unsigned int Source)
+L 1873 Get_Connected_Components(void)
+L 1259 Lens_Space(void)
+L 1071 Lens_Space_D(int Prim,char F1)
+L 1912 LGCD(unsigned long p,unsigned long q)
+L  604 Proper_Power(void)
+L 1720 Recip_Mod_P(unsigned long p,unsigned long q)
 L   24 Reduce_Genus(int Input,int InitPres,int F1)
-L 1960 Split_At_Empty_Relators(int F1)
-L 2361 Split_At_Empty_Relators_Sub1(void)
-L 2426 Split_At_Empty_Relators_Sub2(int NumGen,int NumNewPres)
-L 2539 Splitting_Pres_On_File(int WhoCalled,int NumNewPres)
-L 1417 Transverse(unsigned char *ptr)
+L 1959 Split_At_Empty_Relators(int F1)
+L 2360 Split_At_Empty_Relators_Sub1(void)
+L 2425 Split_At_Empty_Relators_Sub2(int NumGen,int NumNewPres)
+L 2538 Splitting_Pres_On_File(int WhoCalled,int NumNewPres)
+L 1416 Transverse(unsigned char *ptr)
 ********************************************************************************************/
 
 int InitialNumGenerators;
@@ -2200,8 +2200,8 @@ unsigned int Split_At_Empty_Relators(int F1)
     UDV[ReadPres]          	= SPLIT;                
     Daughters[ReadPres]     = NumFilled;
     NCS[ReadPres]          	= 0;    
-    SaveCS                 	= CS[CurrentComp];
-    if(!CS[CurrentComp])    CS[CurrentComp] = TRUE;
+    SaveCS                 	= CSF[CurrentComp];
+    CS[CurrentComp] 		= TRUE; 			/* Indicates the current component CurrentComp has "split". */
     
     SaveNumRelators 	= NumRelators;
     SaveNumGens     	= NumGenerators;
@@ -2209,7 +2209,7 @@ unsigned int Split_At_Empty_Relators(int F1)
     NumEmtyGens     	= 0;
 	
 	for(i = 0; i < NumFilled; i++) 
-		if(ComponentNum[i] == ComponentNum[ReadPres] && UDV[i] < DONE) UDV[i] = DONE;
+		if(ComponentNum[i] == ComponentNum[ReadPres] && UDV[i] < DONE) UDV[i] = FOUND_ELSEWHERE;
     
     for(i = 0; i <= SaveNumGens; i++) BCWG[i] = EOS;
     
@@ -2263,7 +2263,7 @@ unsigned int Split_At_Empty_Relators(int F1)
                 NumFilled -= NumNewPres;
                 }
             UDV[ReadPres] = SaveUDV;
-            CS[ComponentNum[ReadPres]] = SaveCS;                    
+            CSF[ComponentNum[ReadPres]] = SaveCS;                    
             return(TOO_LONG);
             }
         
@@ -2334,7 +2334,7 @@ unsigned int Split_At_Empty_Relators(int F1)
             }
         NumNewPres ++;
         UDV[NumFilled]     	= MISSING_GEN_DONE1;
-        CS[TotalComp]      	= 2;
+        CSF[TotalComp]      = 2;
         N1H[TotalComp]     	= 0;
         NS1XS2[TotalComp]  	= NumEmtyRel;
         NS1XD2[TotalComp]  	= NumEmtyGens - NumEmtyRel;
@@ -2482,7 +2482,7 @@ int Split_At_Empty_Relators_Sub2(int NumGen,int NumNewPres)
 	if(NumGenerators == 1)
 		{
 		UDV[NumFilled] = GENERIC_LENS_SPACE;
-		LSP[NumFilled] = Length;
+		LSP[NumFilled] = GetHandleSize((char **) Relators[1]) - 1;
 		LSQ[NumFilled] = 1;
 		}    
 		

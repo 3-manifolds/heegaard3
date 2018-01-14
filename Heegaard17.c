@@ -2,15 +2,15 @@
 #include "Heegaard_Dec.h"
 
 /****************************** Functions in Heegaard 17.c *********************************
-L  627 Defining_Relator_SPC(void)
+L  626 Defining_Relator_SPC(void)
 L  481 Get_User_Input_SPC(char c)
 L   16 Just_Delete_Primitives(char F1,char F2)
-L  594 OneGenerator_SPC(unsigned char NumMissingGenerators,char F2)
-L  610 OneRelator_SPC(unsigned char NumMissingGenerators,char F2)
+L  593 OneGenerator_SPC(unsigned char NumMissingGenerators,char F2)
+L  609 OneRelator_SPC(unsigned char NumMissingGenerators,char F2)
 L  424 Reduce_The_Initial_Presentation_To_Minimal_Length_SPC(char F2)
-L  864 Report_Sorted_Readable(int *Table1)
-L  820 Report_SPC(int *Table1)
-L  805 Verify_Length(unsigned char ***MyRelators,int MyNumRelators)
+L  863 Report_Sorted_Readable(int *Table1)
+L  819 Report_SPC(int *Table1)
+L  804 Verify_Length(unsigned char ***MyRelators,int MyNumRelators)
 ********************************************************************************************/
 	
 int Just_Delete_Primitives(char F1,char F2)
