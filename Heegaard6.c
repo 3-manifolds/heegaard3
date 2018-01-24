@@ -1978,7 +1978,7 @@ unsigned int Split_At_Empty_Relators(int F1)
                     NumEmtyRel,
                     NumNewPres,
                     OrigNumBdryComps,
-                    SaveCS,
+                    SaveCSF,
                     SaveNumGens,
                     SaveNumRelators;
         
@@ -2200,7 +2200,7 @@ unsigned int Split_At_Empty_Relators(int F1)
     UDV[ReadPres]          	= SPLIT;                
     Daughters[ReadPres]     = NumFilled;
     NCS[ReadPres]          	= 0;    
-    SaveCS                 	= CSF[CurrentComp];
+    SaveCSF                 	= CSF[CurrentComp];
     CS[CurrentComp] 		= TRUE; 			/* Indicates the current component CurrentComp has "split". */
     
     SaveNumRelators 	= NumRelators;
@@ -2263,7 +2263,7 @@ unsigned int Split_At_Empty_Relators(int F1)
                 NumFilled -= NumNewPres;
                 }
             UDV[ReadPres] = SaveUDV;
-            CSF[ComponentNum[ReadPres]] = SaveCS;                    
+            CSF[ComponentNum[ReadPres]] = SaveCSF;                    
             return(TOO_LONG);
             }
         

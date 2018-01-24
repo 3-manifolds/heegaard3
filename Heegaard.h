@@ -177,9 +177,9 @@ extern void 	Fill_A2AJ1(void);													/* In Heegaard3.c	*/
 extern void		Fill_AA(int);														/* In Heegaard2.c	*/
 extern void		Fill_DRA(void);														/* In Heegaard4.c	*/
 extern void		Find_Cancellation_Paths(int,int,int);								/* In Heegaard5.c	*/
-extern int		Find_Canonical_Orbit_Reps(int *,int,int,int,char);					/* In Heegaard18.c	*/
-extern int		Find_Canonical_Orbit_Reps_S1(int*,int,int,int);						/* In Heegaard12.c  */
-extern int		Find_Canonical_Orbit_Reps_S2(int*,int,int,int);						/* In Heegaard12.c  */
+extern int		Find_Canonical_Orbit_Reps(int *,int,int,int,char,char);				/* In Heegaard18.c	*/
+extern int		Find_Canonical_Orbit_Reps_S1(int*,int,char,int);					/* In Heegaard12.c  */
+extern int		Find_Canonical_Orbit_Reps_S2(int*,int,char,int);					/* In Heegaard12.c  */
 extern int		Find_Cut_Vertices(void);											/* In Heegaard3.c	*/ 
 extern int		Find_Flow_A(int,int);												/* In Heegaard2.c	*/
 extern int		Find_Flow_B(unsigned int);											/* In Heegaard6.c	*/

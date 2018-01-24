@@ -347,8 +347,8 @@ int Check_Connected(void)
         for(i = 1, Length = 0L; i <= NumRelators; i++)
             Length += GetHandleSize((char **) Relators[i]);
         Length -= NumRelators;
-        
-        CS[CurrentComp] = TRUE;
+        if((DisAmbigFlag == TRUE) && (1 < NumGenerators) && (NumGenerators + 1 < NG[ReadPres])) CS[CurrentComp] = TRUE;
+        if(DisAmbigFlag == FALSE) CS[CurrentComp] = TRUE;
         
         TotalComp                       ++;
         UDV[ReadPres]                   = SPLIT;
@@ -374,8 +374,8 @@ int Check_Connected(void)
         	LSP[NumFilled] = GetHandleSize((char **) Relators[1]) - 1;
         	LSQ[NumFilled] = 1;
         	}
-        
- 		for(i = 0; i < NumFilled; i++) 
+
+ 		if(CS[ComponentNum[ReadPres]] == TRUE) for(i = 0; i < NumFilled; i++) 
  			if(ComponentNum[i] == ComponentNum[ReadPres] && UDV[i] < DONE) UDV[i] = DONE;
  	           
         Canonical_Rewrite(Relators,FALSE,FALSE);

@@ -57,8 +57,8 @@ int Just_Delete_Primitives(char F1,char F2)
 	NumRelatorsChecked = NumPrimitivesFound = 0L;
 	NumRelTooLong = 0;
 
-	NXMG = (unsigned char*) NewPtr((sizeof(char)*MAX_SAVED_PRES));
-	if(NXMG == NULL) Mem_Error();
+	if(F2) NXMG = (unsigned char*) NewPtr((sizeof(char)*MAX_SAVED_PRES));
+	if(F2 && NXMG == NULL) Mem_Error();
 
 	if(Batch != 4 && Batch != 14 && Batch != 15 && Batch != 53 && F2 == 1)
 	Turn_Micro_Print_On();	
@@ -92,10 +92,10 @@ int Just_Delete_Primitives(char F1,char F2)
 		case 0:
 			break;
 		case 3:
-			if(NXMG != NULL) DisposePtr((unsigned char*) NXMG);
+			if(F2 && NXMG != NULL) DisposePtr((unsigned char*) NXMG);
 			return(3);
 		case TOO_LONG:		
-			if(NXMG != NULL) DisposePtr((unsigned char*) NXMG);
+			if(F2 && NXMG != NULL) DisposePtr((unsigned char*) NXMG);
 			return(TOO_LONG);
 		}	
 	NXMG[0] = SNumGenerators - NumGenerators;
@@ -110,10 +110,10 @@ int Just_Delete_Primitives(char F1,char F2)
 				case 0:
 					break;
 				case 1:	
-					if(NXMG != NULL) DisposePtr((unsigned char*) NXMG);
+					if(F2 && NXMG != NULL) DisposePtr((unsigned char*) NXMG);
 					return(1);
 				case INTERRUPT:
-					if(NXMG != NULL) DisposePtr((unsigned char*) NXMG);
+					if(F2 && NXMG != NULL) DisposePtr((unsigned char*) NXMG);
 					return(INTERRUPT);	
 				}
 			}
@@ -230,7 +230,7 @@ int Just_Delete_Primitives(char F1,char F2)
 			NumPrimitivesFound ++;
 			if(Get_Relators_From_SUR(ReadPres)) 
 				{
-				if(NXMG != NULL) DisposePtr((unsigned char*) NXMG);
+				if(F2 && NXMG != NULL) DisposePtr((unsigned char*) NXMG);
 				return TOO_LONG;
 				}
 
@@ -381,7 +381,7 @@ int Just_Delete_Primitives(char F1,char F2)
 				if(F2 == FALSE) Batch = TRUE;
 				if(Save_Pres(ReadPres,0,Length,1,6,1,1,0))
 					{
-					if(NXMG != NULL) DisposePtr((unsigned char*) NXMG);
+					if(F2 && NXMG != NULL) DisposePtr((unsigned char*) NXMG);
 					if(F2 == FALSE) Batch = FALSE;
 					return(TOO_LONG);
 					}
@@ -393,7 +393,7 @@ int Just_Delete_Primitives(char F1,char F2)
 	END:
 		if(Batch == 4 || Batch == 53)
 			{
-			if(NXMG != NULL) DisposePtr((unsigned char*) NXMG);
+			if(F2 && NXMG != NULL) DisposePtr((unsigned char*) NXMG);
 			if(NumPrimitivesFound > 0) 
 				return(1);
 			else
@@ -417,7 +417,7 @@ int Just_Delete_Primitives(char F1,char F2)
 			}
 		NumRelTooLong = 0; 
 		if(F2 == 1) Sort_Presentations_In_Memory(2);
-		if(NXMG != NULL) DisposePtr((unsigned char*) NXMG);
+		if(F2 && NXMG != NULL) DisposePtr((unsigned char*) NXMG);
 		return(1);
 }
 

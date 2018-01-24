@@ -418,7 +418,7 @@ int main(int argv, char **argc)
     printf("\n\n                                 HEEGAARD");
     printf("\n                               BY JOHN BERGE");
     printf("\n                             jberge@charter.net");
-    printf("\n                                  1/10/18\n");
+    printf("\n                                  1/24/18\n");
     printf("\n A PROGRAM FOR STUDYING 3-MANIFOLDS VIA PRESENTATIONS AND HEEGAARD DIAGRAMS.\n");
     printf("\n        Copyright 1995-2018 by John Berge, released under GNU GPLv2+.");
  	printf("\n\n               With thanks to Marc Culler and Nathan Dunfield.");

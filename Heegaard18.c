@@ -24,7 +24,7 @@ L 2643 CHSP_Check_Simple_Circuits(unsigned int,int*,int,unsigned char**,unsigned
 L 1364 Delete_Old_PresentationsSLP(void)
 L 1388 Delete_Old_PresentationsSMGP(int MyNumSavedPres,unsigned int* SUR_Num)
 L 1756 Display_HS_Diagrams(int NumHSReps,int* HSRepL)
-L   65 Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1)
+L   65 Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char RealCompNum)
 L 2173 Find_Simple_Circuits(void)
 L 2817 Get_Next_Presentation_From_File(char Flag)
 L 3576 Get_Relators1_Diagram(void)
@@ -62,7 +62,7 @@ int Init_Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum)
 	return(-1);	
 }
 
-int Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char Try_2_Recognize)
+int Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char Try_2_Recognize,char RealCompNum)
 {
 	char			*HSL2 = NULL,
 					*PMQPML = NULL,
@@ -125,6 +125,16 @@ int Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char
 	MissingPres 		= FALSE;
 	MissingCanonicalRep = FALSE;
 	SNumFilled 			= NumFilled;
+	if(MyMinNumGenerators <= 1)
+		{
+		printf("\n\nWon't find HS Reps for presentations on fewer than two generators.");
+		return(TOO_LONG);
+		}
+	if(MyMinNumRelators == 0)
+		{
+		printf("\n\nWon't find HS Reps for empty presentations.");
+		return(TOO_LONG);
+		}	
 
 	/******************************************************************************************
 		Copy the Presentations of the current component on MyMinNumGenerators into SMGP[ ].
@@ -139,7 +149,7 @@ int Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char
 			printf("\n Will proceed to find Canonical Orbit Representatives of this truncated set of presentations.");
 			break;
 			}
-		ReadPres = MyTable[n];
+		ReadPres = MyTable[n];		
 		NumGenerators = NG[ReadPres];
 		if(NumGenerators > MyMinNumGenerators) 
 			{
@@ -190,8 +200,7 @@ int Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char
 	if(MyNumSavedPres == 0)
 		{
 		printf("\n\nThe initial presentation was: %s",PresName);
-		printf("\n\nNo presentations of component 1 meet the requirements of the Canonical Rep routine.");
-		printf("\nSorry!");
+		printf("\n\nNo presentations of C%d meet the requirements of the Canonical Rep routine.",RealCompNum);
 		if(Batch && H_Results != NULL) fprintf(H_Results,"\n\n%s	?",PresName);
 		return(TOO_LONG);
 		}
@@ -352,6 +361,7 @@ NEXT_PRES:
 			}
 	
 		Delete_Old_PresentationsSLP();
+		
 		switch(mykbhit())
 			{
 			case ' ':			
@@ -637,40 +647,29 @@ REPORT_RESULTS:
 				if(F1 == 1 && !B10B11Recognized) 
 					{
 					if(Batch) printf("\n");
-					if(TotalComp == 1) printf("\n%s HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,i+1,m,Length,
-						NumGenerators,NumRelators);
-					else printf("\n%s S %d, HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,MyCompNum,i+1,m,Length,
-						NumGenerators,NumRelators);	
+					printf("\nC%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",RealCompNum,i+1,m,Length,NumGenerators,NumRelators);	
 					Print_Relators(SMGP[l],NumRelators);
 					}	
 				if((Batch == 10 || Batch == 11) && H_Results != NULL && B10B11HSReps == TRUE && F1 == 1)
 					{
 					if(B10B11SaveOnlyHS1P1 == 1)
-						{						
-						if(TotalComp == 1) fprintf(H_Results,"\n\n%s HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,i+1,m,Length,
-							NumGenerators,NumRelators);
-						else fprintf(H_Results,"\n\n%s S %d, HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,MyCompNum,i+1,m,Length,
-							NumGenerators,NumRelators);						
+						{
+						fprintf(H_Results,"\n\nC%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",RealCompNum,i+1,m,Length,NumGenerators,NumRelators);					
 						Print_Relators2(SMGP[l],NumRelators);
 						}
 					if(B10B11SaveOnlyHS1P1 == 2 && i == 0 && m == 1)
 						{
-						if(TotalComp == 1) fprintf(H_Results,"\n\n%s HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,i+1,m,Length,
-							NumGenerators,NumRelators);
-						else fprintf(H_Results,"\n\n%s S %d, HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,MyCompNum,i+1,m,Length,
-							NumGenerators,NumRelators);
+						fprintf(H_Results,"\n\nC%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",RealCompNum,i+1,m,Length,NumGenerators,NumRelators);
 						Print_Relators2(SMGP[l],NumRelators);
 						}
 					if(B10B11SaveOnlyHS1P1 == 3 && NumGenerators == 2 && NumRelators == 1)				
 						{
-						if(TotalComp == 1 && i == 0) fprintf(H_Results,"\n\n%s",PresName);
-						if(TotalComp > 1 && i == 0) fprintf(H_Results,"\n\n%s S %d",PresName,MyCompNum);
+						fprintf(H_Results,"\n\nC%d)",RealCompNum);
 						fprintf(H_Results,"\nL %lu %s",Length,*SMGP[l][1]);	
 						}												
 					if(B10B11SaveOnlyHS1P1 == 4 && NumSplittings == 1 && NumGenerators == 2 && NumRelators == 1)				
 						{
-						if(TotalComp == 1) fprintf(H_Results,"\n\n%s",PresName);
-						else fprintf(H_Results,"\n\n%s S %d",PresName,MyCompNum);
+						fprintf(H_Results,"\n\nC%d)",RealCompNum);
 						fprintf(H_Results,"\nL %lu %s",Length,*SMGP[l][1]);
 						}
 					}								
@@ -724,7 +723,7 @@ REPORT_RESULTS:
 		
 	if(Check_for_1_HS) goto END;
 		
-	if(B10B11HSReps || Batch == 53) /* If B10B11HSReps or Batch == 53, find and print the largest HSNum that appears. */
+	if((B10B11HSReps || Batch == 53) && TotalComp == 1) /* If B10B11HSReps or Batch == 53, find and print the largest HSNum that appears. */
 		{
 		for(i = 0,MaxHSNum = 0; i < NumOrbits; i++) 
 		if(HSN[i] > MaxHSNum) MaxHSNum = HSN[i];
@@ -855,6 +854,7 @@ REPORT_RESULTS:
 					}
 				}
 			}
+			
 		if(B10B11Recognized && FoundBigSF) goto END;			
 		
 		if((Batch == 10 || Batch == 11) && !B10B11Recognized) goto END;
@@ -3190,7 +3190,7 @@ int Search_For_Non_Minimal_UnStabilized_Splittings(char F1,int TargetNumGenerato
 
 	LastPresRead = NumFilled - 1;				
 	j = Init_Find_Canonical_Orbit_Reps(Table1,LastPresRead,1);		
-	if(j >= 0 && j < TOO_LONG) switch(Find_Canonical_Orbit_Reps(Table1,j,1,1,FALSE)) 
+	if(j >= 0 && j < TOO_LONG) switch(Find_Canonical_Orbit_Reps(Table1,j,1,1,FALSE,0)) 
 		{
 		case 0:
 			break;
