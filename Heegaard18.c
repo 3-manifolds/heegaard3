@@ -228,7 +228,7 @@ int Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char
 
 	if(Batch == FALSE)
 		{
-		printf("\n\n    Computing orbits under level-transformations of %d presentations.",MyNumSavedPres);
+		printf("\n\n    Computing orbits under level-transformations of %d presentations of component C%d.",MyNumSavedPres,RealCompNum);
 		printf("\n    This may take awhile. Hit 's' to get status reports. ");
 		printf("\n    Hit 'p' to toggle printing of an * after each orbit is checked.  ");
 		printf("\n    Hit ' ' for a chance to skip remaining orbit computations.    \n");

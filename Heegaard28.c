@@ -2,29 +2,29 @@
 #include "Heegaard_Dec.h"
 
 /******************************* Functions in Heegaard28.c ********************************	
-L 2564 Check_C_Robustness(char Flag1,char Flag2)
-L  949 Check_R1_Positivity(void)
-L  834 FindMinExpAndContext(char WhichGen, unsigned int MinExp)
+L 2572 Check_C_Robustness(char Flag1,char Flag2)
+L  957 Check_R1_Positivity(void)
+L  842 FindMinExpAndContext(char WhichGen, unsigned int MinExp)
 L   32 Genus_Two_One_Relator_Annuli_And_Tori(char F1)
 L  304 Genus_Two_One_Relator_Annuli_And_Tori_S1(void)
 L  508 Genus_Two_One_Relator_Annuli_And_Tori_S2(unsigned int ZZ0,unsigned int ZZ1, unsigned int ZZ2,
 	   unsigned int ZZ3, unsigned int Source, unsigned int NumReps,char F1)
 L  551 Get_Genus_Two_Commutators(char Flag1)
-L 1932 Get_Sep_Disk_Dual(char)
-L 1416 Get_Universal_Minimizer_Waves(char F1)
-L 1812 Get_Universal_Minimizer_Waves_S1(unsigned char NumWaveGuides)
-L 1305 Init_Get_Universal_Minimizer_Waves(int NumHSReps,int* HSRepL)
-L 3507 Look_For_Disjoint_Genus_2_Curves(char F1)
-L 2740 Look_For_PP_SF_Curves(unsigned char NumWaveGuides,char F1,char F2)
-L 2019 P_and_PP_Curves_Disjoint_From_Relators(char Flag2)
-L 1183 Pos_Relator_Check_Do_Auts(unsigned int ZZ0,unsigned int ZZ1, unsigned int ZZ2,
+L 1940 Get_Sep_Disk_Dual(char)
+L 1424 Get_Universal_Minimizer_Waves(char F1)
+L 1820 Get_Universal_Minimizer_Waves_S1(unsigned char NumWaveGuides)
+L 1313 Init_Get_Universal_Minimizer_Waves(int NumHSReps,int* HSRepL)
+L 3515 Look_For_Disjoint_Genus_2_Curves(char F1)
+L 2748 Look_For_PP_SF_Curves(unsigned char NumWaveGuides,char F1,char F2)
+L 2027 P_and_PP_Curves_Disjoint_From_Relators(char Flag2)
+L 1191 Pos_Relator_Check_Do_Auts(unsigned int ZZ0,unsigned int ZZ1, unsigned int ZZ2,
 	   unsigned int ZZ3, unsigned int Source, unsigned int NumReps)
-L 1198 Pos_Relator_Check_Min_Exp(char Gen1,char Gen2,char Gen3,char Gen4)
-L 1981 ReWrite_WaveGuides(unsigned char* MyWaveGuide)
-L 2702 Save_P_or_PP(unsigned char** Str1,unsigned int HS)
-L 3347 Set_Up_SF_Check(int NumStowed,unsigned char* NSL,unsigned int* NSEL,char F1,char F2)
-L 3332 Stow_Relators(unsigned char* MyPtr,unsigned int HS,int i)
-L 3478 Translate_2_Dual_Pres(unsigned char* MyPtr)
+L 1206 Pos_Relator_Check_Min_Exp(char Gen1,char Gen2,char Gen3,char Gen4)
+L 1989 ReWrite_WaveGuides(unsigned char* MyWaveGuide)
+L 2710 Save_P_or_PP(unsigned char** Str1,unsigned int HS)
+L 3355 Set_Up_SF_Check(int NumStowed,unsigned char* NSL,unsigned int* NSEL,char F1,char F2)
+L 3340 Stow_Relators(unsigned char* MyPtr,unsigned int HS,int i)
+L 3486 Translate_2_Dual_Pres(unsigned char* MyPtr)
 ******************************************************************************************/
 
 int		NumSaved;
@@ -339,10 +339,10 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S1(void)
 				if(NumRelators == 2)	/* R is not disjoint from a proper-power. */
 					{
 					/* Ci is disjoint from a proper-power R' = A^(|e|), which must intersect R. */
-					/* Compute |R.R'|. |R.R'| is equal to the number of appearances of 'A' in R with exponents A^f, |f| > 0, |f| ≠ |e|. */
+					/* Compute |R.R'|. |R.R'| is equal to the number of appearances of 'A' in R with exponents A^f, |f| > 0, |f| ≠ |e|. */					
 					Get_Genus_2_EXPS();
 					for(i = 0,NumIntersections = 0; NEXA2_SF[i] && i < 8; i++)
-						if(abs(EXPA2_SF[i]) != abs(EXPA1_SF[0])) NumIntersections += NEXA2_SF[i];			
+						if(abs(EXPA2_SF[i]) != abs(EXPA1_SF[0])) NumIntersections += NEXA2_SF[i];
 					if(NumIntersections > 1)
 						{
 						printf("\n\nC = %s is disjoint from a proper-power R' = A^%d.",(char *) *Relators[1],abs(EXPA1_SF[0]));
@@ -794,7 +794,15 @@ _ALREADY_HAVE_DIAGRAM:
 		curve R', disjoint from Ci, such that either R' is a proper-power intersecting R 
 		more than once, or Ci is disjoint from a non-separating annulus whose bdry 
 		components are primitives, one of which is R', and R' intersects R more than once. 
+			First, stash a copy of Relators[1] in Relators[3].
 	*******************************************************************************************/
+	
+	if(Relators[3] != NULL) DisposeHandle((char **) Relators[3]);
+	Relators[3] = (unsigned char **) NewHandle(GetHandleSize((char **) Relators[1]));	
+	if(Relators[3] == NULL) Mem_Error();
+	p = *Relators[3];
+	q = *Relators[1];
+	while( (*p++ = *q++) ) ;
 	
 	NumRelators = 2;
 	for(i = 1; i <= NumCommutators; i++)
