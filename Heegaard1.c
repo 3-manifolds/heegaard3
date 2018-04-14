@@ -1884,13 +1884,13 @@ _RESTART:
                         break;    
                         }        
                     break;
-                case 3:
+                case NON_PLANAR:
                     printf("\n\n                    The Whitehead graph is nonplanar.");
                     Fatal_Error();        
                     return(1);
                 case 4:
                     break;
-                case 5:
+                case 5:          
                     printf("\n\n          After some level transformations, ");
                     printf("the presentation contains a trivial generator.");
                     if(!Do_Not_Reduce_Genus)
@@ -1926,7 +1926,7 @@ _RESTART:
                 Print_Relators(Relators,NumRelators);
                 }    
             if(Flag3 != 5)
-                {                
+                {                              
                 printf("\n\n                    Unable to remove all separating pairs of vertices by Sep_Vert_Slides.");
                 if(Flag3 != 7) printf("\n                    (Heegaard probably found an annulus in the diagram of Presentation %u",NumFilled);
                 printf("\n                    which becomes an inessential disk, annulus or S^2 in M.)");

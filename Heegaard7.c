@@ -130,7 +130,33 @@ int Level_Transformations(int F1,int F2,int F3)
 	MyNum = Num_Saved_LPres;
 	if(Num_Saved_LPres == 0) Found_L_Annulus = FALSE;
 	Fill_A(NumRelators);
-	Get_Matrix();	
+	Get_Matrix();
+	
+	/******************************************************************************************
+			If a minimal length presentation P is realizable, then P and any presentation P'
+		obtained from P by level-transformations must have a planar Whitehead graph, even if P
+		and P' have separating pairs of vertices. 
+			So we may be able to verify that P is not realizable by checking every P' obtained
+		from P by level-transformations for planarity, even when we cannot find a presentation
+		without any separating pairs of vertices.
+	******************************************************************************************/
+/*
+for(i = NumEdges = 0; i < Vertices; i++)
+	{
+	A[i][i] = 0;
+	for(j = k = 0; j < Vertices; j ++) if(A[i][j])
+		{
+		AJ1[i][k] = j;
+		k++;
+		}
+	VWG[i] = k;
+	NumEdges += k;
+	AJ1[i][k] = VERTICES;
+	}                            
+NumEdges /= 2;
+*/    
+	if((TestRealizability1 || TestRealizability4) && Planar(TRUE,FALSE)) return(NON_PLANAR);
+	
 	switch(Sep_Pairs(0,0,1))
 		{
 		case 0:
@@ -159,17 +185,6 @@ int Level_Transformations(int F1,int F2,int F3)
 		case 1:
 			break;
 		}
-
-	/******************************************************************************************
-			If a minimal length presentation P is realizable, then P and any presentation P'
-		obtained from P by level-transformations must have a planar Whitehead graph, even if P
-		and P' have separating pairs of vertices. 
-			So we may be able to verify that P is not realizable by checking every P' obtained
-		from P by level-transformations for planarity, even when we cannot find a presentation
-		without any separating pairs of vertices.
-	******************************************************************************************/
-
-	if((TestRealizability1 || TestRealizability4) && Planar(TRUE,FALSE)) return(3);
 
 	/******************************************************************************************
 			At this point, Been_Seen() has checked that the incoming presentation in Relators[] 
@@ -251,8 +266,7 @@ int Level_Transformations(int F1,int F2,int F3)
 					if(j > 1) return(j);
 					if(Level_Trans_Reset(MyNum,V3,V4) == TOO_LONG) return(TOO_LONG);					
 					}
-				}
-			
+				}							
 			if(Random == 0)
 				{
 				if(XX[VLI] != TheComp && XX[VRI] != TheComp)

@@ -969,8 +969,8 @@ FIND_BDRY:
     length = Find_Minimal_Path();
     
     if(length == 0)
-        {   
-        if(NumFaces == 0)
+        {
+		if(NumFaces < MaxNumFaces)
         	{
         	jj++;
         	if(jj < VWG[MyBdry[0]]) 
@@ -988,7 +988,7 @@ FIND_BDRY:
         /**************************************************************************************
             There is no directed path joining Bdry[1] to Bdry[0]. This can only occur when the
             graph is not planar. So set NumFaces = MaxNumFaces + 1 as a flag, and goto OUTPUT.
-        **************************************************************************************/            
+        **************************************************************************************/                            
         NumFaces = MaxNumFaces + 1;
         goto OUTPUT;
         }
