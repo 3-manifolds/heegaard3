@@ -840,7 +840,7 @@ _BEGIN:
         			goto GET_RESPONSE3;
         			}
         		Turn_Micro_Print_On();	
-            	i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE);
+            	i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE);
             	if(i == 0) printf("\n\nH[R] is anannular and atoroidal.");
             	if(Micro_Print == 1) Micro_Print = FALSE;
             	printf("\n\nCHOOSE ANOTHER OPTION FROM THE PREVIOUS LIST.    ");

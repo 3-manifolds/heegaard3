@@ -756,7 +756,7 @@ GET_RESPONSE3:
     				if(H_Results) fprintf(H_Results,"\n------------------------------------\n%-19s",PresName);
 					if(NumRelators == 1 && NumGenerators == 2)
 						{
-						i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE);
+						i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE);
 						if(i == 0) 
 							{
 							printf("\nH[R] is anannular and atoroidal.");
@@ -791,7 +791,7 @@ GET_RESPONSE3:
     				if(H_Results) fprintf(H_Results,"\n------------------------------------\n%-19s",PresName);
 					if(NumRelators == 1 && NumGenerators == 2)
 						{
-						i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE);
+						i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE);
 						if(i == 0) 
 							{
 							printf("\nH[R] is anannular and atoroidal.");
@@ -958,7 +958,7 @@ GET_RESPONSE3:
 				
 			case 56:
 				if(NumRelators != 1 || NumGenerators != 2) continue;
-				i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE);
+				i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE);
             	if(i == 0) 
             		{
             		printf("\nH[R] is anannular and atoroidal.");

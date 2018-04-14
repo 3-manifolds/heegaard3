@@ -1047,7 +1047,7 @@ REPORT_RESULTS:
 								}
 							if(k == 0 && NumRelators == 1 && NumGenerators == 2)
 								{
-								m = Genus_Two_One_Relator_Annuli_And_Tori(TRUE);
+								m = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE);
 								if(m == 0) printf("\n\nH[R] is anannular and atoroidal.");
 								if(m == 1) 
 									{
@@ -1067,7 +1067,7 @@ REPORT_RESULTS:
 									printf("\n\nThere is an essential torus in the manifold of Orbit %d.",k+1);
 									printf("\nHeegaard checked %d diagram(s) of which %d had a relator disjoint from a proper-power.",NumSFChecked,n);
 									goto FOUND_TORUS;
-									}
+									}							
 								}
 							}
 						}

@@ -283,7 +283,7 @@ int Sort_Presentations_In_Memory(int F1)
 					{
 					if(--k) 
 						{
-						printf(" #");
+						printf(" # ");
 						fprintf(H_Results," #");
 						}
 					continue;
@@ -301,7 +301,7 @@ int Sort_Presentations_In_Memory(int F1)
 					{
 					if(--k) 
 						{
-						printf(" #");
+						printf(" # ");
 						fprintf(H_Results," #");
 						}
 					continue;

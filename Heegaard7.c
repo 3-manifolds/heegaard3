@@ -11,15 +11,15 @@ L  834 Do_Aut_L_Long(int V1,int V2,int TheComp)
 L 1350 Do_Aut_L_Long_2(int V1,int V2,int TheComp)
 L  545 Find_Path(int V1,int V2,int TheComp,int SepType)
 L  293 Get_Components(void)
-L 1864 Is_Sep_Pair(unsigned int VL,unsigned int VR,unsigned int MyNum)
+L 1878 Is_Sep_Pair(unsigned int VL,unsigned int VR,unsigned int MyNum)
 L 1730 Level_Trans_Reset(unsigned int MyNum,unsigned int V3,unsigned int V4)
 L   31 Level_Transformations(int F1,int F2,int F3)
 L 1266 Level_Transformations_2(int F1,int F2,int F3,unsigned int MyNum)
-L 1902 Micro_Print_Level_Transformations(unsigned int TheComp,unsigned int V1,unsigned int V2,
-	   unsigned int Type) 
+L 1916 Micro_Print_Level_Transformations(unsigned int TheComp,unsigned int V1,unsigned int V2,
+	   unsigned int Type)
 L 1770 Micro_Print_Level_Transformations_Reset(unsigned int MyNum)
-L 2023 Random_Sep_Pair(unsigned int WhichSLRPres)
-L 1949 Slide_LComp(unsigned int VX,unsigned int VY,int TheComp,int SepType,unsigned int MyNum,
+L 2037 Random_Sep_Pair(unsigned int WhichSLRPres)
+L 1963 Slide_LComp(unsigned int VX,unsigned int VY,int TheComp,int SepType,unsigned int MyNum,
 	   int F1,int F2,int F3,int F5)
 L 1640 Slide_ValenceTwo_Comp(int TheComp,unsigned int VL,unsigned int VR,unsigned int MyNum)  	
 ********************************************************************************************/
@@ -92,8 +92,8 @@ int Level_Transformations(int F1,int F2,int F3)
 	k = Been_Seen();
 	if(k < Num_Saved_LPres)
 		{
-		if(Micro_Print == 1) printf("\n\nPresentation L%u is a duplicate of Presentation %d, and will be deleted.",
-			Num_Saved_LPres + 1, k);			
+		if(Micro_Print == 1) printf("\n\nPresentation L%u is a duplicate of Presentation L%d, and will be deleted.",
+			Num_Saved_LPres + 1, k + 1);			
 		return(0);
 		}
 	if((MyChar = mykbhit()))
@@ -1778,12 +1778,12 @@ unsigned int Count_Sep_Pairs(unsigned int Num_Saved_LPres)
 	/**********************************************************************************
 	  This routine calls Sep_Pairs() repeatedly in order to locate all pairs of 
 	  separating vertices of the Reduced Whitehead Graph RWG of the presentation
-	  Num_Saved_LPres -1. At termination, the array SLR[Num_Saved_LPres -1][0] 
+	  Num_Saved_LPres - 1. At termination, the array SLR[Num_Saved_LPres - 1][0] 
 	  contains a list of all separating pairs of vertices of the RWG. 
 	  	The total number of separating pairs of vertices found is saved twice. Once in
 	 Num_Sep_Vertex_Pairs[] at Num_Sep_Vertex_Pairs[Num_Saved_LPres -1]. And also in
-	 UnUsed_Sep_Vertex_Pairs[] at UnUsed_Sep_Vertex_Pairs[Num_Saved_LPres -1]. (Later, 
-	 the value in UnUsed_Sep_Vertex_Pairs[Num_Saved_LPres -1] is decremented each time 
+	 UnUsed_Sep_Vertex_Pairs[] at UnUsed_Sep_Vertex_Pairs[Num_Saved_LPres - 1]. (Later, 
+	 the value in UnUsed_Sep_Vertex_Pairs[Num_Saved_LPres - 1] is decremented each time 
 	 a separating pair of vertices is selected for processing.)
 	***********************************************************************************/
 	
@@ -1794,9 +1794,12 @@ unsigned int Count_Sep_Pairs(unsigned int Num_Saved_LPres)
 					*q;
 					
 	unsigned int	i,
-					Num_Sep_Pairs;
+					j,
+					Num_Sep_Pairs,
+					TotalNumSepComps;
 	
 	Num_Sep_Pairs = 0;
+	TotalNumSepComps = 0;
 	p = SepVertexList;
 	
 	if(Micro_Print == 1 && (Num_Saved_LPres == 1))
@@ -1815,6 +1818,11 @@ unsigned int Count_Sep_Pairs(unsigned int Num_Saved_LPres)
 			else
 				y = V2/2 + 65;
 			printf("\n(%c,%c)",x,y);
+			for(j = 0; j < Vertices; j++) XX[j] = 0;
+			XX[V1] = VERTICES;
+			XX[V2] = VERTICES;
+			Get_Components();
+			TotalNumSepComps += NumSepComps;
 			}
 		*p++ = V1;
 		*p++ = V2;
@@ -1832,6 +1840,11 @@ unsigned int Count_Sep_Pairs(unsigned int Num_Saved_LPres)
 				else
 					y = V2/2 + 65;
 				printf(", (%c,%c)",x,y);
+				for(j = 0; j < Vertices; j++) XX[j] = 0;
+				XX[V1] = VERTICES;
+				XX[V2] = VERTICES;
+				Get_Components();
+				TotalNumSepComps += NumSepComps;
 				}
 			*p++ = V1;
 			*p++ = V2;	
@@ -1852,10 +1865,11 @@ unsigned int Count_Sep_Pairs(unsigned int Num_Saved_LPres)
 	if(Micro_Print == 1)
 		{
 		if(Num_Sep_Pairs == 1)
-			printf(" is the only separating pair of vertices of the RWG of Presentation L%u.",Num_Saved_LPres);
+			printf(" is the only separating pair of vertices of the RWG of Presentation L%u. It yields %u components.",
+			Num_Saved_LPres,TotalNumSepComps);
 		else 
-			printf(" are the %u separating pairs of vertices of the RWG of Presentation L%u. ",
-			Num_Sep_Pairs,Num_Saved_LPres);
+			printf(" are the %u separating pairs of vertices of the RWG of Presentation L%u. They yield %u components. ",
+			Num_Sep_Pairs,Num_Saved_LPres,TotalNumSepComps);
 		}
 	
 	return(Num_Sep_Pairs);	

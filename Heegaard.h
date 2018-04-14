@@ -93,6 +93,7 @@ extern int 		Check_C_Robustness(char,char);										/* In Heegaard28.c  */
 extern int      CheckDualRelator(char,int);											/* In Heegaard19.c	*/
 extern int		CheckForAltExpSigns(char,char);										/* In Heegaard19.c	*/ 
 extern int		Check_for_Big_SF(int,int,unsigned int);								/* In Heegaard25.c	*/
+extern int 		Check_for_Essential_Annuli_and_Tori(void);							/* In Heegaard19.c	*/
 extern int		Check_For_Primitives(int,int);										/* In Heegaard6.c	*/
 extern int		Check_HS_Disjoint_Curves(int,int*,char*);							/* In Heegaard18.c	*/
 extern int   	Check_HS_Reducibility(int,int*,char*);								/* In Heegaard18.c	*/
@@ -202,10 +203,10 @@ extern int 		Genus_Two_Essential_Tori(int,int,char);								/* In Heegaard19.c	*
 extern int 		Genus_Two_Essential_Torus_Betas(char);								/* In Heegaard19.c	*/
 extern int		Genus_Two_Meridian_Reps(int,int);									/* In Heegaard20.c	*/
 extern int		Genus_Two_Meridian_Reps_Sub(unsigned char*, unsigned char*);		/* In Heegaard20.c	*/
-extern int		Genus_Two_One_Relator_Annuli_And_Tori(char);						/* In Heegaard28.c  */
-extern int		Genus_Two_One_Relator_Annuli_And_Tori_S1 (void);					/* In Heegaard28.c  */
+extern int		Genus_Two_One_Relator_Annuli_And_Tori(char,char);					/* In Heegaard28.c  */
+extern int		Genus_Two_One_Relator_Annuli_And_Tori_S1(char);						/* In Heegaard28.c  */
 extern int 		Genus_Two_One_Relator_Annuli_And_Tori_S2(unsigned int,unsigned int,
-				unsigned int,unsigned int,unsigned int,unsigned int,char);			/* In Heegaard28.c  */
+				unsigned int,unsigned int,unsigned int,unsigned int,char,char);		/* In Heegaard28.c  */
 extern int		Genus_Two_Seifert_Fibered(int,char);								/* In Heegaard19.c	*/
 extern int		Genus3ET(int,int,char);												/* In Heegaard19.c	*/
 extern int 		Get_2_Gen_SF_EXPS1(unsigned char);									/* In Heegaard25.c	*/
@@ -220,7 +221,7 @@ extern int		Get_Connected_Components(void);										/* In Heegaard6.c	*/
 extern int		Get_Diagrams(void);													/* In Heegaard2.c	*/
 extern int 		Get_Sep_Disk_Dual(char);											/* In Heegaard28.c  */
 extern int 		Get_Gen_SF_EXPS2(unsigned char,int*,int*,int*,int*);				/* In Heegaard25.c	*/
-extern int 		Get_Genus_Two_Commutators(char);									/* In Heegaard28.c  */
+extern int 		Get_Genus_Two_Commutators(char,char);								/* In Heegaard28.c  */
 extern int		Get_Genus_2_EXPS(void);												/* In Heegaard19.c	*/
 extern int		Get_Genus_2_SF_EXPS1(void);											/* In Heegaard19.c	*/
 extern int		Get_Genus_2_SF_EXPS2(void);											/* In Heegaard19.c	*/

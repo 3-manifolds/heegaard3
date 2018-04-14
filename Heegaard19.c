@@ -4315,4 +4315,5 @@ int CheckDualRelator(char MissingGen,int MyCompNum)
 		return(1);
 		}
 	return(0);
-}			
+}
+
