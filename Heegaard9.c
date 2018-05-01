@@ -146,15 +146,15 @@ void Test_LT_For_Pseudo_Min(void)
         	}
         if(Planar(FALSE,TRUE))
         	{
-        	printf(" <-- Not Realizable!");
-        	if(Batch == 7 && H_Results != NULL) fprintf(H_Results," <-- Not Realizable!");
+        	printf(" Presentation %d is Not Realizable!",ReadPres + 1);
+        	if(Batch == 7 && H_Results != NULL) fprintf(H_Results," Presentation %d is Not Realizable!",ReadPres + 1);
         	goto END;
         	}
         switch(Diagram_Main())
         	{
         	case FATAL_ERROR:
-				printf(" <-- Not Realizable!");
-				if(Batch == 7 && H_Results != NULL) fprintf(H_Results," <-- Not Realizable!");
+				printf(" Presentation %d is Not Realizable!",ReadPres + 1);
+				if(Batch == 7 && H_Results != NULL) fprintf(H_Results," Presentation %d is Not Realizable!",ReadPres + 1);
 				goto END;        	
         	case NON_UNIQUE_1:
         	case NON_UNIQUE_2:

@@ -1930,7 +1930,7 @@ void Find_Cancellation_Paths(int F1,int F2,int Pres)
 		{
 		ptr = (unsigned char *) NewPtr(100);
 		if(ptr == NULL) Mem_Error();	
-		printf("\n\nENTER N IN [0,%u] AND HIT 'return' TO HAVE HEEGAARD FIND PATHS FOR PRESENTATION N.    ",NumFilled);
+		printf("\n\nENTER N, 0 <= N <= %u, AND HIT 'return' TO HAVE HEEGAARD FIND PATHS FOR PRESENTATION N.    ",NumFilled);
 		for(i = j = 0; j < NumFilled; j++) if(SURL[j] == 0) i ++;
 		if(i)
 			{

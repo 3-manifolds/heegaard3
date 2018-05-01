@@ -241,7 +241,6 @@ extern unsigned int
 	*GV2R,
 	*HegSplNum,
 	*HegSplNxt,
-	*InDisk,
 	*InQueue,
 	*IV,
 	LastPresRead,

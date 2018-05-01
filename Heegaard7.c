@@ -92,8 +92,8 @@ int Level_Transformations(int F1,int F2,int F3)
 	k = Been_Seen();
 	if(k < Num_Saved_LPres)
 		{
-		if(Micro_Print == 1) printf("\n\nPresentation L%u is a duplicate of Presentation L%d, and will be deleted.",
-			Num_Saved_LPres + 1, k + 1);			
+		if(Micro_Print == 1) printf("\n\nPresentation L%u is a duplicate of Presentation L%d, and will be deleted.",Num_Saved_LPres + 1, k + 1);
+/*		if((Micro_Print == 1) && (Num_Saved_LPres - k > 2)) printf("\n\nPossible Length %d SepVertSlide cycle at Pres %s",Num_Saved_LPres - k, PresName);	*/			
 		return(0);
 		}
 	if((MyChar = mykbhit()))
@@ -140,21 +140,7 @@ int Level_Transformations(int F1,int F2,int F3)
 		from P by level-transformations for planarity, even when we cannot find a presentation
 		without any separating pairs of vertices.
 	******************************************************************************************/
-/*
-for(i = NumEdges = 0; i < Vertices; i++)
-	{
-	A[i][i] = 0;
-	for(j = k = 0; j < Vertices; j ++) if(A[i][j])
-		{
-		AJ1[i][k] = j;
-		k++;
-		}
-	VWG[i] = k;
-	NumEdges += k;
-	AJ1[i][k] = VERTICES;
-	}                            
-NumEdges /= 2;
-*/    
+    
 	if((TestRealizability1 || TestRealizability4) && Planar(TRUE,FALSE)) return(NON_PLANAR);
 	
 	switch(Sep_Pairs(0,0,1))
@@ -1879,10 +1865,10 @@ unsigned int Count_Sep_Pairs(unsigned int Num_Saved_LPres)
 	if(Micro_Print == 1)
 		{
 		if(Num_Sep_Pairs == 1)
-			printf(" is the only separating pair of vertices of the RWG of Presentation L%u. It yields %u components.",
+			printf(" is the only separating pair of vertices of the RWG of Presentation L%u yielding %u components.",
 			Num_Saved_LPres,TotalNumSepComps);
 		else 
-			printf(" are the %u separating pairs of vertices of the RWG of Presentation L%u. They yield %u components. ",
+			printf(" are the %u separating pairs of vertices of the RWG of Presentation L%u yielding %u components. ",
 			Num_Sep_Pairs,Num_Saved_LPres,TotalNumSepComps);
 		}
 	

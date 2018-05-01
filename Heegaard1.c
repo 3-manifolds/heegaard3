@@ -8,41 +8,6 @@
 struct termios normal_termio;
 #endif
 
-/****************************** Functions in Heegaard1.c **********************************
-L 3192 Check_Realizability_Of_The_Initial_Presentation(void)
-L 1395 Compare_Dual_Pres(int k)
-L 1340 Compare_Input_Pres(void)
-L 1368 Compare_Pres(int k)
-L 1258 Delete_Dups(void)
-L 2726 Delete_Old_Presentations(void)
-L 3215 Display_Diagram_Of_The_Initial_Presentation(void)
-L 4149 ExponentialRewrite(void)
-L 3510 Find_Level_Transformations_Of_The_Initial_Presentation(void)
-L 1421 Get_Initial_Diagram(int PrintFlag)
-L 2994 Get_Presentation_From_File(void)
-L 3125 Get_Presentation_From_KeyBoard(void)
-L 3310 Get_Simplification_Parameters_From_User(int Flag1,int Flag2)
-L 2641 Init_G_Variables(void)
-L 3780 Initial_Realizability_Check(void)
-L  380 main(int argv, char **argc)
-L 3845 mykbhit(void)
-L 2416 Non_Unique_Initial_Diagram(void)
-L 2548 On_File(void)
-L 3810 Print_Realizability(int Del_Only_Triv_Rel, unsigned int WhichPres)
-L 3838 Realization_Warning(void)
-L 3686 Reduce_The_Initial_Presentation_To_Minimal_Length(int)																				
-L 3900 ReRun_A_Bunch(void)
-L 4078 ReRun_A_Bunch_Sub(char Flag1,char Flag2, unsigned int j,char NumStabs)
-L 2746 ReRun_A_Presentation(void)
-L 4218 Restore_Saved_Input(void)
-L 1125 Rewrite_Input(void)
-L 4193 Save_Copy_Of_Input(void)
-L 2173 Save_Pres(unsigned int From,unsigned int Daut,unsigned long Len,int F1,int F2,
-	   int F3,unsigned char F4,char F5)
-L 3468 Turn_Micro_Print_On(void)
-L 3878 WaitkbHit(void)
-********************************************************************************************/
-
 FILE 
     *H_Results,
     *H_Results_2,
@@ -283,7 +248,6 @@ unsigned int
     *GV2R,
     *HegSplNum,
     *HegSplNxt,
-    *InDisk,
     *InQueue,
     *IV,
     LastPresRead,
@@ -377,6 +341,41 @@ unsigned long
     TOCLength,
     TotalAuts;   
 
+/****************************** Functions in Heegaard1.c **********************************
+L 3191 Check_Realizability_Of_The_Initial_Presentation(void)
+L 1394 Compare_Dual_Pres(int k)
+L 1339 Compare_Input_Pres(void)
+L 1367 Compare_Pres(int k)
+L 1257 Delete_Dups(void)
+L 2725 Delete_Old_Presentations(void)
+L 3214 Display_Diagram_Of_The_Initial_Presentation(void)
+L 4148 ExponentialRewrite(void)
+L 3509 Find_Level_Transformations_Of_The_Initial_Presentation(void)
+L 1420 Get_Initial_Diagram(int PrintFlag)
+L 2993 Get_Presentation_From_File(void)
+L 3124 Get_Presentation_From_KeyBoard(void)
+L 3309 Get_Simplification_Parameters_From_User(int Flag1,int Flag2)
+L 2640 Init_G_Variables(void)
+L 3779 Initial_Realizability_Check(void)
+L  379 main(int argv, char **argc)
+L 3844 mykbhit(void)
+L 2415 Non_Unique_Initial_Diagram(void)
+L 2547 On_File(void)
+L 3809 Print_Realizability(int Del_Only_Triv_Rel, unsigned int WhichPres)
+L 3837 Realization_Warning(void)
+L 3685 Reduce_The_Initial_Presentation_To_Minimal_Length(int)																				
+L 3899 ReRun_A_Bunch(void)
+L 4077 ReRun_A_Bunch_Sub(char Flag1,char Flag2, unsigned int j,char NumStabs)
+L 2745 ReRun_A_Presentation(void)
+L 4217 Restore_Saved_Input(void)
+L 1124 Rewrite_Input(void)
+L 4192 Save_Copy_Of_Input(void)
+L 2172 Save_Pres(unsigned int From,unsigned int Daut,unsigned long Len,int F1,int F2,
+	   int F3,unsigned char F4,char F5)
+L 3467 Turn_Micro_Print_On(void)
+L 3877 WaitkbHit(void)
+********************************************************************************************/
+
 int main(int argv, char **argc)
 {
     char            FoundAlexPoly,
@@ -418,7 +417,7 @@ int main(int argv, char **argc)
     printf("\n\n                                 HEEGAARD");
     printf("\n                               BY JOHN BERGE");
     printf("\n                             jberge@charter.net");
-    printf("\n                                  1/24/18\n");
+    printf("\n                                  4/28/18\n");
     printf("\n A PROGRAM FOR STUDYING 3-MANIFOLDS VIA PRESENTATIONS AND HEEGAARD DIAGRAMS.\n");
     printf("\n        Copyright 1995-2018 by John Berge, released under GNU GPLv2+.");
  	printf("\n\n               With thanks to Marc Culler and Nathan Dunfield.");
@@ -1836,8 +1835,8 @@ _RESTART:
             Num_Saved_LPres = 0;
             NotNewPres = 0;
             SNum_Level_Slides = Num_Level_Slides;
-            ReadPres = This_Pres; 
-            switch(Flag3 = Level_Transformations(TRUE,TRUE,FALSE))
+            ReadPres = This_Pres;           
+			switch(Flag3 = Level_Transformations(TRUE,TRUE,FALSE))
                 {
                 case 0:
                     break;
@@ -2897,7 +2896,7 @@ int ReRun_A_Presentation(void)
 
     ptr = (unsigned char *) NewPtr(100); 
     if(ptr == NULL) Mem_Error(); 
-    printf("\n\nENTER N IN [0,%u] AND HIT 'return' TO RERUN PRESENTATION N.    ",NumFilled);
+    printf("\n\nENTER N, 0 <= N <= %u, AND HIT 'return' TO RERUN PRESENTATION N.    ",NumFilled);
     for(i = j = 0; j < NumFilled; j++) if(SURL[j] == 0) i ++;
     if(i)
         {

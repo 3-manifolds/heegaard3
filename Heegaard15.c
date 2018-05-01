@@ -18,12 +18,6 @@ int Do_Initialization()
 		if(A[i] 	== NULL) Mem_Error();
 		AA[i] 		= (unsigned int *)	NewPtr(sizeof(int)*VERTICES);
 		if(AA[i] 	== NULL) Mem_Error();
-		AJ1[i] 		= (unsigned int *)	NewPtr(sizeof(int)*(VERTICES + 1));
-		if(AJ1[i] 	== NULL) Mem_Error();
-		AJ2[i] 		= (unsigned int *)	NewPtr(sizeof(int)*(VERTICES + 1));
-		if(AJ2[i] 	== NULL) Mem_Error();
-		AJ3[i] 		= (unsigned int *)	NewPtr(sizeof(int)*(VERTICES + 1));
-		if(AJ3[i] 	== NULL) Mem_Error();
 		B[i] 		= (unsigned int *)	NewPtr(sizeof(int)*VERTICES);
 		if(B[i] 	== NULL) Mem_Error();
 		CO[i]		= (unsigned char*)	NewPtr(sizeof(char)*VERTICES);
@@ -31,6 +25,16 @@ int Do_Initialization()
 		GB[i]		= (         int *)  NewPtr(sizeof(int)*VERTICES);
 		if(GB[i] 	== NULL) Mem_Error();
 		}
+		
+	for(i = 0; i < VERTICES + 1; i++)
+		{
+		AJ1[i] 		= (unsigned int *)	NewPtr(sizeof(int)*(VERTICES + 1));
+		if(AJ1[i] 	== NULL) Mem_Error();
+		AJ2[i] 		= (unsigned int *)	NewPtr(sizeof(int)*(VERTICES + 1));
+		if(AJ2[i] 	== NULL) Mem_Error();
+		AJ3[i] 		= (unsigned int *)	NewPtr(sizeof(int)*(VERTICES + 1));
+		if(AJ3[i] 	== NULL) Mem_Error();		
+		}	
 
 	for(i = 0; i < (VERTICES)/2; i++)
 		{
@@ -100,8 +104,6 @@ int Do_Initialization()
 	if(DeletedEdges == NULL) Mem_Error();
 	DF				= (unsigned int  *)  NewPtr(sizeof(int)*(VERTICES)/2);
 	if(DF 			== NULL) Mem_Error();
-	InDisk			= (unsigned int  *)  NewPtr(sizeof(int)*VERTICES);
-	if(InDisk 		== NULL) Mem_Error();
 	ER				= (			char *)  NewPtr(sizeof(char)*MAX_SAVED_PRES);
 	if(ER 			== NULL) Mem_Error();
 	Father			= (unsigned int  *)  NewPtr(sizeof(int)*VERTICES);
@@ -123,9 +125,7 @@ int Do_Initialization()
 	HegSplNum		= (unsigned int  *)	 NewPtr(sizeof(int)*MAX_SAVED_PRES);
 	if(HegSplNum    == NULL) Mem_Error();
 	HegSplNxt		= (unsigned int  *)	 NewPtr(sizeof(int)*MAX_SAVED_PRES);
-	if(HegSplNxt    == NULL) Mem_Error();
-	InDisk			= (unsigned int  *)  NewPtr(sizeof(int)*VERTICES);
-	if(InDisk 		== NULL) Mem_Error();	
+	if(HegSplNxt    == NULL) Mem_Error();	
 	InPS			= (			int	 *)	 NewPtr(sizeof(int)*VERTICES);
 	if(InPS 		== NULL) Mem_Error();	
 	InQueue 		= (unsigned int  *)	 NewPtr(sizeof(int)*VERTICES);

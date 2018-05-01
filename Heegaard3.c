@@ -2,22 +2,22 @@
 #include "Heegaard_Dec.h"
 
 /****************************** Functions in Heegaard3.c ************************************
-L 1380 Check_Bridge_Interlacing(unsigned int NumComps,unsigned int length)
+L 1376 Check_Bridge_Interlacing(unsigned int NumComps,unsigned int length)
 L  140 Check_Connected(void)
 L  540 Connected_(unsigned int i,unsigned int k)
-L 1897 Diagram_Data(int PrintOut,int F1,int F2,Pres,HS)
-L 2130 Diagram_Data_for_Graphviz(int F2,int Pres,int HS)
-L 1585 Find_Cut_Vertices(void)
-L 1197 Find_Minimal_Path(void)
-L 2301 Gauss_Seidel(void)
+L 1982 Diagram_Data(int PrintOut,int F1,int F2,Pres,HS)
+L 2215 Diagram_Data_for_Graphviz(int F2,int Pres,int HS)
+L 1670 Find_Cut_Vertices(void)
+L 1281 Find_Minimal_Path(void)
+L 2386 Gauss_Seidel(void)
 L   86 Get_Matrix(void)
-L  880 Planar(int Flag,int SaveFaces)
-L 1307 Planar_Connected_(unsigned int length)
-L 2591 Print_Bdry_Comp_Info(int F2,int Pres,int HS)
-L 1659 Print_Graph(int F1,int F2,int Pres,int HS)
-L  615 Sep_Pairs(int VI,int VJ,int FirstCall)
-L  771 Sep_Pairs_Sub(v1,v2)
-L  574 Split_Relators(unsigned char x)
+L  881 Planar(int Flag,int SaveFaces)
+L 1330 Planar_Connected_(unsigned int length)
+L 2676 Print_Bdry_Comp_Info(int F2,int Pres,int HS)
+L 1744 Print_Graph(int F1,int F2,int Pres,int HS)
+L  616 Sep_Pairs(int VI,int VJ,int FirstCall)
+L  772 Sep_Pairs_Sub(v1,v2)
+L  575 Split_Relators(unsigned char x)
 L   27 Whitehead_Graph(void)
 ********************************************************************************************/
 
@@ -544,14 +544,15 @@ int Connected_(unsigned int i,unsigned int k)
         in the adjacency lists AJ1[]. The array ZZ[] is initialized by the calling routine
         which sets the entries of vertices which should be deleted from the adjacency lists to
         a non-zero value and passes the number of deleted vertices as the parameter k. 
-        The routine returns FALSE if the graph is not connected and TRUE if it is connected.
+        The routine returns FALSE if the graph is not connected, returns TRUE if the graph is
+        connected, and sets ZZ[j] = 1 if j lies in the component of the graph containing i. 
     ******************************************************************************************/    
      
     unsigned int   	h,
     				j,
     				*p,
     				*r;
-                                                     
+    				                                                     
     ZZ[i] = 1;
     k ++;
     for(r = UpDate,*r = i,p = r + 1; r < p; r++)
@@ -885,21 +886,25 @@ int Planar(int Flag,int SaveFaces)
         the "infinite" face of the graph. It returns FALSE if the graph is planar and TRUE if
         the graph is nonplanar.
     ******************************************************************************************/
-
+	
     int             Bdry_Major_Vert,
     				h,
     				i,
     				ii,
     				j,
     				jj,
-    				k,
+    				k,			
                     Max_Bdry_Major_Vert,
                     MaxNumFaces,
                     NumInPS,
+                    P1,
+                    P2,
                     s1,
-                    s2;
+                    s2,
+                    V;
                                         
-    unsigned int   	*MyBdry,
+    unsigned int   	InitialVertex,
+    				*MyBdry,
                     *q,
                     length;
                             
@@ -921,24 +926,20 @@ int Planar(int Flag,int SaveFaces)
         return(FALSE);
         }        
     if(NumEdges > 3*(Vertices - 2)) return(TRUE);
-
+ 
 	ii = 0;
 	jj = 0;
-NEW_INITIAL_EDGE:                                                                                                                                    
+	InitialVertex		= VERTICES;                                                                                                                                    
     MaxLength           = VERTICES + 1;
     NumFaces            = 0;
     Max_Bdry_Major_Vert = -1;
     MaxNumFaces         = NumEdges - Vertices + 2;
-    for(i = 0,h = 0; i < Vertices; i++)
-    for(q = AJ1[i]; (j = *q) < VERTICES; q++) GB[i][j] = TRUE;
-    	
+    for(h = 0; h < Vertices; h++)
+    for(i = 0; i < Vertices; i++) GB[h][i] = FALSE;
     for(i = 0; i < Vertices; i++)
-        {
-        InDisk[i]     = 0;
-        InPS[i]       = FALSE;
-        ZZ[i]         = 0;
-        }
-         
+    for(q = AJ1[i]; (j = *q) < VERTICES; q++) GB[i][j] = TRUE;
+    for(i = 0; i < Vertices; i++) InPS[i] = FALSE;  	
+            
     /******************************************************************************************
         Find an oriented edge of the graph to serve as the first edge of the boundary of the
         initial face of the graph. Then delete the oppositely oriented edge from the array
@@ -958,7 +959,7 @@ NEW_INITIAL_EDGE:
     DeletedEdgePtr        = DeletedEdges;
     *DeletedEdgePtr++     = j;
     *DeletedEdgePtr++     = i;    
-    InPS[i]               = 1;
+  	InPS[i]               = 1;
     InPS[j]               = 1;
     NumInPS               = 2;    
     s1                    = 0;
@@ -968,27 +969,94 @@ FIND_BDRY:
 
     length = Find_Minimal_Path();
     
+    /**********************************************************************************************
+    	If Find_Minimal_Path() returns a circuit P which contains all of the vertices currently
+    	in InPS, then there are no vertices in the interior of the current planar surface. In
+    	order to avoid a possible erroneous declaration that P bounds a face, we look for a
+    	vertex V of P which can be isolated so that Heegaard will find a new path P' with V not
+    	contained in P'. To do this, we first choose a vertex V' not in P, find the component C
+    	of the graph G-P containing V' and locate the first P1 and second point P2 at which C 
+    	meets P. Then V can be taken to be any vertex not in the oriented path from P1 to P2 in P.
+    ***********************************************************************************************/
+    
+    if(length + 1 == NumInPS && NumInPS < Vertices)
+    	{   	
+    	for(h = 0; h <= length && InPS[Bdry[h]] == 1; h++) {}
+    	if(h >= NumInPS)
+    		{
+           	while(DeletedEdgePtr > DeletedEdges)
+				{
+				DeletedEdgePtr --;
+				j = *DeletedEdgePtr --;
+				GB[*DeletedEdgePtr][j] = TRUE;
+				}       	 	
+       	 	length ++;		
+ 			for(i = 0; i < Vertices; i++)
+ 				{ 
+ 				if(InPS[i]) ZZ[i] = VERTICES;
+ 				else ZZ[i] = 0;
+ 				}
+ 			for(i = 0; i < Vertices; i++) if(InPS[i] == FALSE) break;
+ 			Connected_(i,NumInPS);	
+ 			for(i = 1,P1 = 0; i <= length; i++)
+				{
+				for(q = AJ1[Bdry[i]]; (j = *q) < VERTICES; q++)
+					{
+					if(ZZ[j] == 1)
+						{
+						P1 = i;
+						break;
+						}                
+					}
+				if(P1) break;	
+				}
+			for(i = P1 + 1,P2 = 0; i <= length; i++)
+				{
+				for(q = AJ1[Bdry[i]]; (j = *q) < VERTICES; q++)
+					{
+					if(ZZ[j] == 1)
+						{
+						P2 = i;
+						break;
+						}                
+					}
+				if(P2) break;	
+				}				
+			if(P1 > 1)
+				{
+				V = Bdry[P1-1];
+				Bdry[0] = Bdry[P1];
+				Bdry[1] = Bdry[P1+1];
+				}	
+			if(P1 == 1 && P2 < length)
+				{
+				V = Bdry[P2+1];
+				Bdry[0] = Bdry[1];
+				Bdry[1] = Bdry[2];
+				}
+			if(P1 == 1 && P2 == length) 	
+				{
+				Bdry[0] = Bdry[length];
+				Bdry[1] = Bdry[1];
+				V = Bdry[2];
+				}			
+			for(j = 0; j < Vertices; j++) if(GB[j][V] == 1)
+				{
+				GB[j][V] = 0;
+				*DeletedEdgePtr++ = j;
+				*DeletedEdgePtr++ = V;
+				}	
+			s1 = s2 = 0;       		
+        	length = Find_Minimal_Path();		
+    		}
+    	}
+    
     if(length == 0)
-        {
-		if(NumFaces < MaxNumFaces)
-        	{
-        	jj++;
-        	if(jj < VWG[MyBdry[0]]) 
-        		goto NEW_INITIAL_EDGE;
-        	else
-        		{
-        		if(++ii < Vertices) 
-        			{
-        			jj = 0;
-        			goto NEW_INITIAL_EDGE;
-        			}
-        		}       	
-        	}
-               
+        {               
         /**************************************************************************************
             There is no directed path joining Bdry[1] to Bdry[0]. This can only occur when the
             graph is not planar. So set NumFaces = MaxNumFaces + 1 as a flag, and goto OUTPUT.
-        **************************************************************************************/                            
+        **************************************************************************************/ 
         NumFaces = MaxNumFaces + 1;
         goto OUTPUT;
         }
@@ -1012,9 +1080,29 @@ FIND_BDRY:
     #endif
         
     if(NumInPS < Vertices && (length + 1 < Vertices))
-        {        	
-        for(h = 0; h <= length; h++) ZZ[MyBdry[h]] = VERTICES;       
+        { 
+        for(h = 0; h < Vertices; h++) ZZ[h] = 0;	
+        for(h = 0; h <= length; h++) ZZ[MyBdry[h]] = VERTICES;
+        
+        /***************************************************************************************
+        	When Heegaard finds an initial circuit P and no faces have been found, we choose an
+        	arbitrary vertex V not in P, and insist that V lie on the 'outside' of any 
+        	subsequent paths Heegaard finds. This forces Heegaard to look for a sequence of
+        	nested paths all of which have V lying to the same side.
+        ***************************************************************************************/
+        
+        if(NumFaces == 0 && InitialVertex == VERTICES)
+        	{
+        	for(h = 0; h < Vertices; h++) if(ZZ[h] != VERTICES) break;
+        	InitialVertex = h;
+        	}
+        if(NumFaces == 0) Connected_(InitialVertex,length + 1);
         k = Planar_Connected_(length + 1);
+        if(k == NON_PLANAR)
+        	{
+        	NumFaces = MaxNumFaces + 1;
+        	goto OUTPUT;        	
+        	}
         }    
     else
         k = 1;
@@ -1069,8 +1157,8 @@ FIND_BDRY:
             Face[NumFaces][k] = VERTICES;    
             }
                         
-        #ifdef PRINT_CYCLES    
-            printf("\n %d) ",NumFaces);
+      #ifdef PRINT_CYCLES
+            printf("\n\n %d) ",NumFaces);
             for(k = 0; k < length; k++)
                 {
                 h = MyBdry[k];
@@ -1083,11 +1171,11 @@ FIND_BDRY:
             for( ; k < 26; k++)
                 printf(".");    
             printf(" bounds.");
-        #endif
+       #endif
                                                 
         /**************************************************************************************
             For each oriented edge of this cycle, set the corresponding entry of GB[][] equal
-            to zero. (If the graph is planar, each oriented edge will appear in the boundary of
+            to -1. (If the graph is planar, each oriented edge will appear in the boundary of
             exactly one oriented face.) Then update the entries of the array CO[][]. This array
             gives the cyclic order in which vertices appear around a vertex in the embedding
             of the graph.
@@ -1096,16 +1184,14 @@ FIND_BDRY:
         for(k = 0,h = MyBdry[length - 1]; k < length; k++)
             {
             j = MyBdry[k];
-            GB[h][j] = 0;
+            GB[h][j] = -1;       
             h = j;
-            ZZ[j] = 1;
             if(!InPS[j])
                 {
                 InPS[j] = TRUE;
                 NumInPS ++;
                 }
-            }
-                
+            }              
         for(k = 0; k < length - 2; k++) CO[MyBdry[k+1]][MyBdry[k]] = MyBdry[k+2];
         CO[MyBdry[k+1]][MyBdry[k]] = MyBdry[0];
         CO[MyBdry[0]][MyBdry[k+1]] = MyBdry[1];
@@ -1116,14 +1202,14 @@ FIND_BDRY:
             exists, goto OUTPUT.
         **************************************************************************************/
             
-        for(h = s1,i = s2; (j = AJ1[h][i]) < VERTICES; i++) if(GB[h][j])
+        for(h = s1,i = s2; (j = AJ1[h][i]) < VERTICES; i++) if(GB[h][j] == 1)
             {
             s1 = h;
             s2 = i;
             goto FIND_FIRST_EDGE;
             }
         for(h = s1 + 1; h < Vertices; h++)
-        for(i = 0; (j = AJ1[h][i]) < VERTICES; i++) if(GB[h][j])
+        for(i = 0; (j = AJ1[h][i]) < VERTICES; i++) if(GB[h][j] == 1)
             {
             s1 = h;
             s2 = i;
@@ -1131,27 +1217,25 @@ FIND_BDRY:
             }    
         FIND_FIRST_EDGE:
         
-        for(h = s1,i = s2; (j = AJ1[h][i]) < VERTICES; i++) if(GB[h][j] && !GB[j][h])
+        for(h = s1,i = s2; (j = AJ1[h][i]) < VERTICES; i++) if(GB[h][j] == 1 && GB[j][h] != 1)
             {
             MyBdry[0] = h;
             MyBdry[1] = j;
             goto FIND_BDRY;
             }
         for(h = s1 + 1; h < Vertices; h++)
-        for(i = 0; (j = AJ1[h][i]) < VERTICES; i++) if(GB[h][j] && !GB[j][h])
+        for(i = 0; (j = AJ1[h][i]) < VERTICES; i++) if(GB[h][j] == 1 && GB[j][h] != 1)
             {
             MyBdry[0] = h;
             MyBdry[1] = j;
             goto FIND_BDRY;
             }
-                    
         goto OUTPUT;                                                        
         }
     
     goto FIND_BDRY;    
     
 OUTPUT:
-    
     if(MaxLength == Vertices || NumFaces == MaxNumFaces)
         {
         for(i = 0; i < Vertices; i++) if(VWG[i])
@@ -1194,186 +1278,98 @@ OUTPUT:
         return(TRUE);                                                                  
 }                
 
-unsigned int Find_Minimal_Path(void)        
+unsigned int Find_Minimal_Path(void)
 {
     /******************************************************************************************
         Find_Minimal_Path() is called by Planar(). Find_Minimal_Path() finds a minimal length
         directed path, in the graph specified by GB[][], which joins the vertices Bdry[1] and
         Bdry[0]. The path is returned in the array Bdry[], while the value returned by the
-        routine is equal to the length of this path. If no path can be found, the routine
+        routine is equal to the length of the path. If no path can be found, the routine
         returns 0.
     ******************************************************************************************/
-                            
-    unsigned int   	*Beg1,
-                    *Beg2,
-                    *End1,
-                    *End2,
-                    FreeEdges1,
-                    FreeEdges2,
-                    From[VERTICES],
-                    Disk1[VERTICES],
-                    Disk2[VERTICES],
-                    h,
-                    i,
-                    j,
-                    length,
-                    *p,
-                    *r,
-                    Radius1,
-                    Radius2;
     
-    End1 = Beg1         = Disk1;
-    End2 = Beg2         = Disk2;
-    *End1++             = Bdry[0];
-    *End2++             = Bdry[1];
-    InDisk[Bdry[0]]     = 1;
-    InDisk[Bdry[1]]     = 2;
-    FreeEdges1          = VWG[Bdry[0]];
-    FreeEdges2          = VWG[Bdry[1]];
-    Radius1 = Radius2   = 0;
+    char			FoundPath;
     
-    while(1)
-        {
-        if(FreeEdges1 <= FreeEdges2)
-            {
-            Radius1 ++;
-            FreeEdges1 = 0;
-            for(r = Beg1,p = End1; r < p; r++)
-                {
-                i = *r;
-                for(h = 0; (j = AJ1[i][h]) < VERTICES; h++)
-                    {
-                    if(InDisk[j] == 2 && GB[j][i])
-                        {
-                        Bdry[Radius2 + 1] = j;
-                        length = Radius1 + Radius2;
-                        for(h = Radius2; h > 1; h--) Bdry[h] = From[Bdry[h+1]];
-                        From[j] = i;
-                        for(h = Radius2 + 1; h < length; h++)
-                            Bdry[h+1] = From[Bdry[h]];
-                        goto FOUND_PATH;
-                        }
-                    if(InDisk[j] == 0 && GB[j][i])
-                        {
-                        From[j]     = i;
-                        InDisk[j]   = 1;
-                        *End1++     = j;
-                        FreeEdges1  += VWG[j];
-                        }
-                    }
-                }
-            Beg1 = r;
-            if(r == End1) return(0);
-            }
-        else
-            {
-            Radius2 ++;
-            FreeEdges2 = 0;    
-            for(r = Beg2,p = End2; r < p; r++)
-                {
-                i = *r;
-                for(h = 0; (j = AJ1[i][h]) < VERTICES; h++)
-                    {
-                    if(InDisk[j] == 1 && GB[i][j])
-                        {
-                        Bdry[Radius2 + 1] = j;
-                        length = Radius1 + Radius2;
-                        for(h = Radius2 + 1; h < length; h++)
-                            Bdry[h+1] = From[Bdry[h]];
-                        From[j] = i;
-                        for(h = Radius2; h > 1; h--) Bdry[h] = From[Bdry[h+1]];
-                        goto FOUND_PATH;
-                        }
-                    if(InDisk[j] == 0 && GB[i][j])
-                        {
-                        From[j]     = i;
-                        InDisk[j]   = 2;
-                        *End2++     = j;
-                        FreeEdges2  += VWG[j];
-                        }
-                    }
-                }
-            Beg2 = r;
-            if(r == End2) return(0);
-            }        
-        }
-    
-    FOUND_PATH:
-    for(r = Disk1; r < End1; r++) InDisk[*r] = 0;
-    for(r = Disk2; r < End2; r++) InDisk[*r] = 0;
-    return(length);                                                                        
+	unsigned int	h,
+					i,
+					MyUpDate[VERTICES],
+					PathNext[VERTICES],
+					*p,
+					*r;
+						
+	for(h = 0; h < Vertices; h++) PathNext[h] = VERTICES;
+	PathNext[Bdry[0]] = 0;
+				
+	p = MyUpDate;
+	*p++ = Bdry[0];
+	for(r = MyUpDate,FoundPath = FALSE; r < p; r++)
+		{
+		i = *r;
+		for(h = 0; h < Vertices; h++) if(PathNext[h] == VERTICES && GB[h][i] == 1)
+			{			
+			PathNext[h] = i;
+			if(h == Bdry[1]) 
+				{
+				FoundPath = TRUE;
+				break;
+				}
+			*p++ = h;
+			}
+		if(FoundPath) break;			
+		}
+	if(FoundPath == FALSE) return(FALSE);
+	
+	for(h = 2; h < Vertices; h++)
+		{
+		Bdry[h] = PathNext[Bdry[h-1]];
+		if(Bdry[h] == Bdry[0]) break;
+		} 		
+	return(h - 1);					
 }
 
-int Planar_Connected_(unsigned int length)                                            
+int Planar_Connected_(unsigned int length)                                       
 {    
     /******************************************************************************************
         This routine is used to find the components produced when the cycle specified in
         Bdry[] is deleted from the graph. It is sufficient to know which component each vertex
         neighboring the deleted cycle belongs to. Given such a vertex, the routine uses
-        breadth-first search to find the component in which the vertex lies. Note that
-        vertices which are known to belong to the planar-surface, and are not in the cycle,
-        have their entries in ZZ[] set to 1.
+        breadth-first search to find the component in which the vertex lies.
     ******************************************************************************************/    
-     
+	
+	int				CBIRV;
+	     
     unsigned int   	h,
                     i,
                     j,
                     k,
                     NumComps,
                     *p,
-                    *q,
-                    *r,
-                    V,
-                    W,
-                    *zz;
-                                                                           
-    NumComps = 1;
-    p        = UpDate;                        
-    zz       = ZZ;
-    
-    for(V = 0; V < length; V++)
-    for(W = 0; (j = AJ1[Bdry[V]][W]) < VERTICES; W++) if(zz[j] == 0)
-        {
-        h         = NumComps + 1;
-        q         = p;
-        zz[j]     = h;
-        *p++      = j;
-        for(r = q; r < p; r++)
-            {
-            for(k = 0; (j = AJ1[*r][k]) < VERTICES; k++) if((i = zz[j]) < h)
-                {
-                if(i == 0)
-                    {
-                    zz[j] = h;
-                    *p++  = j;
-                    }
-                else 
-                    {
-                    for(r = q; r < p; r++) zz[*r] = i;
-                    goto NEXT_BDRY_VERTEX;
-                    }
-                }
-            }
-        NumComps ++;    
-        NEXT_BDRY_VERTEX:
-        continue;
+                    *r;
+
+	NumComps = 0;
+	if(NumFaces == 0) NumComps = 1;
+    for(h = 0;h < Vertices; h++) if(ZZ[h] == 0)
+    	{
+    	NumComps ++;
+    	ZZ[h] = NumComps;
+    	p = UpDate;
+    	*p++ = h;
+    	for(r = UpDate; r < p; r++)
+    		{
+    		i = *r;
+    		for(k = 0; (j = AJ1[i][k]) < VERTICES; k++) if(ZZ[j] == 0)
+    			{
+    			*p++ = j;
+    			ZZ[j] = NumComps;
+    			}
+    		}
+    	}     
+    if(NumComps > 1)
+    	{
+    	CBIRV = Check_Bridge_Interlacing(NumComps,length);
+    	if(CBIRV == NON_PLANAR) return(NON_PLANAR);  
+		if(CBIRV == FALSE) return(FALSE);
         }
-        
-    if(NumComps > 1 && !Check_Bridge_Interlacing(NumComps,length))
-        {
-        for(r = UpDate; r < p; r++)
-            zz[*r] = 0;
-        for(h = 0; h < length; h++)
-            {
-            j = Bdry[h];
-            if(InPS[j])
-                zz[j] = 1;
-            else
-                zz[j] = 0;
-            }    
-        return(FALSE);
-        }
-    for(r = UpDate; r < p; r++) zz[*r] = 0;    
     return(TRUE);
 }
 
@@ -1381,26 +1377,24 @@ int Check_Bridge_Interlacing(unsigned int NumComps,unsigned int length)
 {   
     char            SideC[VERTICES];
     
-    unsigned char   Comp[VERTICES],
-                	MaxC[VERTICES],
+    unsigned char   MaxC[VERTICES],
+                	MidC[VERTICES],
                     MinC[VERTICES];
                             
     unsigned int    CompsFound,
-                    Found_h,
-                    Found_i,
     			   	h,
                     i,
                     j,
-                    k,
-                    kk,                    
-                    MaxC_h,
-                    MaxC_i,
-                    MinC_h,
-                    MinC_i,
+                    k,                    
+                    MCh,
+                    MCi,
+                    mCh,
+                    mCi,
                     *MyBdry,
-                    *q,                    
-                    V,
-                    W,
+                    MyUpDate[VERTICES],
+                    *p,
+                    *q,
+                    *r,
                     *zz;
     
     MyBdry          = Bdry;
@@ -1408,148 +1402,234 @@ int Check_Bridge_Interlacing(unsigned int NumComps,unsigned int length)
     MyBdry[length]  = MyBdry[0];
                                         
     /******************************************************************************************
-        For each "bridge" or component formed when the cycle specified by the path in Bdry[]
-        is deleted from the graph, find the first and last points at which the bridge meets
-        the path.
+        For each bridge component formed when the cycle specified by the path in Bdry[] is
+        deleted from the graph, find the first and last points at which the bridge meets the
+        path.
     ******************************************************************************************/
-    
-    MinC[1] = 1;
-    for(h = 2; h <= NumComps; h++) MinC[h] = 0;
-    for(h = i = 1; h <= length; h++)
-    for(q = AJ1[MyBdry[h]]; (j = *q) < VERTICES; q++)
-        {
-        if((k = zz[j]) != VERTICES && MinC[k] == 0)
-            {
-            MinC[k] = h;
-            if(++i == NumComps) goto FOUND_MINS;
-            }                
+	
+    for(h = 1; h <= NumComps; h++) MinC[h] = 0;
+    for(h = 1,i = 0; h <= length; h++)
+    	{
+		for(q = AJ1[MyBdry[h]]; (j = *q) < VERTICES; q++)
+			{
+			if((k = zz[j]) != VERTICES && MinC[k] == 0)
+				{
+				MinC[k] = h;
+				if(++i == NumComps) break;
+				}                
+			}
+		if(i >= NumComps) break;	
         }
-    FOUND_MINS:
     
-    MaxC[1] = length;
-    for(h = 2; h <= NumComps; h++) MaxC[h] = 0;
-    for(h = length,i = 1; h > 0; h--)
-    for(q = AJ1[MyBdry[h]]; (j = *q) < VERTICES; q++)
-        {
-        if((k = zz[j]) != VERTICES && MaxC[k] == 0)
-            {
-            MaxC[k] = h;
-            if(++i == NumComps) goto FOUND_MAXS;
-            }                
+    for(h = 1; h <= NumComps; h++) MaxC[h] = 0;
+    for(h = length,i = 0; h > 0; h--)
+    	{
+		for(q = AJ1[MyBdry[h]]; (j = *q) < VERTICES; q++)
+			{
+			if((k = zz[j]) != VERTICES && MaxC[k] == 0)
+				{
+				MaxC[k] = h;
+				if(++i == NumComps) break;
+				}                   
+			}
+		if(i >= NumComps) break;	
         }
-    FOUND_MAXS:
     
+    for(h = 1; h <= NumComps; h++) MidC[h] = FALSE;
+    for(h = 1; h <= NumComps; h++)
+    	{
+		for(i = MinC[h] + 1; i < MaxC[h]; i++)
+			{
+			for(q = AJ1[MyBdry[i]]; (j = *q) < VERTICES; q++) if(zz[j] == h)
+				{
+				MidC[h] = TRUE;
+				break;
+				}
+			if(MidC[h] == TRUE) break;
+			}
+		}
+
+	/**********************************************************************************************
+		1)	Set SideC[i] = 2 if Component i contains a vertex in InPS. 
+		2)	Set SideC[i] = -2 if: 
+			a) 	There is a vertex of the path between MinC[i] and MaxC[i] which lies in the 
+				current planar surface PS. 
+			b) 	MaxC[i] = MinC[i] + 1, both MyBdry[MinC[i]] and MyBdry[MaxC[i]] are InPS and the 
+				oriented edge GB(MyBdry[MaxC[i]],MyBdry[MinC[i]]) is an edge of the PS. 
+			c) 	There is a component j, j != i, with MinC[i] <= MinC[j], MaxC[j] <= MaxC[i], 
+				MidC[j] = TRUE, and SideC[j] = 2.	
+	**********************************************************************************************/
+			
+	for(h = 1; h <= NumComps; h++) SideC[h] = 0;
+	for(h = 1; h <= NumComps; h++) 
+		{
+		for(j = 0; j < Vertices; j++) if(zz[j] == h && InPS[j]) 
+			{
+			SideC[h] = 2;
+			break;
+			}
+		}			
+				
+	for(h = 1; h <= NumComps; h++) if(SideC[h] != 2)
+		{
+		for(i = MinC[h] + 1; i < MaxC[h]; i++) if(InPS[MyBdry[i]] == 1)
+			{
+			SideC[h] = -2;
+			break;
+			}	
+		if(MaxC[h] == MinC[h] + 1)
+			{
+			i = MyBdry[MinC[h]];
+			j = MyBdry[MaxC[h]];			
+			if(InPS[i] == 1 && InPS[j] == 1 && GB[j][i] == -1) SideC[h] = -2;
+			}
+			
+		for(i = 1; i<= NumComps; i++)
+			{
+			if(i == h) continue;
+			if(SideC[i] != 2) continue;
+			if(MaxC[i] == MinC[i] + 1) continue;
+			if(MinC[h] <= MinC[i] && MaxC[i] <= MaxC[h] && MidC[i] == TRUE)
+				{
+				SideC[h] = -2;
+				break;
+				}					
+			}						
+		}
+     	
     /******************************************************************************************
             Determine whether components are forced to be embedded on the "inside" or on the
         "outside" of this cycle.
-            Start by putting component 1 on the "outside". Continue by putting other components
-        on the side forced by the interlacing. Then, if there are components whose location is
-        still indeterminate, put the first such component on the "outside". Continue until the
-        locations of all components have been determined.
     ******************************************************************************************/
     
-    for(i = 1; i <= NumComps; i++) Comp[i] = i;
-    CompsFound = 0;
-    
-    do
-        {
-        CompsFound ++;
-        SideC[Comp[CompsFound]] = 1;
-        for(V = CompsFound; V <= CompsFound; V++)
-        for(W = CompsFound + 1; W <= NumComps; W++)
-            {
-            h         = Comp[V];
-            i         = Comp[W];
-            MinC_h    = MinC[h];
-            MaxC_h    = MaxC[h];
-            MinC_i    = MinC[i];
-            MaxC_i    = MaxC[i];
-            if(MaxC_h <= MinC_i || MaxC_i <= MinC_h)
-                continue;
-            if(MinC_h < MinC_i && MinC_i < MaxC_h && MaxC_h < MaxC_i)
-                goto FOUND_COMP;
-            if(MinC_i < MinC_h && MinC_h < MaxC_i && MaxC_i < MaxC_h)
-                goto FOUND_COMP;
-            if(MinC_h == MinC_i && MaxC_h == MaxC_i)
-                {
-                Found_h = Found_i = FALSE;
-                if(h == 1) for(j = MinC_h + 1; j < MaxC_h; j++)
-                    {
-                    if(InPS[MyBdry[j]])
-                        goto FOUND_COMP;
-                    for(q = AJ1[MyBdry[j]]; (kk = *q) < VERTICES; q++) if(zz[kk] == h)
-                        goto FOUND_COMP;
-                    }
-                else for(j = MinC_h + 1; j < MaxC_h; j++)
-                    {
-                    for(q = AJ1[MyBdry[j]]; (kk = *q) < VERTICES; q++)
-                        {
-                        if(zz[kk] == h)
-                            Found_h = TRUE;
-                        if(zz[kk] == i)
-                            Found_i = TRUE;    
-                        }
-                    if(Found_h && Found_i) goto FOUND_COMP;
-                    }
-                continue;        
-                }
-            if(MinC_i <= MinC_h && MaxC_h <= MaxC_i)
-                {
-                for(j = MinC_h + 1; j < MaxC_h; j++)
-                for(q = AJ1[MyBdry[j]]; (kk = *q) < VERTICES; q++)
-                    if(zz[kk] == i) goto FOUND_COMP;
-                continue;
-                }
-            if(MinC_h <= MinC_i && MaxC_i <= MaxC_h)
-                {
-                if(h == 1)
-                    {
-                    if((MinC_i + 1) == MaxC_i
-                        && !GB[MyBdry[MaxC_i]][MyBdry[MinC_i]]) goto FOUND_COMP;
-                    for(j = MinC_i + 1; j < MaxC_i; j++)
-                        {
-                        if(InPS[MyBdry[j]]) goto FOUND_COMP;
-                        for(q = AJ1[MyBdry[j]]; (kk = *q) < VERTICES; q++)
-                            if(zz[kk] == h) goto FOUND_COMP;
-                        }
-                    }
-                else
-                    {
-                    for(j = MinC_i + 1; j < MaxC_i; j++)
-                    for(q = AJ1[MyBdry[j]]; (kk = *q) < VERTICES; q++)
-                        if(zz[kk] == h) goto FOUND_COMP;
-                    }
-                continue;
-                }
-            FOUND_COMP:
-            SideC[i]            = -SideC[h];
-            CompsFound          ++;
-            Comp[W]             = Comp[CompsFound];
-            Comp[CompsFound]    = i;                        
-            }
-        }
-    while(CompsFound < NumComps);
-    
+    for(i = 1; i <= NumComps; i++)
+    for(j = 1; j <= NumComps; j++) AJ3[i][j] = FALSE;
+
+	/****************************************************************************************** 
+			Set AJ3[i][j] = TRUE if Bridge components i and j must be embedded on opposite 
+		sides of this cycle. 	
+	******************************************************************************************/
+	
+    for(h = 1; h <= NumComps; h++)
+    for(i = h + 1; i <= NumComps; i++)
+		{    
+		mCh = MinC[h];
+		MCh = MaxC[h];
+		mCi = MinC[i];
+		MCi = MaxC[i];
+	
+		if(mCh < mCi && mCi < MCh && MCh < MCi) 
+			{
+			AJ3[h][i] = AJ3[i][h] = TRUE;
+			continue;
+			}
+		if(mCi < mCh && mCh < MCi && MCi < MCh)
+			{
+			AJ3[h][i] = AJ3[i][h] = TRUE;
+			continue;
+			}
+		if(mCh == mCi && MCh == MCi)
+			{
+			if(MidC[h] && MidC[i]) 
+				{
+				AJ3[h][i] = AJ3[i][h] = TRUE;
+				} 		
+			continue;		
+			}
+		if(mCh <= mCi && MCi <= MCh && MidC[h])
+			{
+			for(j = MinC[i] + 1; j < MaxC[i]; j++)
+				{
+				for(q = AJ1[MyBdry[j]]; (k = *q) < VERTICES; q++) if(zz[k] == h)
+					{
+					AJ3[h][i] = AJ3[i][h] = TRUE;
+					j = MaxC[i];
+					break;
+					}
+				}
+			continue;			
+			}
+		if(mCi <= mCh && MCh <= MCi && MidC[i])
+			{
+			for(j = MinC[h] + 1; j < MaxC[h]; j++)
+				{
+				for(q = AJ1[MyBdry[j]]; (k = *q) < VERTICES; q++) if(zz[k] == i)
+					{
+					AJ3[h][i] = AJ3[i][h] = TRUE;
+					j = MaxC[h];
+					break;
+					}
+				}
+			continue;				
+			}						
+		}
+
+	if(NumFaces == 0) SideC[1] = 2;
+			
+	for(h = 1,CompsFound = 0; h <= NumComps; h++) if(abs(SideC[h]) > 1)
+		{
+		r = p = MyUpDate;
+		SideC[h] = SideC[h]/2;
+		CompsFound ++;
+		*p++ = h;
+		while(r < p)
+			{
+			i = *r++;
+			for(j = 1; j <= NumComps; j++) if(AJ3[i][j])
+				{
+				if((SideC[j] == SideC[i]) || (SideC[j] == 2*SideC[i])) return(NON_PLANAR);
+				if(SideC[j] == 0)
+					{
+					SideC[j] = -SideC[i];
+					*p++ = j;
+					CompsFound ++;
+					}				
+				}
+			}
+		}
+
+	for(h = 1; h <= NumComps; h++) if(SideC[h] == 0)
+		{
+		r = p = MyUpDate;
+		SideC[h] = 1;
+		CompsFound ++;
+		*p++ = h;
+		while(r < p)
+			{
+			i = *r++;
+			for(j = 1; j <= NumComps; j++) if(AJ3[i][j])
+				{
+				if(SideC[j] == SideC[i]) return(NON_PLANAR);
+				if(SideC[j] == 0)
+					{
+					SideC[j] = -SideC[i];
+					*p++ = j;
+					CompsFound ++;
+					}
+				}	
+			}
+		}	
+	
     /******************************************************************************************
         Check whether it was possible to put all of the components on the "outside" of this
-        cycle.    If it was, return TRUE.
+        cycle. If it was, return TRUE.
     ******************************************************************************************/
 
-    for(h = 2; h <= NumComps && SideC[h] == 1; h++) {}
-        if(h > NumComps) return(TRUE);
+    for(h = 1,i = 0; h <= NumComps; h++) if(SideC[h] == 1) i++;
+        if(i == NumComps) return(TRUE);
     
     /******************************************************************************************
         Temporarily delete the oriented edges leading from this cycle to components lying on
         the "outside". This insures that the next cycle will lie "inside" of this one.
     ******************************************************************************************/
         
-    for(h = 0; h < length; h++)
+    for(h = 1; h <= length; h++)
         {
         i = MyBdry[h];
         for(q = AJ1[i]; (k = *q) < VERTICES; q++)
             {
-            if((j = zz[k]) == VERTICES) continue;
-            if(SideC[j] == 1 && GB[i][k])
+            if((j = zz[k]) == VERTICES) continue;            
+            if(SideC[j] == 1 && GB[i][k] == 1)
                 {
                 *DeletedEdgePtr++    = i;
                 *DeletedEdgePtr++    = k;
@@ -1565,19 +1645,24 @@ int Check_Bridge_Interlacing(unsigned int NumComps,unsigned int length)
         Doing this insures that the next cycle will lie properly "inside" this one.
     ******************************************************************************************/
 
-    for(h = 2,i = INFINITE,j = 0; h <= NumComps; h++) if(SideC[h] == -1)
+    for(h = 1,i = INFINITE,j = 0; h <= NumComps; h++) if(SideC[h] == -1)
         { 
         if(MinC[h] < i) i = MinC[h];
         if(MaxC[h] > j) j = MaxC[h];
         }
-        
-    *DeletedEdgePtr++             = MyBdry[i];
-    *DeletedEdgePtr++             = MyBdry[i+1];
-    GB[MyBdry[i]][MyBdry[i+1]]    = FALSE;    
     
-    *DeletedEdgePtr++             = MyBdry[j-1];
-    *DeletedEdgePtr++             = MyBdry[j];
-    GB[MyBdry[j-1]][MyBdry[j]]    = FALSE;
+    if(GB[MyBdry[i]][MyBdry[i+1]] == 1)
+    	{   
+		*DeletedEdgePtr++             = MyBdry[i];
+		*DeletedEdgePtr++             = MyBdry[i+1];
+		GB[MyBdry[i]][MyBdry[i+1]]    = FALSE;    
+    	}
+    if(GB[MyBdry[j-1]][MyBdry[j]] == 1)
+    	{	
+		*DeletedEdgePtr++             = MyBdry[j-1];
+		*DeletedEdgePtr++             = MyBdry[j];
+		GB[MyBdry[j-1]][MyBdry[j]]    = FALSE;
+    	}
     
     return(FALSE);        
 }

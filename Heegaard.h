@@ -188,7 +188,8 @@ extern int 		Find_Flow_D(char);													/* In Heegaard24.c	*/
 extern int		Find_Level_Flow(unsigned int);										/* In Heegaard13.c	*/
 extern int		Find_Level_Transformations(int,int);								/* In Heegaard13.c	*/
 extern int		Find_Level_Transformations_Of_The_Initial_Presentation(void);		/* In Heegaard1.c	*/
-extern unsigned int	Find_Minimal_Path(void);										/* In Heegaard3.c	*/ 
+extern unsigned int	Find_Minimal_Path(void);										/* In Heegaard3.c	*/
+extern unsigned int	Find_Minimal_Path2(void);										/* In Heegaard3.c	*/ 
 extern int		FindMinExpAndContext(char,unsigned int);							/* In Heegaard28.c	*/
 extern int		Find_Path(int,int,int,int);											/* In Heegaard7.c	*/
 extern int		Find_Primitives(int);												/* In Heegaard2.c	*/
@@ -301,7 +302,7 @@ extern int		OneRelator_SPC(unsigned char);										/* In Heegaard17.c	*/
 extern unsigned int	On_File(void);													/* In Heegaard1.c	*/
 extern int 		P_and_PP_Curves_Disjoint_From_Relators(char);						/* In Heegaard28.c	*/
 extern int		Planar(int,int);													/* In Heegaard3.c	*/ 
-extern int		Planar_Connected_(unsigned int);								    /* In Heegaard3.c	*/	
+extern int		Planar_Connected_(unsigned int);									/* In Heegaard3.c	*/	
 extern int		PM_Check_When_Bdry_Exists(char);			  						/* In Heegaard24.c  */
 extern int 		Pos_Relator_Check_Do_Auts(unsigned int,unsigned int, unsigned int, 
 	unsigned int,unsigned int,unsigned int);										/* In Heegaard 28.c */
