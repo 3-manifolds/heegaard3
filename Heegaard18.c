@@ -201,7 +201,7 @@ int Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char
 		{
 		printf("\n\nThe initial presentation was: %s",PresName);
 		printf("\n\nNo presentations of C%d meet the requirements of the Canonical Rep routine.",RealCompNum);
-		if(Batch && H_Results != NULL) fprintf(H_Results,"\n\n%s	?",PresName);
+		if(Batch && H_Results != NULL) fprintf(H_Results,"	?");
 		return(TOO_LONG);
 		}
 	

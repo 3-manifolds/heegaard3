@@ -748,7 +748,7 @@ GET_RESPONSE3:
 				BreadthFirstSearch	= FALSE;
 				Find_All_Min_Pres 	= FALSE;
 				Delete_Only_Short_Primitives 	= SDelete_Only_Short_Primitives;
-    			Do_Not_Reduce_Genus 			= SDo_Not_Reduce_Genus;
+    			Do_Not_Reduce_Genus 			= SDo_Not_Reduce_Genus;  			
     			FormBandsums 					= SFormBandsums;
     			OnlyReducingBandsums 			= SOnlyReducingBandsums;
     			if(Get_Initial_Diagram(TRUE)) 
@@ -766,7 +766,7 @@ GET_RESPONSE3:
 					if((NumRelators != 1 || NumGenerators != 2) && H_Results) 
 						fprintf(H_Results,"<-- No HS Reps!");
 					continue;
-					}
+					}					
     			TestRealizability1 = FALSE;
     			TestRealizability2 = FALSE;           
 	   			if(Get_Diagrams() == INTERRUPT) 

@@ -1701,7 +1701,7 @@ int Delete_Redundant_Relators(void)
                             RL[MAXNUMRELATORS];
     
     unsigned long           TempLR;
-                                    
+    
     for(i = 1; i <= NumRelators; i++) DRL[i] = EOS;
     for(i = 0; i < NumRelators; i++) RL[i] = i;
     

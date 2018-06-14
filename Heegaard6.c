@@ -4,19 +4,19 @@
 /****************************** Functions in Heegaard6.c ***********************************
 L  977 Check_For_Primitives(int Input,int MyNumRelators)
 L  224 Defining_Relator(int h,int Input,int InitPres,int F1)
-L 1753 Find_Flow_B(unsigned int Source)
-L 1873 Get_Connected_Components(void)
-L 1259 Lens_Space(void)
+L 1820 Find_Flow_B(unsigned int Source)
+L 1940 Get_Connected_Components(void)
+L 1326 Lens_Space(void)
 L 1071 Lens_Space_D(int Prim,char F1)
-L 1912 LGCD(unsigned long p,unsigned long q)
+L 1979 LGCD(unsigned long p,unsigned long q)
 L  604 Proper_Power(void)
-L 1720 Recip_Mod_P(unsigned long p,unsigned long q)
+L 1787 Recip_Mod_P(unsigned long p,unsigned long q)
 L   24 Reduce_Genus(int Input,int InitPres,int F1)
-L 1959 Split_At_Empty_Relators(int F1)
-L 2360 Split_At_Empty_Relators_Sub1(void)
-L 2425 Split_At_Empty_Relators_Sub2(int NumGen,int NumNewPres)
-L 2538 Splitting_Pres_On_File(int WhoCalled,int NumNewPres)
-L 1416 Transverse(unsigned char *ptr)
+L 2026 Split_At_Empty_Relators(int F1)
+L 2427 Split_At_Empty_Relators_Sub1(void)
+L 2492 Split_At_Empty_Relators_Sub2(int NumGen,int NumNewPres)
+L 2605 Splitting_Pres_On_File(int WhoCalled,int NumNewPres)
+L 1483 Transverse(unsigned char *ptr)
 ********************************************************************************************/
 
 int InitialNumGenerators;
@@ -113,7 +113,7 @@ unsigned int Reduce_Genus(int Input,int InitPres,int F1)
                 If InitialNumGenerators = NumGenerators and Input = DUALIZE then this is a
                 lens space. Call Lens_Space_D() to determine which lens space it is.
                 Otherwise, call Lens_Space() to see if we have a lens space and, if so,
-                determine which lens space it is. But first,save copies of the relators.
+                determine which lens space it is. But first, save copies of the relators.
             ******************************************************************************/    
             
             if(InitialNumGenerators == NumGenerators && Input == DUALIZE)
@@ -1087,6 +1087,7 @@ int Lens_Space_D(int Prim,char F1)
                             
     unsigned int   	edge,
                     ee,
+                    OFRV,
                     s,
                     u,
                     v,
@@ -1103,16 +1104,75 @@ int Lens_Space_D(int Prim,char F1)
 
     unsigned long 	Recip_Mod_P();
     unsigned int  	Whitehead_Graph();
+       
+    /********************************************************
+     	First, just in case we have trouble finding a 
+     	diagram, abelianize the presentation and compute P.
+     ********************************************************/
     
+    SMicro_Print = Micro_Print;
+    Micro_Print = FALSE;            
+    if(Find_Flow_A(NORMAL,FALSE))
+        {
+        Micro_Print = SMicro_Print;        
+        return(TOO_LONG);
+        }
+    Micro_Print = SMicro_Print;
+         
+    ptr = (long *)NewPtr(sizeof(long)*100);
+    if(ptr == NULL) Mem_Error();
+    ptr['A'] = ptr['B'] = ptr['a'] = ptr['b'] = 0;
+    p = *Relators[1];
+    while( (x = *p++) ) ptr[x] ++;
+    a = ptr['A'] - ptr['a'];
+    b = ptr['B'] - ptr['b'];
+    ptr['A'] = ptr['B'] = ptr['a'] = ptr['b'] = 0;
+    p = *Relators[2];
+    while( (x = *p++) ) ptr[x] ++;    
+    c = ptr['A'] - ptr['a'];
+    d = ptr['B'] - ptr['b'];
+    DisposePtr((char *) ptr);
+
+	P = labs(a*d - b*c);
+	Q = 0;
+	if(P == 1) Q = 1;
+      
+	OFRV = On_File();
+	if(OFRV == NumFilled) 
+		{
+		if(P == 1) 	Save_Pres(ReadPres,0,Length,1,5,0,0,0);
+		else 		Save_Pres(ReadPres,0,Length,1,3,0,0,0);  
+		}   
+
+	if(UDV[OFRV] < DONE) 
+		{
+		UDV[OFRV] = GENERIC_LENS_SPACE;
+		LSP[OFRV] = P;
+		LSQ[OFRV] = Q;
+		if(P == 0) UDV[OFRV] = KNOWN_LENS_SPACE;
+		if(P == 1) UDV[OFRV] = THREE_SPHERE;
+		}
+	
+	if(P <= 1)
+		{
+		if(Micro_Print == 1)
+			{
+			printf("\n\nThe current presentation is a two generator, two relator presentation of a closed");
+			printf("\nmanifold M, for which one of the relators is a primitive. Thus M is a lens space.");
+			printf("\nIn particular, M is the lens space L(%lu,%lu).",P,Q);
+			}    
+		return(0);
+    	}
+    	
     /******************************************************************************************
-        Look for a simple closed curve on the Heegaard surface which is transverse to
+        Next, look for a simple closed curve on the Heegaard surface which is transverse to
         the "non-primitive" dual relator at a single point and which is disjoint from the
         "primitive" dual relator. But first, because some free reductions may have been
         performed, we need to go back to the original diagram and recover a set of dual
         relators which have not been freely reduced.
-    ******************************************************************************************/    
-
-   if(F1) for(v = 1; v <= 2; v++)
+    ******************************************************************************************/     	
+	
+	if(F1) for(v = 1; v <= 2; v++)
         {
         Temp = Relators[v];
         Relators[v] = DualRelators[v];
@@ -1126,12 +1186,12 @@ int Lens_Space_D(int Prim,char F1)
     Micro_Print = FALSE;            
     if(Find_Flow_A(NORMAL,FALSE))
         {
-        Micro_Print = SMicro_Print;
+        Micro_Print = SMicro_Print;        
         return(TOO_LONG);
         }
     if(Whitehead_Graph())
         {
-        Micro_Print = SMicro_Print;        
+        Micro_Print = SMicro_Print;                
         return(TOO_LONG);
         }
     Micro_Print = SMicro_Print;    
@@ -1232,6 +1292,13 @@ END:
 		}
 	Q = labs(b*e - a*f);
 	Q = Recip_Mod_P(P,Q);
+
+	if(UDV[OFRV] < DONE || UDV[OFRV] == GENERIC_LENS_SPACE) 
+		{
+		UDV[OFRV] = KNOWN_LENS_SPACE;
+		LSP[OFRV] = P;
+		LSQ[OFRV] = Q;
+		}
   
     if(Prim == 2)
         {
@@ -1286,10 +1353,10 @@ unsigned int Lens_Space(void)
 
     unsigned long  	Recip_Mod_P();
     unsigned int  	Whitehead_Graph();
-    
+    	    
     /******************************************************************************************
-         Call Find_Flow to reduce the relators to minimal length before we try to find the
-         diagram. 
+         Call Find_Flow() to reduce the relators to minimal length before we try to 
+         find the diagram. 
      *****************************************************************************************/
       
      if(Find_Flow_A(NORMAL,FALSE)) return(1);

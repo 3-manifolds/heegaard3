@@ -163,7 +163,7 @@ unsigned long	SLength;
 		}
 		
 	/*********************************************************************************
-				If there are two relators, check for S^1 X S^2.
+				If there are two relators, check for S1 X S2.
 	*********************************************************************************/
 	
 	if(NumRelators == 2)
@@ -194,7 +194,7 @@ unsigned long	SLength;
 				if(H1 == 0)
 					{
 					FoundSF = TRUE;
-					printf("\n\nA Relator is primitive, and the manifold of Orbit %d is S^1 X S^2.",OrbitNum);
+					printf("\n\nA Relator is primitive, and the manifold of Orbit %d is S1 X S2.",OrbitNum);
 					if(B10B11Recognized) 
 						{
 						SFSolV[0] = 1;
@@ -250,7 +250,7 @@ unsigned long	SLength;
 				if(H1 == 0)
 					{
 					FoundSF = TRUE;
-					printf("\n\nA Relator is primitive, and the manifold of Orbit %d is S^1 X S^2.",OrbitNum);
+					printf("\n\nA Relator is primitive, and the manifold of Orbit %d is S1 X S2.",OrbitNum);
 					if(B10B11Recognized) 
 						{
 						SFSolV[0] = 3;
@@ -1880,7 +1880,7 @@ int SF_Sort_And_Print(int H1, int n, int A1, int A2, int A3, int B1, int B2, int
 			if(H1 == 0)
 				{
 				FoundSF = TRUE;
-				printf(" S^1 X S^2");
+				printf(" S1 X S2");
 				if(B10B11Recognized) 
 					{
 					SFSolV[0] = 12;
@@ -1948,7 +1948,7 @@ int SF_Sort_And_Print(int H1, int n, int A1, int A2, int A3, int B1, int B2, int
 			if(H1 == 0)
 				{
 				FoundSF = TRUE;
-				printf(" S^1 X S^2");
+				printf(" S1 X S2");
 				if(B10B11Recognized) 
 					{
 					SFSolV[0] = 13;
