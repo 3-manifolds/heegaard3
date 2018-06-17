@@ -2,45 +2,45 @@
 #include "Heegaard_Dec.h"
 
 /****************************** Functions in Heegaard 12.c **********************************
-L 1769 Batch_Report(int* Table1)
-L 1356 Display_A_Diagram(int F1,int Pres,int HS)
-L 1475 Display_Diagrams(void)
-L 1029 Fatal_Error(void)
-L 2417 Find_Canonical_Orbit_Reps_S1(int* MyTable,int MyStart,char RealCompNum,int F1)
-L 2541 Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F1)
-L 1199 Micro_Print_Bandsum(void)
-L 1216 Micro_Print_Do_Aut(unsigned int Source, unsigned int NumReps)
-L 1193 Micro_Print_Dualize(void)
-L 1185 Micro_Print_Freely_Reduce(unsigned long length, unsigned long origlength)
-L 1175 Micro_Print_Reset(void)
-L 1258 Micro_Print_Whitehead_Graph_Return_Value(unsigned int WGRV)
-L  907 Print_Bdry_Data(unsigned int WhichPres)
-L  968 Print_Bdry_Data2(unsigned int WhichPres)
-L 1304 Print_DelRelators(void)
-L 1313 Print_DualRelators(int F1,int F2,int Pres,int HS)
-L 1327 Print_OutRelators(int F1,int F2,int Pres,int HS)
-L 1145 Print_Relators(unsigned char ***MyRelators,int MyNumRelators)
-L 1153 Print_Relators2(unsigned char ***MyRelators,int MyNumRelators)
-L 1160 Print_Relators3(unsigned char ***MyRelators,int MyNumRelators)
-L 1167 Print_Relators4(unsigned char ***Copy_Of_Input,int CopyNumRelators)
-L 2310 Print_SFComp(int MyComp)
-L 1341 Print_SLR(int i,int Found_L_Annulus)
-L  346 qkst1a_compare(int i,int j)
-L  388 qkst1a_swap(i,j)
-L  399 Report(long Band_Sums,long NumDiagrams,unsigned int OnStack,unsigned int Starting_Pres,unsigned int Flag1,
+L 1776 Batch_Report(int* Table1)
+L 1363 Display_A_Diagram(int F1,int Pres,int HS)
+L 1482 Display_Diagrams(void)
+L 1036 Fatal_Error(void)
+L 2424 Find_Canonical_Orbit_Reps_S1(int* MyTable,int MyStart,char RealCompNum,int F1,char F2)
+L 2565 Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F1,char F2)
+L 1206 Micro_Print_Bandsum(void)
+L 1223 Micro_Print_Do_Aut(unsigned int Source, unsigned int NumReps)
+L 1200 Micro_Print_Dualize(void)
+L 1192 Micro_Print_Freely_Reduce(unsigned long length, unsigned long origlength)
+L 1182 Micro_Print_Reset(void)
+L 1265 Micro_Print_Whitehead_Graph_Return_Value(unsigned int WGRV)
+L  914 Print_Bdry_Data(unsigned int WhichPres)
+L  975 Print_Bdry_Data2(unsigned int WhichPres)
+L 1311 Print_DelRelators(void)
+L 1320 Print_DualRelators(int F1,int F2,int Pres,int HS)
+L 1334 Print_OutRelators(int F1,int F2,int Pres,int HS)
+L 1151 Print_Relators(unsigned char ***MyRelators,int MyNumRelators)
+L 1160 Print_Relators2(unsigned char ***MyRelators,int MyNumRelators)
+L 1167 Print_Relators3(unsigned char ***MyRelators,int MyNumRelators)
+L 1174 Print_Relators4(unsigned char ***Copy_Of_Input,int CopyNumRelators)
+L 2317 Print_SFComp(int MyComp)
+L 1348 Print_SLR(int i,int Found_L_Annulus)
+L  353 qkst1a_compare(int i,int j)
+L  395 qkst1a_swap(i,j)
+L  406 Report(long Band_Sums,long NumDiagrams,unsigned int OnStack,unsigned int Starting_Pres,unsigned int Flag1,
 	   unsigned int Flag2,unsigned int Flag3,unsigned int Flag4,unsigned int Flag5,unsigned char * Ptr1)
 L   36 Sort_Presentations_In_Memory(int F1)
-L  841 Update_Bdry_Data(void)
+L  848 Update_Bdry_Data(void)
 ********************************************************************************************/
 
 int Sort_Presentations_In_Memory(int F1)
-{
-	char			k;
-		    
+{		    
     int         	i,
-    				j;
+    				j,
+    				k;
     				
-    unsigned int 	SOnStack;
+    unsigned int 	SLastPresRead,
+    				SOnStack;
     
     if(Batch == 4)
     	{
@@ -91,11 +91,13 @@ int Sort_Presentations_In_Memory(int F1)
 					for(i = TotalComp,LastPresRead = NumFilled - 1; i >= 1; i--)
 						{
 						FoundFiniteSF = FoundSF = FoundBigSF = FoundEssentialTorus = FALSE;												
-						j = Init_Find_Canonical_Orbit_Reps(Table1,LastPresRead,i);						
+						j = Init_Find_Canonical_Orbit_Reps(Table1,LastPresRead,i);				
 						if(CS[i] == 1) continue;
 						if(j < 0) continue;
-						if(j >= TOO_LONG) continue;																																			
-						if(Find_Canonical_Orbit_Reps_S1(Table1,j,i,F1)) 
+						if(j >= TOO_LONG) continue;
+						SLastPresRead = LastPresRead;
+						LastPresRead = Find_Canonical_Orbit_Reps_S1(Table1,j,i,F1,FALSE);																																		
+						if(LastPresRead <= SLastPresRead) 
 							{
 							if(--k) 
 								{
@@ -145,8 +147,10 @@ int Sort_Presentations_In_Memory(int F1)
 						j = Init_Find_Canonical_Orbit_Reps(Table1,LastPresRead,i);						
 						if(CS[i] == 1) continue;
 						if(j < 0) continue;
-						if(j >= TOO_LONG) continue;																																			
-						if(Find_Canonical_Orbit_Reps_S1(Table1,j,i,F1)) 
+						if(j >= TOO_LONG) continue;
+						SLastPresRead = LastPresRead;
+						LastPresRead = Find_Canonical_Orbit_Reps_S1(Table1,j,i,F1,FALSE);																																		
+						if(LastPresRead <= SLastPresRead) 
 							{
 							if(--k) 
 								{
@@ -222,13 +226,13 @@ int Sort_Presentations_In_Memory(int F1)
     			NumFilled,TotalAuts,Num_Level_Slides);
         	printf("\nexamined %ld bandsum(s), examined %ld diagram(s), dualized %lu diagram(s), Mergers %u, ToDo %u.",
         		Band_Sums,NumDiagrams,NumDualized,Mergers,OnStack);
-    		}
+    		}    		
 		if((B10B11HSReps || Batch == 53) && H_Results)
     		{   		
     		if(Batch == 53) printf("\n");
-			printf("\n\nLooking for Heegaard Splitting Reps. . . .");
-			FoundSF = FoundBigSF = FoundFiniteSF = FoundEssentialTorus = FALSE;			
-			fprintf(H_Results,"\n\n------------------------------------\n%s",PresName);
+    		FoundSF = FoundBigSF = FoundFiniteSF = FoundEssentialTorus = FALSE;	
+			printf("\n\nLooking for Heegaard Splitting Reps. . . .");		
+			fprintf(H_Results,"\n\n------------------------------------");
 			for(k = TotalComp, i = 1; i <= TotalComp; i++) if(CS[i] == 1) k--;
 			for(i = TotalComp,LastPresRead = NumFilled - 1; i >= 1; i--)
 				{
@@ -236,12 +240,14 @@ int Sort_Presentations_In_Memory(int F1)
 				if(CS[i] == 1) continue;
 				if(j < 0) continue;
 				if(j >= TOO_LONG) continue;			
-				Find_Canonical_Orbit_Reps_S1(Table1,j,-k,F1);
-				if(Find_Canonical_Orbit_Reps_S2(Table1,j,-k,F1)) 
+				Find_Canonical_Orbit_Reps_S1(Table1,j,-k,F1,TRUE);
+				SLastPresRead = LastPresRead;
+				LastPresRead = Find_Canonical_Orbit_Reps_S2(Table1,j,-k,F1,TRUE);
+				if(LastPresRead <= SLastPresRead) 
 					{
 					k--;
 					continue;
-					}								
+					}					
 				switch(Find_Canonical_Orbit_Reps(Table1,j,i,F1,TRUE,k))
 					{
 					case INTERRUPT:
@@ -250,11 +256,11 @@ int Sort_Presentations_In_Memory(int F1)
 					case TOO_LONG:
 						printf("\n");
 						if(NG[Table1[j]] < 2)
-						fprintf(H_Results,"\n\nC%d) No HS Reps for presentations on fewer than 2 generators!",k);
+						fprintf(H_Results,"\n\n%.25s . . . C%d) No HS Reps for presentations on fewer than 2 generators!",PresName,k);
 						if(NR[Table1[j]] == 0)
-						fprintf(H_Results,"\n\nC%d) No HS Reps for empty presentations!",k);
+						fprintf(H_Results,"\n\n%.25s . . . C%d) No HS Reps for empty presentations!",PresName,k);
 						if(NG[Table1[j]] > 1 && NR[Table1[j]] > 0)
-						fprintf(H_Results,"\n\nC%d) No HS Reps!",k);
+						fprintf(H_Results,"\n\n%.25s . . . C%d) No HS Reps!",PresName,k);
 					}
 				k--;
 				}	
@@ -269,7 +275,7 @@ int Sort_Presentations_In_Memory(int F1)
 		if(B10B11Recognized && H_Results) 
 			{						
 			printf("\n\n");			
-			fprintf(H_Results,"\n------------------------------------\n%-19s\n",PresName);
+			fprintf(H_Results,"\n\n%s\n",PresName);
 			for(k = TotalComp, i = 1; i <= TotalComp; i++) if(CS[i] == 1) k--;
 			for(i = TotalComp,LastPresRead = NumFilled - 1; i >= 1; i--)
 				{
@@ -277,15 +283,16 @@ int Sort_Presentations_In_Memory(int F1)
 				j = Init_Find_Canonical_Orbit_Reps(Table1,LastPresRead,i);
 				if(CS[i] == 1) continue;
 				if(j < 0) continue;
-				if(j >= TOO_LONG) continue;				
-				Find_Canonical_Orbit_Reps_S1(Table1,j,i,F1);
-				LastPresRead = Find_Canonical_Orbit_Reps_S2(Table1,j,i,F1);
-				if(LastPresRead) 
+				if(j >= TOO_LONG) continue;	
+				SLastPresRead = LastPresRead;			
+				Find_Canonical_Orbit_Reps_S1(Table1,j,i,F1,FALSE);
+				LastPresRead = Find_Canonical_Orbit_Reps_S2(Table1,j,i,F1,FALSE);
+				if(LastPresRead <= SLastPresRead) 
 					{
 					if(--k) 
 						{
-						printf(" # ");
-						fprintf(H_Results," #");
+						printf(" \n# ");
+						fprintf(H_Results," \n#");
 						}
 					continue;
 					}			
@@ -302,15 +309,15 @@ int Sort_Presentations_In_Memory(int F1)
 					{
 					if(--k) 
 						{
-						printf(" # ");
-						fprintf(H_Results," #");
+						printf(" \n# ");
+						fprintf(H_Results," \n#");
 						}
 					continue;
 					}
 				if(--k) 
 					{
-					printf(" # ?");
-					fprintf(H_Results," # ?");
+					printf(" \n# ?");
+					fprintf(H_Results," \n# ?");
 					}
 				else 
 					{
@@ -2414,169 +2421,192 @@ int Print_SFComp(int MyComp)
 	return(0);	
 }
 
-int Find_Canonical_Orbit_Reps_S1(int* MyTable,int MyStart,char RealCompNum,int F1)
+int Find_Canonical_Orbit_Reps_S1(int* MyTable,int MyStart,char RealCompNum,int F1,char F2)
 {
 	int		i,
 			j,
 			k,
 			MyMinNumGenerators,
 			MyMinNumRelators;
-
-	LastPresRead = MyStart;
-	MyMinNumGenerators = NG[MyTable[MyStart]];
+			
+	i = MyTable[MyStart];
+	MyMinNumGenerators = NG[i];
 	if(MyMinNumGenerators == 0)
 		{
-		if(RealCompNum < 0) printf("\n\nC%d) ",-RealCompNum);
+		if(RealCompNum < 0) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 		printf("Has no generators!");
-		return(TOO_LONG);
+		return(MyStart);
 		}
-	MyMinNumRelators = NR[MyTable[MyStart]];
-	if(MyMinNumRelators == 0)
+	MyMinNumRelators = NR[i];
+	if(MyMinNumRelators == 0 && UDV[i] <= DONE)
 		{
-		if(RealCompNum < 0) printf("\n\nC%d) ",-RealCompNum);
+		if(RealCompNum < 0) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 		printf("Free of rank %d.",MyMinNumGenerators);
-		return(TOO_LONG);
-		}
+		return(MyStart);
+		}		
+	if(MyMinNumGenerators <= 1 && UDV[i] <= DONE)
+		{
+		LSP[i] = SURL[i];
+		LSQ[i] = 1;
+		UDV[i] = GENERIC_LENS_SPACE;
+		}		
 	
-	if(F1 != 2)
-		{	
-		for(k = MyStart; k >= 0 && ComponentNum[MyTable[k]] == abs(RealCompNum); k--)
+	if(F1 != 2)	for(k = MyStart; k >= 0 && NG[MyTable[k]] == MyMinNumGenerators; k--)
+		{
+		i = MyTable[k];
+		if(UDV[i] <= DONE) continue;	
+		switch(UDV[i])
 			{
-			i = MyTable[k];	
-/*			if(UDV[i] > DONE) printf("\n\nC%d) ",abs(RealCompNum));			*/				
-			switch(UDV[i])
-				{
-				case FOUND_ELSEWHERE:
-				case SPLIT:		
-					return(TOO_LONG);
-				case GENERIC_LENS_SPACE:
-					if(LSP[i] > 4)
-						printf("L(%lu,Q)",LSP[i]);
+			case FOUND_ELSEWHERE:
+			case SPLIT:		
+				return(k);
+			case GENERIC_LENS_SPACE:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(LSP[i] > 4)
+					printf("L(%lu,Q)",LSP[i]);
+				else
+					{
+					if(LSP[i] == 1)
+						printf("S^3");
 					else
-						{
-						if(LSP[i] == 1)
-							printf("S^3");
-						else
-							printf("L(%lu,1)",LSP[i]);
-						}							
-					return(TOO_LONG);	
-				case THREE_SPHERE:		
-					printf("S^3");
-					return(TOO_LONG);
-				case NOT_CONNECTED:	
-					printf("NOT_CONNECTED");
-					return(TOO_LONG);
-				case S1_X_S2:		
-					printf("S1 X S2");
-					for(j = 2; j <= NG[i]; j++) printf(" # S1 X S2");
-					return(TOO_LONG);	
-				case S1_X_D2:
-					printf("S1 X D2");
-					for(j = 2; j <= NG[i]; j++) printf(" # S1 X D2");
-					return(TOO_LONG);	
-				case S1_X_X2:
-					printf("S1 X X2");
-					for(j = 2; j <= NG[i]; j++) printf(" # S1 X X2");
-					return(TOO_LONG);	
-				case MISSING_GEN_DONE1:
-				case MISSING_GEN_DONE2:
-					if(N1H[ComponentNum[i]] >= 1)
-						{
-						printf(" I X D2");
-						for(j = 2; j <= N1H[ComponentNum[i]]; j++) printf(" # I X D2");
-						}
-					if(NS1XS2[ComponentNum[i]] >= 1)
-						{
-						if(N1H[ComponentNum[i]] >= 1) printf(" #");
-						printf(" S1 X S2");
-						for(j = 2; j <= NS1XS2[ComponentNum[i]]; j++) printf(" # S1 X S2");
-						}
-					if(NS1XD2[ComponentNum[i]] >= 1)
-						{
-						if(N1H[ComponentNum[i]] >= 1 || NS1XS2[ComponentNum[i]] >= 1) printf(" #");
-						printf(" S1 X D2");
-						for(j = 2; j <= NS1XD2[ComponentNum[i]]; j++) printf(" # S1 X D2");
-						}		
-					return(TOO_LONG);						
-				case KNOWN_LENS_SPACE:
-					switch(LSP[i])
-						{
-						case 0L:
-							printf("S1 X S2");
-							break; 
-						case 1L:
-							printf("S^3");
-							break;
-						default:
-							printf("L(%lu,%lu)",LSP[i],LSQ[i]);
-							break;
-						}					
-					return(TOO_LONG);	
-				case ANNULUS_EXISTS:
-					printf("ANNULUS_EXISTS");
-					return(TOO_LONG);	
-				case V2_ANNULUS_EXISTS:
-					printf("V2_ANNULUS_EXISTS");
-					return(TOO_LONG);
-				case NON_UNIQUE_4:
-					printf("NON_UNIQUE_4");
-					return(TOO_LONG);
-				case NON_UNIQUE_3:
-					printf("NON_UNIQUE_3");
-					return(TOO_LONG);	
-				case NON_UNIQUE_2:
-					printf("NON_UNIQUE_2");
-					return(TOO_LONG);	
-				case NON_UNIQUE_1:
-					printf("NON_UNIQUE_1");
-					return(TOO_LONG);		
-				default:
-					break;                                                                                      
-				}
-			}	
+						printf("L(%lu,1)",LSP[i]);
+					}							
+				return(k);	
+			case THREE_SPHERE:	
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);	
+				printf("S^3");
+				return(k);
+			case NOT_CONNECTED:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);	
+				printf("NOT_CONNECTED");
+				return(k);
+			case S1_X_S2:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);		
+				printf("S1 X S2");
+				for(j = 2; j <= NG[i]; j++) printf(" # S1 X S2");
+				return(k);	
+			case S1_X_D2:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				printf("S1 X D2");
+				for(j = 2; j <= NG[i]; j++) printf(" # S1 X D2");
+				return(k);	
+			case S1_X_X2:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				printf("S1 X X2");
+				for(j = 2; j <= NG[i]; j++) printf(" # S1 X X2");
+				return(k);	
+			case MISSING_GEN_DONE1:
+			case MISSING_GEN_DONE2:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(N1H[ComponentNum[i]] >= 1)
+					{
+					printf(" I X D2");
+					for(j = 2; j <= N1H[ComponentNum[i]]; j++) printf(" # I X D2");
+					}
+				if(NS1XS2[ComponentNum[i]] >= 1)
+					{
+					if(N1H[ComponentNum[i]] >= 1) printf(" #");
+					printf(" S1 X S2");
+					for(j = 2; j <= NS1XS2[ComponentNum[i]]; j++) printf(" # S1 X S2");
+					}
+				if(NS1XD2[ComponentNum[i]] >= 1)
+					{
+					if(N1H[ComponentNum[i]] >= 1 || NS1XS2[ComponentNum[i]] >= 1) printf(" #");
+					printf(" S1 X D2");
+					for(j = 2; j <= NS1XD2[ComponentNum[i]]; j++) printf(" # S1 X D2");
+					}		
+				return(k);						
+			case KNOWN_LENS_SPACE:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				switch(LSP[i])
+					{
+					case 0L:
+						printf("S1 X S2");
+						break; 
+					case 1L:
+						printf("S^3");
+						break;
+					default:
+						printf("L(%lu,%lu)",LSP[i],LSQ[i]);
+						break;
+					}					
+				return(k);	
+			case ANNULUS_EXISTS:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				printf("ANNULUS_EXISTS");
+				return(k);	
+			case V2_ANNULUS_EXISTS:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				printf("V2_ANNULUS_EXISTS");
+				return(k);
+			case NON_UNIQUE_4:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				printf("NON_UNIQUE_4");
+				return(k);
+			case NON_UNIQUE_3:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				printf("NON_UNIQUE_3");
+				return(k);	
+			case NON_UNIQUE_2:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				printf("NON_UNIQUE_2");
+				return(k);	
+			case NON_UNIQUE_1:
+				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				printf("NON_UNIQUE_1");
+				return(k);		
+			default:
+				break;                                                                                      
+			}
 		}
-	return(0);	
+	return(INFINITE);	
 }	
 
-int Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F1)
+int Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F1,char F2)
 {
-	char	F2;
+	char	F3;
 	
 	int		i,
 			j,
 			k,
 			MyMinNumGenerators,
 			MyMinNumRelators;
-
-	LastPresRead = MyStart;	
-	i = MyTable[MyStart];
 	
+	F3 = FALSE;
+	if(Batch && H_Results) F3 = TRUE;
+	
+	i = MyTable[MyStart];	
 	MyMinNumGenerators = NG[i];	
 	if(MyMinNumGenerators == 0)
 		{
-		if(RealCompNum < 0) fprintf(H_Results,"\n\nC%d)",-RealCompNum);
-		if(F2) fprintf(H_Results," Has no generators!");
+		if(RealCompNum < 0) fprintf(H_Results,"\n\n%.25s . . . C%d)",PresName,-RealCompNum);
+		if(F3) fprintf(H_Results," Has no generators!");
 		return(MyStart);
 		}
 	MyMinNumRelators = NR[i];
 	if(MyMinNumRelators == 0)
 		{
-		if(RealCompNum < 0) fprintf(H_Results,"\n\nC%d)",-RealCompNum);
-		if(F2) fprintf(H_Results," Free of rank %d.",MyMinNumGenerators);
+		if(RealCompNum < 0) fprintf(H_Results,"\n\n%.25s . . . C%d)",PresName,-RealCompNum);
+		if(F3) fprintf(H_Results," Free of rank %d.",MyMinNumGenerators);
 		return(MyStart);
 		}
-				
-	F2 = FALSE;
-	if(Batch && H_Results) F2 = TRUE;
-	for(k = MyStart; k >= 0 && ComponentNum[MyTable[k]] == abs(RealCompNum); k--)
+	if(MyMinNumGenerators <= 1 && UDV[i] <= DONE)
 		{
-		i = MyTable[k];
-/*		if(UDV[i] > DONE) fprintf(H_Results,"\n\nC%d)",abs(RealCompNum));	*/
-		if(F1 != 2 && F2) switch(UDV[i])
+		LSP[i] = SURL[i];
+		LSQ[i] = 1;
+		UDV[i] = GENERIC_LENS_SPACE;
+		}
+				
+	if(F1 != 2 && F3) for(k = MyStart; k >= 0 && NG[MyTable[k]] == MyMinNumGenerators; k--)
+		{
+		i = MyTable[k];		
+		if(UDV[i] <= DONE) continue;
+		switch(UDV[i])
 			{		
 			case SPLIT:
 				return(k);
 			case GENERIC_LENS_SPACE:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				if(LSP[i] > 4)
 					fprintf(H_Results," L(%lu,Q)",LSP[i]);
 				else
@@ -2588,44 +2618,51 @@ int Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F
 					}							
 				return(k);	
 			case THREE_SPHERE:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," S^3");
 				return(k);
-			case NOT_CONNECTED:	
+			case NOT_CONNECTED:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);	
 				fprintf(H_Results," NOT_CONNECTED");
 				return(k);		
-			case S1_X_S2:		
+			case S1_X_S2:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);		
 				fprintf(H_Results," S1 X S2");
-				for(j = 2; j <= NG[i]; j++) fprintf(H_Results," # S1 X S2");
+				for(j = 2; j <= NG[i]; j++) fprintf(H_Results," \n# S1 X S2");
 				return(k);	
-			case S1_X_D2:		
+			case S1_X_D2:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);		
 				fprintf(H_Results," S1 X D2");
-				for(j = 2; j <= NG[i]; j++) fprintf(H_Results," # S1 X D2");
+				for(j = 2; j <= NG[i]; j++) fprintf(H_Results," \n# S1 X D2");
 				return(k);	
 			case S1_X_X2:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," S1 X X2");
-				for(j = 2; j <= NG[i]; j++) fprintf(H_Results," # S1 X X2");
+				for(j = 2; j <= NG[i]; j++) fprintf(H_Results," \n# S1 X X2");
 				return(k);
 			case MISSING_GEN_DONE1:		
 			case MISSING_GEN_DONE2:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				if(N1H[ComponentNum[i]] >= 1)
 					{
 					fprintf(H_Results," I X D2");
-					for(j = 2; j <= N1H[ComponentNum[i]]; j++) fprintf(H_Results," # I X D2");
+					for(j = 2; j <= N1H[ComponentNum[i]]; j++) fprintf(H_Results," \n# I X D2");
 					}
 				if(NS1XS2[ComponentNum[i]] >= 1)
 					{
-					if(N1H[ComponentNum[i]] >= 1) fprintf(H_Results," #");
+					if(N1H[ComponentNum[i]] >= 1) fprintf(H_Results," \n#");
 					fprintf(H_Results," S1 X S2");
-					for(j = 2; j <= NS1XS2[ComponentNum[i]]; j++) fprintf(H_Results," # S1 X S2");
+					for(j = 2; j <= NS1XS2[ComponentNum[i]]; j++) fprintf(H_Results," \n# S1 X S2");
 					}
 				if(NS1XD2[ComponentNum[i]] >= 1)
 					{
-					if(N1H[ComponentNum[i]] >= 1 || NS1XS2[ComponentNum[i]] >= 1) fprintf(H_Results," #");
+					if(N1H[ComponentNum[i]] >= 1 || NS1XS2[ComponentNum[i]] >= 1) fprintf(H_Results," \n#");
 					fprintf(H_Results," S1 X D2");
-					for(j = 2; j <= NS1XD2[ComponentNum[i]]; j++) fprintf(H_Results," # S1 X D2");
+					for(j = 2; j <= NS1XD2[ComponentNum[i]]; j++) fprintf(H_Results," \n# S1 X D2");
 					}	
 				return(k);					
 			case KNOWN_LENS_SPACE:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				switch(LSP[i])
 					{
 					case 0L:
@@ -2640,26 +2677,32 @@ int Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F
 					}					
 				return(k);	
 			case ANNULUS_EXISTS:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," ANNULUS_EXISTS");
 				return(k);	
 			case V2_ANNULUS_EXISTS:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," V2_ANNULUS_EXISTS");
 				return(k);
 			case NON_UNIQUE_4:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," NON_UNIQUE_4");
 				return(k);
 			case NON_UNIQUE_3:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," NON_UNIQUE_3");
 				return(k);	
 			case NON_UNIQUE_2:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," NON_UNIQUE_2");
 				return(k);	
 			case NON_UNIQUE_1:
+				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," NON_UNIQUE_1");
 				return(k);		
 			default:
 				break;                                                                                      
 			}	
 		}
-	return(0);	
+	return(INFINITE);	
 }

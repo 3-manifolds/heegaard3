@@ -1134,8 +1134,7 @@ int Lens_Space_D(int Prim,char F1)
     DisposePtr((char *) ptr);
 
 	P = labs(a*d - b*c);
-	Q = 0;
-	if(P == 1) Q = 1;
+	Q = 1;
       
 	OFRV = On_File();
 	if(OFRV == NumFilled) 

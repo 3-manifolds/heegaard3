@@ -9,38 +9,38 @@
 *******************************************************************************************/
 
 /****************************** Functions in Heegaard18.c *****************************************
-L 3465 Check_HS_Disjoint_Curves(int NumHSReps,int* HSRepL,char* HSL2)
-L 3213 Check_HS_Reducibility(int NumHSReps,int* HSRepL,char* HSL2)
-L 2742 Check_HS_Reps(int NumHSReps,int* HSRepL)
-L 2072 Check_HS_Simple_Circuits(int NumHSReps,int* HSRepL,char* HSL2)
-L 3657 Check_HS_Strong_Irreducibility(int NumHSReps,int* HSRepL,char* HSL2)
-L 3754 Check_HS_Strong_IrreducibilityS1(void)
-L 4508 Check_HS_Strong_IrreducibilityS2(unsigned char NumPathsInWave,int * PathsInWave,
+L 3470 Check_HS_Disjoint_Curves(int NumHSReps,int* HSRepL,char* HSL2)
+L 3218 Check_HS_Reducibility(int NumHSReps,int* HSRepL,char* HSL2)
+L 2747 Check_HS_Reps(int NumHSReps,int* HSRepL)
+L 2077 Check_HS_Simple_Circuits(int NumHSReps,int* HSRepL,char* HSL2)
+L 3662 Check_HS_Strong_Irreducibility(int NumHSReps,int* HSRepL,char* HSL2)
+L 3759 Check_HS_Strong_IrreducibilityS1(void)
+L 4513 Check_HS_Strong_IrreducibilityS2(unsigned char NumPathsInWave,int * PathsInWave,
 	   unsigned char ** PP,unsigned char ** PM)
-L 1812 Check_HS_Uniqueness(int NumHSReps,int* HSRepL)
-L 1887 Check_HS_Uniqueness_Sub1(int MyHSNum,int MyPresNum)
-L 3327 Check_HS_Weak_Reducibility(int NumHSReps,int* HSRepL,char* HSL2)
-L 2643 CHSP_Check_Simple_Circuits(unsigned int,int*,int,unsigned char**,unsigned char**)
-L 1364 Delete_Old_PresentationsSLP(void)
-L 1388 Delete_Old_PresentationsSMGP(int MyNumSavedPres,unsigned int* SUR_Num)
-L 1756 Display_HS_Diagrams(int NumHSReps,int* HSRepL)
+L 1817 Check_HS_Uniqueness(int NumHSReps,int* HSRepL)
+L 1892 Check_HS_Uniqueness_Sub1(int MyHSNum,int MyPresNum)
+L 3332 Check_HS_Weak_Reducibility(int NumHSReps,int* HSRepL,char* HSL2)
+L 2648 CHSP_Check_Simple_Circuits(unsigned int,int*,int,unsigned char**,unsigned char**)
+L 1369 Delete_Old_PresentationsSLP(void)
+L 1393 Delete_Old_PresentationsSMGP(int MyNumSavedPres,unsigned int* SUR_Num)
+L 1761 Display_HS_Diagrams(int NumHSReps,int* HSRepL)
 L   65 Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum,int F1,char RealCompNum)
-L 2173 Find_Simple_Circuits(void)
-L 2817 Get_Next_Presentation_From_File(char Flag)
-L 3576 Get_Relators1_Diagram(void)
-L 1550 ID_A_PMQPM(unsigned int i)
-L 1485 ID_PMQPM(int MyNumSavedPres,char* PMQPML,unsigned int* SUR_Num)
-L 1238 In_File2(int Test,unsigned char ***MyRelators)
+L 2178 Find_Simple_Circuits(void)
+L 2822 Get_Next_Presentation_From_File(char Flag)
+L 3581 Get_Relators1_Diagram(void)
+L 1555 ID_A_PMQPM(unsigned int i)
+L 1490 ID_PMQPM(int MyNumSavedPres,char* PMQPML,unsigned int* SUR_Num)
+L 1243 In_File2(int Test,unsigned char ***MyRelators)
 L   51 Init_Find_Canonical_Orbit_Reps(int* MyTable,int MyStart,int MyCompNum)
-L 2970 Is_IP_In_HS_Reps(int NumHSReps,int* HSRepL)
-L 1711 MergeHegSpl(unsigned int i,unsigned int j)
-L 1677 Print_Orbit_Reps(int MyNumRelators,int NumOrbits,unsigned int* OrbitNum2SLRNum)
-L 1409 qksort2(int first,int last,int NumRelators,unsigned int* SUR_Num)
-L 1441 qkst_compare2(int i,int j,int NumRelators,unsigned int* SUR_Num)
-L 1476 qkst_swap2(int i,int j)
-L 1607 Rewrite_Orbit_Reps(int MyNumRelators,int NumOrbits,unsigned int* OrbitNum2SLRNum)
-L 1332 Save_Pres2(void)
-L 3050 Search_For_Non_Minimal_UnStabilized_Splittings(char F1,int TargetNumGenerators)
+L 2975 Is_IP_In_HS_Reps(int NumHSReps,int* HSRepL)
+L 1716 MergeHegSpl(unsigned int i,unsigned int j)
+L 1682 Print_Orbit_Reps(int MyNumRelators,int NumOrbits,unsigned int* OrbitNum2SLRNum)
+L 1414 qksort2(int first,int last,int NumRelators,unsigned int* SUR_Num)
+L 1446 qkst_compare2(int i,int j,int NumRelators,unsigned int* SUR_Num)
+L 1481 qkst_swap2(int i,int j)
+L 1612 Rewrite_Orbit_Reps(int MyNumRelators,int NumOrbits,unsigned int* OrbitNum2SLRNum)
+L 1337 Save_Pres2(void)
+L 3055 Search_For_Non_Minimal_UnStabilized_Splittings(char F1,int TargetNumGenerators)
 ********************************************************************************************/
 
 int     MaxNumPMQPM = 100,
@@ -624,11 +624,11 @@ REPORT_RESULTS:
 		printf("\n******* Below are the minimal genus Heegaard splittings and the minimal length *******");
 		printf("\n******* orbit representatives which Heegaard found for each splitting.         *******\n");
 		}		
-	for(i = NumHSReps = 0; i < NumSplittings; i++)
+	for(i = NumHSReps = n = 0; i < NumSplittings; i++)
 		{
 		FOLength = OrbitLength[HSL[i]];
 		FOHSNum  = HSN[HSL[i]];
-		for(k = 0, m = 0; k < NumOrbits; k++) if(OrbitLength[k] == FOLength && HSN[k] == FOHSNum)
+		for(k = m = 0; k < NumOrbits; k++) if(OrbitLength[k] == FOLength && HSN[k] == FOHSNum)
 			{
 			if(NumOrbits == 1)
 				j = BeenChecked[0] - MAX_MIN_GEN_PRES;
@@ -647,30 +647,30 @@ REPORT_RESULTS:
 				if(F1 == 1 && !B10B11Recognized) 
 					{
 					if(Batch) printf("\n");
-					printf("\nC%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",RealCompNum,i+1,m,Length,NumGenerators,NumRelators);	
+					printf("\n%.25s . . . C%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,RealCompNum,i+1,m,Length,NumGenerators,NumRelators);	
 					Print_Relators(SMGP[l],NumRelators);
 					}	
 				if((Batch == 10 || Batch == 11) && H_Results != NULL && B10B11HSReps == TRUE && F1 == 1)
 					{
 					if(B10B11SaveOnlyHS1P1 == 1)
 						{
-						fprintf(H_Results,"\n\nC%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",RealCompNum,i+1,m,Length,NumGenerators,NumRelators);					
+						fprintf(H_Results,"\n\n%.25s . . . C%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,RealCompNum,i+1,m,Length,NumGenerators,NumRelators);					
 						Print_Relators2(SMGP[l],NumRelators);
 						}
 					if(B10B11SaveOnlyHS1P1 == 2 && i == 0 && m == 1)
 						{
-						fprintf(H_Results,"\n\nC%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",RealCompNum,i+1,m,Length,NumGenerators,NumRelators);
+						fprintf(H_Results,"\n\n%.25s . . . C%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,RealCompNum,i+1,m,Length,NumGenerators,NumRelators);
 						Print_Relators2(SMGP[l],NumRelators);
 						}
 					if(B10B11SaveOnlyHS1P1 == 3 && NumGenerators == 2 && NumRelators == 1)				
 						{
-						fprintf(H_Results,"\n\nC%d)",RealCompNum);
-						fprintf(H_Results,"\nL %lu %s",Length,*SMGP[l][1]);	
+						if(++n == 1) fprintf(H_Results,"\n\n%.25s . . . C%d)",PresName,RealCompNum);
+						fprintf(H_Results,"\nL %lu %.25s",Length,*SMGP[l][1]);	
 						}												
 					if(B10B11SaveOnlyHS1P1 == 4 && NumSplittings == 1 && NumGenerators == 2 && NumRelators == 1)				
 						{
-						fprintf(H_Results,"\n\nC%d)",RealCompNum);
-						fprintf(H_Results,"\nL %lu %s",Length,*SMGP[l][1]);
+						fprintf(H_Results,"\n\n%.25s . . . C%d)",PresName,RealCompNum);
+						fprintf(H_Results,"\nL %lu %.25s",Length,*SMGP[l][1]);
 						}
 					}								
 				}		
@@ -1048,7 +1048,12 @@ REPORT_RESULTS:
 							if(k == 0 && NumRelators == 1 && NumGenerators == 2)
 								{
 								m = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE);
-								if(m == 0) printf("\n\nH[R] is anannular and atoroidal.");
+								if(m == 0) 
+									{
+									printf("\n\nH[R] is anannular and atoroidal.");
+									if(B10B11Recognized)
+									fprintf(H_Results," H[R] is anannular and atoroidal.");
+									}
 								if(m == 1) 
 									{
 									FoundEssentialTorus = TRUE;
