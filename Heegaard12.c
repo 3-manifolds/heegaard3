@@ -232,7 +232,7 @@ int Sort_Presentations_In_Memory(int F1)
     		if(Batch == 53) printf("\n");
     		FoundSF = FoundBigSF = FoundFiniteSF = FoundEssentialTorus = FALSE;	
 			printf("\n\nLooking for Heegaard Splitting Reps. . . .");		
-			fprintf(H_Results,"\n\n------------------------------------");
+			fprintf(H_Results,"\n\n------------------------------------\n");
 			for(k = TotalComp, i = 1; i <= TotalComp; i++) if(CS[i] == 1) k--;
 			for(i = TotalComp,LastPresRead = NumFilled - 1; i >= 1; i--)
 				{
@@ -256,11 +256,11 @@ int Sort_Presentations_In_Memory(int F1)
 					case TOO_LONG:
 						printf("\n");
 						if(NG[Table1[j]] < 2)
-						fprintf(H_Results,"\n\n%.25s . . . C%d) No HS Reps for presentations on fewer than 2 generators!",PresName,k);
+						fprintf(H_Results,"\n\n%.25s ... C%d) No HS Reps for presentations on fewer than 2 generators!",PresName,k);
 						if(NR[Table1[j]] == 0)
-						fprintf(H_Results,"\n\n%.25s . . . C%d) No HS Reps for empty presentations!",PresName,k);
+						fprintf(H_Results,"\n\n%.25s ... C%d) No HS Reps for empty presentations!",PresName,k);
 						if(NG[Table1[j]] > 1 && NR[Table1[j]] > 0)
-						fprintf(H_Results,"\n\n%.25s . . . C%d) No HS Reps!",PresName,k);
+						fprintf(H_Results,"\n\n%.25s ... C%d) No HS Reps!",PresName,k);
 					}
 				k--;
 				}	
@@ -275,7 +275,7 @@ int Sort_Presentations_In_Memory(int F1)
 		if(B10B11Recognized && H_Results) 
 			{						
 			printf("\n\n");			
-			fprintf(H_Results,"\n\n%s\n",PresName);
+			fprintf(H_Results,"\n\n------------------------------------\n%s\n\n",PresName);
 			for(k = TotalComp, i = 1; i <= TotalComp; i++) if(CS[i] == 1) k--;
 			for(i = TotalComp,LastPresRead = NumFilled - 1; i >= 1; i--)
 				{
@@ -2433,14 +2433,14 @@ int Find_Canonical_Orbit_Reps_S1(int* MyTable,int MyStart,char RealCompNum,int F
 	MyMinNumGenerators = NG[i];
 	if(MyMinNumGenerators == 0)
 		{
-		if(RealCompNum < 0) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+		if(RealCompNum < 0) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 		printf("Has no generators!");
 		return(MyStart);
 		}
 	MyMinNumRelators = NR[i];
 	if(MyMinNumRelators == 0 && UDV[i] <= DONE)
 		{
-		if(RealCompNum < 0) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+		if(RealCompNum < 0) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 		printf("Free of rank %d.",MyMinNumGenerators);
 		return(MyStart);
 		}		
@@ -2461,7 +2461,7 @@ int Find_Canonical_Orbit_Reps_S1(int* MyTable,int MyStart,char RealCompNum,int F
 			case SPLIT:		
 				return(k);
 			case GENERIC_LENS_SPACE:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				if(LSP[i] > 4)
 					printf("L(%lu,Q)",LSP[i]);
 				else
@@ -2473,31 +2473,31 @@ int Find_Canonical_Orbit_Reps_S1(int* MyTable,int MyStart,char RealCompNum,int F
 					}							
 				return(k);	
 			case THREE_SPHERE:	
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);	
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);	
 				printf("S^3");
 				return(k);
 			case NOT_CONNECTED:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);	
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);	
 				printf("NOT_CONNECTED");
 				return(k);
 			case S1_X_S2:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);		
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);		
 				printf("S1 X S2");
 				for(j = 2; j <= NG[i]; j++) printf(" # S1 X S2");
 				return(k);	
 			case S1_X_D2:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				printf("S1 X D2");
 				for(j = 2; j <= NG[i]; j++) printf(" # S1 X D2");
 				return(k);	
 			case S1_X_X2:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				printf("S1 X X2");
 				for(j = 2; j <= NG[i]; j++) printf(" # S1 X X2");
 				return(k);	
 			case MISSING_GEN_DONE1:
 			case MISSING_GEN_DONE2:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				if(N1H[ComponentNum[i]] >= 1)
 					{
 					printf(" I X D2");
@@ -2517,7 +2517,7 @@ int Find_Canonical_Orbit_Reps_S1(int* MyTable,int MyStart,char RealCompNum,int F
 					}		
 				return(k);						
 			case KNOWN_LENS_SPACE:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				switch(LSP[i])
 					{
 					case 0L:
@@ -2532,27 +2532,27 @@ int Find_Canonical_Orbit_Reps_S1(int* MyTable,int MyStart,char RealCompNum,int F
 					}					
 				return(k);	
 			case ANNULUS_EXISTS:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				printf("ANNULUS_EXISTS");
 				return(k);	
 			case V2_ANNULUS_EXISTS:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				printf("V2_ANNULUS_EXISTS");
 				return(k);
 			case NON_UNIQUE_4:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				printf("NON_UNIQUE_4");
 				return(k);
 			case NON_UNIQUE_3:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				printf("NON_UNIQUE_3");
 				return(k);	
 			case NON_UNIQUE_2:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				printf("NON_UNIQUE_2");
 				return(k);	
 			case NON_UNIQUE_1:
-				if(F2) printf("\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) printf("\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				printf("NON_UNIQUE_1");
 				return(k);		
 			default:
@@ -2579,14 +2579,14 @@ int Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F
 	MyMinNumGenerators = NG[i];	
 	if(MyMinNumGenerators == 0)
 		{
-		if(RealCompNum < 0) fprintf(H_Results,"\n\n%.25s . . . C%d)",PresName,-RealCompNum);
+		if(RealCompNum < 0) fprintf(H_Results,"\n\n%.25s ... C%d)",PresName,-RealCompNum);
 		if(F3) fprintf(H_Results," Has no generators!");
 		return(MyStart);
 		}
 	MyMinNumRelators = NR[i];
 	if(MyMinNumRelators == 0)
 		{
-		if(RealCompNum < 0) fprintf(H_Results,"\n\n%.25s . . . C%d)",PresName,-RealCompNum);
+		if(RealCompNum < 0) fprintf(H_Results,"\n\n%.25s ... C%d)",PresName,-RealCompNum);
 		if(F3) fprintf(H_Results," Free of rank %d.",MyMinNumGenerators);
 		return(MyStart);
 		}
@@ -2606,7 +2606,7 @@ int Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F
 			case SPLIT:
 				return(k);
 			case GENERIC_LENS_SPACE:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				if(LSP[i] > 4)
 					fprintf(H_Results," L(%lu,Q)",LSP[i]);
 				else
@@ -2618,31 +2618,31 @@ int Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F
 					}							
 				return(k);	
 			case THREE_SPHERE:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," S^3");
 				return(k);
 			case NOT_CONNECTED:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);	
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);	
 				fprintf(H_Results," NOT_CONNECTED");
 				return(k);		
 			case S1_X_S2:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);		
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);		
 				fprintf(H_Results," S1 X S2");
 				for(j = 2; j <= NG[i]; j++) fprintf(H_Results," \n# S1 X S2");
 				return(k);	
 			case S1_X_D2:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);		
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);		
 				fprintf(H_Results," S1 X D2");
 				for(j = 2; j <= NG[i]; j++) fprintf(H_Results," \n# S1 X D2");
 				return(k);	
 			case S1_X_X2:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," S1 X X2");
 				for(j = 2; j <= NG[i]; j++) fprintf(H_Results," \n# S1 X X2");
 				return(k);
 			case MISSING_GEN_DONE1:		
 			case MISSING_GEN_DONE2:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				if(N1H[ComponentNum[i]] >= 1)
 					{
 					fprintf(H_Results," I X D2");
@@ -2662,7 +2662,7 @@ int Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F
 					}	
 				return(k);					
 			case KNOWN_LENS_SPACE:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				switch(LSP[i])
 					{
 					case 0L:
@@ -2677,27 +2677,27 @@ int Find_Canonical_Orbit_Reps_S2(int* MyTable,int MyStart,char RealCompNum,int F
 					}					
 				return(k);	
 			case ANNULUS_EXISTS:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," ANNULUS_EXISTS");
 				return(k);	
 			case V2_ANNULUS_EXISTS:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," V2_ANNULUS_EXISTS");
 				return(k);
 			case NON_UNIQUE_4:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," NON_UNIQUE_4");
 				return(k);
 			case NON_UNIQUE_3:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," NON_UNIQUE_3");
 				return(k);	
 			case NON_UNIQUE_2:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," NON_UNIQUE_2");
 				return(k);	
 			case NON_UNIQUE_1:
-				if(F2) fprintf(H_Results,"\n\n%.25s . . . C%d) ",PresName,-RealCompNum);
+				if(F2) fprintf(H_Results,"\n\n%.25s ... C%d) ",PresName,-RealCompNum);
 				fprintf(H_Results," NON_UNIQUE_1");
 				return(k);		
 			default:

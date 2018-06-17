@@ -647,29 +647,29 @@ REPORT_RESULTS:
 				if(F1 == 1 && !B10B11Recognized) 
 					{
 					if(Batch) printf("\n");
-					printf("\n%.25s . . . C%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,RealCompNum,i+1,m,Length,NumGenerators,NumRelators);	
+					printf("\n%.25s ... C%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,RealCompNum,i+1,m,Length,NumGenerators,NumRelators);	
 					Print_Relators(SMGP[l],NumRelators);
 					}	
 				if((Batch == 10 || Batch == 11) && H_Results != NULL && B10B11HSReps == TRUE && F1 == 1)
 					{
 					if(B10B11SaveOnlyHS1P1 == 1)
 						{
-						fprintf(H_Results,"\n\n%.25s . . . C%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,RealCompNum,i+1,m,Length,NumGenerators,NumRelators);					
+						fprintf(H_Results,"\n\n%.25s ... C%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,RealCompNum,i+1,m,Length,NumGenerators,NumRelators);					
 						Print_Relators2(SMGP[l],NumRelators);
 						}
 					if(B10B11SaveOnlyHS1P1 == 2 && i == 0 && m == 1)
 						{
-						fprintf(H_Results,"\n\n%.25s . . . C%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,RealCompNum,i+1,m,Length,NumGenerators,NumRelators);
+						fprintf(H_Results,"\n\n%.25s ... C%d) HS %u, P %d, L %lu, Gen %d, Rel %d ",PresName,RealCompNum,i+1,m,Length,NumGenerators,NumRelators);
 						Print_Relators2(SMGP[l],NumRelators);
 						}
 					if(B10B11SaveOnlyHS1P1 == 3 && NumGenerators == 2 && NumRelators == 1)				
 						{
-						if(++n == 1) fprintf(H_Results,"\n\n%.25s . . . C%d)",PresName,RealCompNum);
+						if(++n == 1) fprintf(H_Results,"\n\n%.25s ... C%d)",PresName,RealCompNum);
 						fprintf(H_Results,"\nL %lu %.25s",Length,*SMGP[l][1]);	
 						}												
 					if(B10B11SaveOnlyHS1P1 == 4 && NumSplittings == 1 && NumGenerators == 2 && NumRelators == 1)				
 						{
-						fprintf(H_Results,"\n\n%.25s . . . C%d)",PresName,RealCompNum);
+						fprintf(H_Results,"\n\n%.25s ... C%d)",PresName,RealCompNum);
 						fprintf(H_Results,"\nL %lu %.25s",Length,*SMGP[l][1]);
 						}
 					}								
