@@ -1047,7 +1047,7 @@ REPORT_RESULTS:
 								}
 							if(k == 0 && NumRelators == 1 && NumGenerators == 2)
 								{
-								m = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE);
+								m = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE,FALSE);
 								if(m == 0) 
 									{
 									printf("\n\nH[R] is anannular and atoroidal.");
@@ -1065,7 +1065,7 @@ REPORT_RESULTS:
 								m = Genus_Two_Essential_Tori(k + 1,MyCompNum,0);
 								if(m == 1) n++;
 								if(m == 2)
-									{
+									{							
 									FoundEssentialTorus = TRUE;
 									if(B10B11Recognized) goto FOUND_TORUS;
 									n++;

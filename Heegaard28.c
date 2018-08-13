@@ -5,11 +5,11 @@
 L 2582 Check_C_Robustness(char Flag1,char Flag2)
 L  967 Check_R1_Positivity(void)
 L  852 FindMinExpAndContext(char WhichGen, unsigned int MinExp)
-L   32 Genus_Two_One_Relator_Annuli_And_Tori(char F1)
-L  304 Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print)
+L   32 Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print,char F2)
+L  304 Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print,char F2)
 L  518 Genus_Two_One_Relator_Annuli_And_Tori_S2(unsigned int ZZ0,unsigned int ZZ1, unsigned int ZZ2,
 	   unsigned int ZZ3, unsigned int Source, unsigned int NumReps,char F1,char Print)
-L  561 Get_Genus_Two_Commutators(char Flag1,char Print)
+L  561 Get_Genus_Two_Commutators(char Flag1,char Print,char F2)
 L 1950 Get_Sep_Disk_Dual(char)
 L 1434 Get_Universal_Minimizer_Waves(char F1)
 L 1830 Get_Universal_Minimizer_Waves_S1(unsigned char NumWaveGuides)
@@ -29,7 +29,7 @@ L 3496 Translate_2_Dual_Pres(unsigned char* MyPtr)
 
 int		NumSaved;
 
-int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print)
+int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print,char F2)
 {					
 	unsigned char	i,
 					NegExpLoc,
@@ -72,7 +72,7 @@ int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print)
 		while( (*p++ = *q++) ) ;
 		}
 	
-	GTS1RV = Genus_Two_One_Relator_Annuli_And_Tori_S1(Print);				
+	GTS1RV = Genus_Two_One_Relator_Annuli_And_Tori_S1(Print,F2);				
 	if(GTS1RV) return(GTS1RV);
 	
 	/******************************************************************************************* 	
@@ -110,29 +110,29 @@ int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print)
 			if(NEXA1_SF[1] == 0 && abs(EXPA1_SF[0]) == 1 && NEXB1_SF[2] == 0 && EXPB1_SF[0]*EXPB1_SF[1] == -1)
 				/* 'A' appears only as A or as a, 'B' appears only as B and b. */
 				/* Both A --> AB and A --> Ab are level-transformations. */
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,1,1,Print)) ) return(GTS2RV);
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,1,1,Print,F2)) ) return(GTS2RV);
 		
 			if(NEXB1_SF[1] == 0 && abs(EXPB1_SF[0]) == 1 && NEXA1_SF[2] == 0 && EXPA1_SF[0]*EXPA1_SF[1] == -1)
 				/* 'B' appears only as B or as b, 'A' appears only as A and a. */
 				/* Both B --> BA and B --> Ba are level-transformations. */
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,1,2,Print)) ) return(GTS2RV);			
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,1,2,Print,F2)) ) return(GTS2RV);			
 		
 			if(NEXA1_SF[2] == 0 && EXPA1_SF[0]*EXPA1_SF[1] == 2) /* 'A' appears only as A and A^2 or as a and a^2. */
 				{
 				if(A[1][3] > 0 && A[1][3] < A[1][2]) /* A --> Ab is level. */
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,1,3,Print)) ) return(GTS2RV);
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,1,3,Print,F2)) ) return(GTS2RV);
 				
 				if(A[1][2] > 0 && A[1][2] < A[1][3]) /* A --> AB is level. */
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,1,4,Print)) ) return(GTS2RV);
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,1,4,Print,F2)) ) return(GTS2RV);
 				}
 			
 			if(NEXB1_SF[2] == 0 && EXPB1_SF[0]*EXPB1_SF[1] == 2) /* 'B' appears only as B and B^2 or as b and b^2. */
 				{
 				if(B[3][1] > 0 && B[3][1] < B[3][0]) /* B --> Ba is level. */
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,1,0,0,1,5,Print)) ) return(GTS2RV);
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,1,0,0,1,5,Print,F2)) ) return(GTS2RV);
 						
 				if(B[3][0] > 0 && B[3][0] < B[3][1]) /* B --> BA is level. */				
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,1,6,Print)) ) return(GTS2RV);			
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,1,6,Print,F2)) ) return(GTS2RV);			
 				}
 			}
 			
@@ -153,11 +153,11 @@ int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print)
 				{
 				if(A[1][3] > 0 && A[1][3] < A[1][2]) 
 					/* A --> Ab is level. */
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,1,7,Print)) ) return(GTS2RV);
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,1,7,Print,F2)) ) return(GTS2RV);
 				
 				if(A[1][2] > 0 && A[1][2] < A[1][3]) 
 					/* A --> AB is level. */
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,1,8,Print)) ) return(GTS2RV);
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,1,8,Print,F2)) ) return(GTS2RV);
 				}
 			}					
 		}
@@ -181,12 +181,12 @@ int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print)
 				case 1:
 				case 4:		
 					/* B --> Ba^(MinExp). */
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,1,0,0,MinExp,13,Print)) ) return(GTS2RV);
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,1,0,0,MinExp,13,Print,F2)) ) return(GTS2RV);
 					break;
 				case 2:
 				case 3:	
 					/* B --> BA^(MinExp). */
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,MinExp,14,Print)) ) return(GTS2RV);
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,MinExp,14,Print,F2)) ) return(GTS2RV);
 					break;
 				default:
 					break;
@@ -214,16 +214,16 @@ int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print)
 				}
 				
 			if(EXPB1_SF[0] >=  1  && NumNegAExps == 1) 	/* B --> BA^-EXPA1_SF[NegExpLoc] */			
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,-EXPA1_SF[NegExpLoc],9,Print)) ) return(GTS2RV);	
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,-EXPA1_SF[NegExpLoc],9,Print,F2)) ) return(GTS2RV);	
 								
 			if(EXPB1_SF[0] <= -1  && NumPosAExps == 1) 	/* B --> BA^ EXPA1_SF[PosExpLoc] */			
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,EXPA1_SF[PosExpLoc],10,Print)) ) return(GTS2RV);
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,0,EXPA1_SF[PosExpLoc],10,Print,F2)) ) return(GTS2RV);
 									
 			if(EXPB1_SF[0] >=  1  && NumPosAExps == 1 && NumNegAExps != 1)  /* B --> Ba^ EXPA1_SF[PosExpLoc] */			
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,1,0,0,EXPA1_SF[PosExpLoc],11,Print)) ) return(GTS2RV);			
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,1,0,0,EXPA1_SF[PosExpLoc],11,Print,F2)) ) return(GTS2RV);			
 												
 			if(EXPB1_SF[0] <= -1  && NumNegAExps == 1 && NumPosAExps != 1) 	/* B --> Ba^-EXPA1_SF[NegExpLoc] */			
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,1,0,0,-EXPA1_SF[NegExpLoc],12,Print)) ) return(GTS2RV);			
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,1,0,0,-EXPA1_SF[NegExpLoc],12,Print,F2)) ) return(GTS2RV);			
 			}
 		}
 	
@@ -246,12 +246,12 @@ int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print)
 				case 1:
 				case 4:	
 					/* A --> Ab^(MinExp). */
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,MinExp,19,Print)) ) return(GTS2RV);	
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,MinExp,19,Print,F2)) ) return(GTS2RV);	
 					break;
 				case 2:
 				case 3:	
 					/* A --> AB^(MinExp). */
-					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,MinExp,20,Print)) ) return(GTS2RV);	
+					if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,MinExp,20,Print,F2)) ) return(GTS2RV);	
 					break;
 				default:
 					break;
@@ -279,16 +279,16 @@ int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print)
 				}
 				
 			if(EXPA1_SF[0] >=  1  && NumNegBExps == 1)	/* A --> AB^-EXPB1_SF[NegExpLoc] */			
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,-EXPB1_SF[NegExpLoc],15,Print)) ) return(GTS2RV);
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,-EXPB1_SF[NegExpLoc],15,Print,F2)) ) return(GTS2RV);
 								
 			if(EXPA1_SF[0] <= -1  && NumPosBExps == 1) 	/* A --> AB^ EXPB1_SF[PosExpLoc] */			
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,EXPB1_SF[PosExpLoc],16,Print)) ) return(GTS2RV);
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(0,1,0,1,2,EXPB1_SF[PosExpLoc],16,Print,F2)) ) return(GTS2RV);
 									
 			if(EXPA1_SF[0] >=  1  && NumPosBExps == 1 && NumNegBExps != 1)  /* A --> Ab^ EXPB1_SF[PosExpLoc] */
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,EXPB1_SF[PosExpLoc],17,Print)) ) return(GTS2RV);
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,EXPB1_SF[PosExpLoc],17,Print,F2)) ) return(GTS2RV);
 												
 			if(EXPA1_SF[0] <= -1  && NumNegBExps == 1 && NumPosBExps != 1) 	/* A --> Ab^-EXPB1_SF[NegExpLoc] */
-				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,-EXPB1_SF[NegExpLoc],18,Print)) ) return(GTS2RV);
+				if( (GTS2RV = Genus_Two_One_Relator_Annuli_And_Tori_S2(1,0,0,1,2,-EXPB1_SF[NegExpLoc],18,Print,F2)) ) return(GTS2RV);
 			}
 		}
 		
@@ -301,19 +301,22 @@ int Genus_Two_One_Relator_Annuli_And_Tori(char F1,char Print)
 	return(0);
 }
 
-int Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print)
+int Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print,char F2)
 {
 	unsigned char	i;
 	
 	int				NumIntersections;
 	
 	/******************************************************************************************************	
+	If F2 is FALSE:
 		The first time Genus_Two_One_Relator_Annuli_And_Tori_S1() is called, it looks only at relator R. 
 		If Genus_Two_One_Relator_Annuli_And_Tori_S1() does not return 1 after its first call, Heegaard 
 		generates the four possible separating simple closed curves C1, C2, C3, and C4, disjoint from R, 
 		which could be disjoint from a proper-power R' intersecting R more than once, or disjoint from 
 		a non-separating annulus, with bdry component R' intersecting R more than once. 
 			(Note in subsequent calls, Ci appears as R1; the original R as R2.)
+	If F2 is TRUE:
+		
 	*******************************************************************************************************/
 		
 	if(Get_Genus_2_EXPS()) return(2);
@@ -331,14 +334,14 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print)
 			{
 			if(abs(EXPA1_SF[0]) > 1)	/* If |e| > 1. */
 				{
-				if(NumRelators == 1)	/* If there is only 1 relator R, R is disjoint from a proper-power A^(|e|). */
+				if(NumRelators == 1 || F2)	/* If there is only 1 relator R, R is disjoint from a proper-power A^(|e|). */
 					{
 					if(!Print) return(1);
 					printf("\n\nR = %s is disjoint from a proper-power A^%d.",(char *) *Relators[1],abs(EXPA1_SF[0]));
 					if(B10B11Recognized || Batch == 56) fprintf(H_Results," R = %s is disjoint from a proper-power A^%d.",(char *) *Relators[1],abs(EXPA1_SF[0]));
 					return(1);
 					}
-				if(NumRelators == 2)	/* R is not disjoint from a proper-power. */
+				if(NumRelators == 2 && !F2)	/* R is not disjoint from a proper-power. */
 					{
 					/* Ci is disjoint from a proper-power R' = A^(|e|), which must intersect R. */
 					/* Compute |R.R'|. |R.R'| is equal to the number of appearances of 'A' in R with exponents A^f, |f| > 0, |f| ≠ |e|. */					
@@ -369,7 +372,7 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print)
 					if(NEXB1_SF[2] == 0 && abs(EXPB1_SF[0]) == 1 && abs(EXPB1_SF[1]) <= 1)
 						{
 						/* 'B' also appears only with exponents ±1. */
-						if(NumRelators == 1)
+						if(NumRelators == 1 || F2)
 							{
 							if(!Print) return(1);
 							printf("\n\nGen 'A' appears in R = %s only with alternating ±1 exponents.",(char *) *Relators[1]);
@@ -383,7 +386,7 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print)
 								}						
 							return(1);
 							}
-						if(NumRelators == 2)
+						if(NumRelators == 2 && !F2)
 							{
 							/* Compute |R.R'|. |R.R'| is |m| when R abelianized is [R] = m[A] + n[B]. */
 							Get_Genus_2_EXPS();
@@ -428,14 +431,14 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print)
 			{
 			if(abs(EXPB1_SF[0]) > 1)	/* If |e| > 1. */
 				{
-				if(NumRelators == 1)	/* If there is only 1 relator R, R is disjoint from a proper-power B^(|e|). */
+				if(NumRelators == 1 || F2)	/* If there is only 1 relator R, R is disjoint from a proper-power B^(|e|). */
 					{
 					if(!Print) return(1);
 					printf("\n\nR = %s is disjoint from a proper-power B^%d.",(char *) *Relators[1],abs(EXPB1_SF[0]));
 					if(B10B11Recognized || Batch == 56) fprintf(H_Results," R = %s is disjoint from a proper-power B^%d.",(char *) *Relators[1],abs(EXPB1_SF[0]));
 					return(1);
 					}
-				if(NumRelators == 2)	/* R is not disjoint from a proper-power. */
+				if(NumRelators == 2 && !F2)	/* R is not disjoint from a proper-power. */
 					{
 					/* Ci is disjoint from a proper-power R' = B^(|e|), which must intersect R. */	
 					/* Compute |R.R'|. |R.R'| is equal to the number of appearances of 'B' in R with exponents B^f, |f| > 0, |f| ≠ |e|. */
@@ -466,7 +469,7 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print)
 					if(NEXA1_SF[2] == 0 && abs(EXPA1_SF[0]) == 1 && abs(EXPA1_SF[1]) <= 1)
 						{
 						/* 'A' also appears only with exponents ±1. */
-						if(NumRelators == 1)
+						if(NumRelators == 1 || F2)
 							{
 							if(!Print) return(1);
 							printf("\n\nGen 'B' appears in R = %s only with alternating ±1 exponents.",(char *) *Relators[1]);
@@ -480,7 +483,7 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print)
 								}
 							return(1);
 							}
-						if(NumRelators == 2)
+						if(NumRelators == 2 && !F2)
 							{
 							/* Compute |R.R'|. |R.R'| is |n| when R abelianized is [R] = m[A] + n[B]. */
 							Get_Genus_2_EXPS();
@@ -515,13 +518,14 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S1(char Print)
 return(0);
 }
 
-int Genus_Two_One_Relator_Annuli_And_Tori_S2(unsigned int ZZ0,unsigned int ZZ1, unsigned int ZZ2, 
-	unsigned int ZZ3, unsigned int Source, unsigned int NumReps,char F1,char Print)
+int Genus_Two_One_Relator_Annuli_And_Tori_S2(unsigned int ZZ0,unsigned int ZZ1,unsigned int ZZ2, 
+	unsigned int ZZ3,unsigned int Source,unsigned int NumReps,char F1,char Print,char F2)
 {
 	ZZ[0] = ZZ0;
 	ZZ[1] = ZZ1;
 	ZZ[2] = ZZ2;
 	ZZ[3] = ZZ3;
+	
 	if(NumReps < 3)
 		Do_Aut(Source,NumReps,NumRelators);
 	else
@@ -541,7 +545,7 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S2(unsigned int ZZ0,unsigned int ZZ1, 
 			else
 				printf("\n\n%d) R = %s",F1,(char *) *Relators[1]);
 			}	
-		if(!F1)
+		if(!F1 && !F2)
 			{
 			if(NumRelators == 2)
 				{
@@ -551,9 +555,14 @@ int Genus_Two_One_Relator_Annuli_And_Tori_S2(unsigned int ZZ0,unsigned int ZZ1, 
 			else	
 				printf("\n\nR = %s",(char *) *Relators[1]);
 			}
+		if(F2)
+			{
+			printf("\n\nR1' = %s",(char *) *Relators[1]);
+			printf("\n    R2' = %s",(char *) *Relators[2]);
+			}	
 		}
 	
-	if(Genus_Two_One_Relator_Annuli_And_Tori_S1(Print)) return(1);
+	if(Genus_Two_One_Relator_Annuli_And_Tori_S1(Print,F2)) return(1);
 	
 	return(0);
 }	
@@ -830,8 +839,8 @@ _ALREADY_HAVE_DIAGRAM:
 		
 		/************************************************************* 
 			Reduce Ci to minimal length carrying R along. Then call 
-			Genus_Two_One_Relator_Annuli_And_Tori(FALSE) and check if 
-			Ci is disjoint from an R', as above.
+			Genus_Two_One_Relator_Annuli_And_Tori(FALSE,Print,False)
+			and check if Ci is disjoint from an R', as above.
 		**************************************************************/
 			
 		if(Find_Flow_A(NORMAL,1) == TOO_LONG) return(2);
@@ -842,7 +851,7 @@ _ALREADY_HAVE_DIAGRAM:
 			printf("\nR = %s \n",(char *) *Relators[2]);
 			}
 		
-		GTORRV = Genus_Two_One_Relator_Annuli_And_Tori(FALSE,Print);
+		GTORRV = Genus_Two_One_Relator_Annuli_And_Tori(FALSE,Print,FALSE);
 		if(GTORRV) return(GTORRV);	
 		}
 							

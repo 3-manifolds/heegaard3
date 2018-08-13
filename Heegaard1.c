@@ -342,38 +342,38 @@ unsigned long
     TotalAuts;   
 
 /****************************** Functions in Heegaard1.c **********************************
-L 3191 Check_Realizability_Of_The_Initial_Presentation(void)
-L 1394 Compare_Dual_Pres(int k)
-L 1339 Compare_Input_Pres(void)
-L 1367 Compare_Pres(int k)
-L 1257 Delete_Dups(void)
-L 2725 Delete_Old_Presentations(void)
-L 3214 Display_Diagram_Of_The_Initial_Presentation(void)
-L 4148 ExponentialRewrite(void)
-L 3509 Find_Level_Transformations_Of_The_Initial_Presentation(void)
-L 1420 Get_Initial_Diagram(int PrintFlag)
-L 2993 Get_Presentation_From_File(void)
-L 3124 Get_Presentation_From_KeyBoard(void)
-L 3309 Get_Simplification_Parameters_From_User(int Flag1,int Flag2)
-L 2640 Init_G_Variables(void)
-L 3779 Initial_Realizability_Check(void)
+L 3203 Check_Realizability_Of_The_Initial_Presentation(void)
+L 1405 Compare_Dual_Pres(int k)
+L 1350 Compare_Input_Pres(void)
+L 1378 Compare_Pres(int k)
+L 1268 Delete_Dups(void)
+L 2736 Delete_Old_Presentations(void)
+L 3226 Display_Diagram_Of_The_Initial_Presentation(void)
+L 4160 ExponentialRewrite(void)
+L 3521 Find_Level_Transformations_Of_The_Initial_Presentation(void)
+L 1431 Get_Initial_Diagram(int PrintFlag)
+L 3004 Get_Presentation_From_File(void)
+L 3135 Get_Presentation_From_KeyBoard(void)
+L 3321 Get_Simplification_Parameters_From_User(int Flag1,int Flag2)
+L 2651 Init_G_Variables(void)
+L 3791 Initial_Realizability_Check(void)
 L  379 main(int argv, char **argc)
-L 3844 mykbhit(void)
-L 2415 Non_Unique_Initial_Diagram(void)
-L 2547 On_File(void)
-L 3809 Print_Realizability(int Del_Only_Triv_Rel, unsigned int WhichPres)
-L 3837 Realization_Warning(void)
-L 3685 Reduce_The_Initial_Presentation_To_Minimal_Length(int)																				
-L 3899 ReRun_A_Bunch(void)
-L 4077 ReRun_A_Bunch_Sub(char Flag1,char Flag2, unsigned int j,char NumStabs)
-L 2745 ReRun_A_Presentation(void)
-L 4217 Restore_Saved_Input(void)
-L 1124 Rewrite_Input(void)
-L 4192 Save_Copy_Of_Input(void)
-L 2172 Save_Pres(unsigned int From,unsigned int Daut,unsigned long Len,int F1,int F2,
+L 3856 mykbhit(void)
+L 2426 Non_Unique_Initial_Diagram(void)
+L 2558 On_File(void)
+L 3821 Print_Realizability(int Del_Only_Triv_Rel, unsigned int WhichPres)
+L 3849 Realization_Warning(void)
+L 3697 Reduce_The_Initial_Presentation_To_Minimal_Length(int)																				
+L 3911 ReRun_A_Bunch(void)
+L 4089 ReRun_A_Bunch_Sub(char Flag1,char Flag2, unsigned int j,char NumStabs)
+L 2756 ReRun_A_Presentation(void)
+L 4229 Restore_Saved_Input(void)
+L 1135 Rewrite_Input(void)
+L 4204 Save_Copy_Of_Input(void)
+L 2183 Save_Pres(unsigned int From,unsigned int Daut,unsigned long Len,int F1,int F2,
 	   int F3,unsigned char F4,char F5)
-L 3467 Turn_Micro_Print_On(void)
-L 3877 WaitkbHit(void)
+L 3479 Turn_Micro_Print_On(void)
+L 3889 WaitkbHit(void)
 ********************************************************************************************/
 
 int main(int argv, char **argc)
@@ -417,7 +417,7 @@ int main(int argv, char **argc)
     printf("\n\n                                 HEEGAARD");
     printf("\n                               BY JOHN BERGE");
     printf("\n                             jberge@charter.net");
-    printf("\n                                  6/14/18\n");
+    printf("\n                                  8/12/18\n");
     printf("\n A PROGRAM FOR STUDYING 3-MANIFOLDS VIA PRESENTATIONS AND HEEGAARD DIAGRAMS.\n");
     printf("\n        Copyright 1995-2018 by John Berge, released under GNU GPLv2+.");
  	printf("\n\n               With thanks to Marc Culler and Nathan Dunfield.");
@@ -804,12 +804,12 @@ _BEGIN:
             		{
             		printf("\n\nBeen Done! Choose a different option from the previous list.    ");
             		goto GET_RESPONSE3;
-            		}
+            		}            		
         		if(NumGenerators != 2 || NumRelators != 1) 
         			{
         			printf("\n\nPlease choose another option! This routine expects a 1-Relator, 2-Generator presentation as input.    ");
         			goto GET_RESPONSE3;
-        			}	
+        			}        				
             	FoundMeridianReps = Is_Knot_Relator();
             	if(FoundMeridianReps)
             		{
@@ -839,10 +839,21 @@ _BEGIN:
         			goto GET_RESPONSE3;
         			}
         		Turn_Micro_Print_On();	
-            	i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE);
+            	i = Genus_Two_One_Relator_Annuli_And_Tori(TRUE,TRUE,FALSE);
             	if(i == 0) printf("\n\nH[R] is anannular and atoroidal.");
             	if(Micro_Print == 1) Micro_Print = FALSE;
-            	printf("\n\nCHOOSE ANOTHER OPTION FROM THE PREVIOUS LIST.    ");
+            	
+            	if(Relators[1] != NULL) DisposeHandle((char **) Relators[1]);
+            	Relators[1] = (unsigned char **) NewHandle(GetHandleSize((char **) Copy_Of_Input[1]));
+	        	if(Relators[1] == NULL) Mem_Error();
+            	p = *Copy_Of_Input[1];
+            	q = *Relators[1];
+            	while( (*q++ = *p++) ) ;
+            	NumRelators = 1;
+            	NumGenerators = 2;
+            	Length = GetHandleSize((char **) Relators[1]) - 1;
+				printf("\n\nRestored the original initial presentation.");            	
+				printf("\n\nCHOOSE ANOTHER OPTION FROM THE PREVIOUS LIST.    ");
             	goto GET_RESPONSE3;
             	          	 
 			case 'C':
@@ -887,7 +898,7 @@ _BEGIN:
 				printf("\n\nCHOOSE ANOTHER OPTION FROM THE PREVIOUS LIST.    ");
 				goto GET_RESPONSE3;
             
-            case 'f':
+            case 'f':            
         		if(NumGenerators != 2 || NumRelators != 1) 
         			{
         			printf("\n\nPlease choose another option! This routine expects a 1-Relator, 2-Generator presentation as input.    ");
@@ -3184,6 +3195,7 @@ int Get_Presentation_From_KeyBoard(void)
     printf("\n\nPlease enter a name by which Heegaard can refer to this presentation,");
     printf("\nand then hit 'return'.");
     printf("\n\nSAVE THIS PRESENTATION AS: ");
+    *PresName = EOS;
     ReadString((char *)PresName, GetPtrSize(PresName));
     return(0);
 }

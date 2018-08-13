@@ -2695,8 +2695,8 @@ int Get_Genus_2_EXPS(void)
 {
     /******************************************************************************************
         For j = 1 and j = 2, this routine does two things. First, it determines the exponents 
-    with which each generator appears in Relators[j]. It leaves these exponents in the eight 
-    columns of the array EXPAj_SF[] and EXPBj_SF[].
+    with which each generator appears in Relators[j]. It leaves these exponents in the columns
+    of the array EXPAj_SF[] and EXPBj_SF[].
         Second, the routine counts the number of appearances of each exponent and leaves
     these counts in the arrays NEXAj_SF[] and NEXBj_SF[]. (Note exponents are signed here, so 
     e and -e are different exponents.)

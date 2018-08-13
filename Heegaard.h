@@ -95,6 +95,7 @@ extern int		CheckForAltExpSigns(char,char);										/* In Heegaard19.c	*/
 extern int		Check_for_Big_SF(int,int,unsigned int);								/* In Heegaard25.c	*/
 extern int 		Check_for_Essential_Annuli_and_Tori(void);							/* In Heegaard19.c	*/
 extern int		Check_For_Primitives(int,int);										/* In Heegaard6.c	*/
+extern int 		Check_Freely_Reduced_Dual_Presentation(void);						/* In Heegaard30.c	*/
 extern int		Check_HS_Disjoint_Curves(int,int*,char*);							/* In Heegaard18.c	*/
 extern int   	Check_HS_Reducibility(int,int*,char*);								/* In Heegaard18.c	*/
 extern int      Check_HS_Reps(int,int*);											/* In Heegaard18.c	*/
@@ -108,6 +109,7 @@ extern int		Check_HS_Uniqueness_Sub1(int,int);									/* In Heegaard18.c	*/
 extern int		Check_HS_Weak_Reducibility(int,int*,char*);							/* In Heegaard18.c	*/
 extern int 		Check_If_Fibered(unsigned char*);									/* In Heegaard21.c  */
 extern int		Check_Level_Transformations(void);									/* In Heegaard2.c	*/
+extern int 		Check_M1_and_M2_Primitivity(int);									/* In Heegaard30.c	*/
 extern void		CheckPolySymmetry(int *, unsigned int);								/* In Heegaard21.c	*/
 extern int		CheckPrimitivity(void);												/* In Heegaard2.c	*/
 extern int 		Check_R1_Positivity(void);											/* In Heegaard28.c  */
@@ -127,9 +129,9 @@ extern int		Connected_AJ3(unsigned int,unsigned int);							/* In Heegaard2.c	*/
 extern int		CountMaxMins(char *);												/* In Heegaard21.c	*/
 extern unsigned int	Count_Sep_Pairs(unsigned int);									/* In Heegaard7.c	*/
 extern int  	CP_Check_Simple_Paths(unsigned int,int*,int,unsigned char**,
-					unsigned char**);												/* In Heegaard5.c   */
+				unsigned char**);													/* In Heegaard5.c   */
 extern int  	CHSP_Check_Simple_Circuits(unsigned int,int*,int,unsigned char**,
-					unsigned char**);												/* In Heegaard18.c  */					
+				unsigned char**);													/* In Heegaard18.c  */					
 extern void		CP_Concatenate_Paths(unsigned char **,unsigned char **,int);		/* In Heegaard5.c	*/
 extern int		CP_Do_Aut(unsigned int,char);										/* In Heegaard5.c	*/
 extern void		CP_Fill_AA(char);													/* In Heegaard5.c	*/
@@ -203,11 +205,15 @@ extern unsigned int	GCD(unsigned int,unsigned int);									/* In Heegaard4.c	*/
 extern int 		Genus_Two_Essential_Tori(int,int,char);								/* In Heegaard19.c	*/
 extern int 		Genus_Two_Essential_Torus_Betas(char);								/* In Heegaard19.c	*/
 extern int		Genus_Two_Meridian_Reps(int,int);									/* In Heegaard20.c	*/
+extern int 		Genus_Two_Meridian_Reps2(int,int);									/* In Heegaard30.c	*/
 extern int		Genus_Two_Meridian_Reps_Sub(unsigned char*, unsigned char*);		/* In Heegaard20.c	*/
-extern int		Genus_Two_One_Relator_Annuli_And_Tori(char,char);					/* In Heegaard28.c  */
-extern int		Genus_Two_One_Relator_Annuli_And_Tori_S1(char);						/* In Heegaard28.c  */
+extern int 		Genus_Two_Meridian_Reps2_S1(int,char);  							/* In Heegaard30.c	*/
+extern int 		Genus_Two_Meridian_Reps2_S2(char,char); 							/* In Heegaard30.c	*/
+extern int 		Genus_Two_Meridian_Reps2_S3(int);									/* In Heegaard30.c	*/
+extern int		Genus_Two_One_Relator_Annuli_And_Tori(char,char,char);				/* In Heegaard28.c  */
+extern int		Genus_Two_One_Relator_Annuli_And_Tori_S1(char,char);				/* In Heegaard28.c  */
 extern int 		Genus_Two_One_Relator_Annuli_And_Tori_S2(unsigned int,unsigned int,
-				unsigned int,unsigned int,unsigned int,unsigned int,char,char);		/* In Heegaard28.c  */
+				unsigned int,unsigned int,unsigned int,unsigned int,char,char,char);/* In Heegaard28.c  */
 extern int		Genus_Two_Seifert_Fibered(int,char);								/* In Heegaard19.c	*/
 extern int		Genus3ET(int,int,char);												/* In Heegaard19.c	*/
 extern int 		Get_2_Gen_SF_EXPS1(unsigned char);									/* In Heegaard25.c	*/
@@ -248,6 +254,8 @@ extern int		ID_A_PMQPM(unsigned int i);											/* In Heegaard18.c	*/
 extern void		ID_PMQPM(int, char*, unsigned int*);								/* In Heegaard18.c	*/
 extern int 		Init_Find_Canonical_Orbit_Reps(int*,int,int);						/* In Heegaard18.c	*/
 extern int 		Init_Genus_Two_Essential_Tori(int*,int,int,char);					/* In Heegaard19.c	*/
+extern int 		Init_Genus_Two_Meridian_Reps2_S1(int,char,char,unsigned long,
+				unsigned long,unsigned long);										/* In Heegaard30.c	*/
 extern int 		Init_Genus_Two_Seifert_Fibered(int*,int,int);						/* In Heegaard19.c	*/
 extern int 		Init_Genus_Three_Essential_Tori(int*,int,int,char);					/* In Heegaard19.c	*/
 extern int 		Init_Get_Universal_Minimizer_Waves(int,int*);						/* In Heegaard28.c	*/
@@ -285,7 +293,7 @@ extern void		Micro_Print_Do_Aut(unsigned int,unsigned int);						/* In Heegaard1
 extern void		Micro_Print_Dualize(void);		 									/* In Heegaard12.c	*/
 extern void		Micro_Print_Freely_Reduce(unsigned long,unsigned long);				/* In Heegaard12.c	*/
 extern void		Micro_Print_Level_Transformations(unsigned int,unsigned int,
-	                                                  unsigned int,unsigned int);	/* In Heegaard7.c	*/
+	            unsigned int,unsigned int);											/* In Heegaard7.c	*/
 extern void		Micro_Print_Level_Transformations_Reset(unsigned int);				/* In Heegaard7.c	*/
 extern void		Micro_Print_Reset(void);			 								/* In Heegaard12.c	*/
 extern void 	Micro_Print_Whitehead_Graph_Return_Value(unsigned int);				/* In Heegaard12.c	*/
@@ -305,7 +313,7 @@ extern int		Planar(int,int);													/* In Heegaard3.c	*/
 extern int		Planar_Connected_(unsigned int);									/* In Heegaard3.c	*/	
 extern int		PM_Check_When_Bdry_Exists(char);			  						/* In Heegaard24.c  */
 extern int 		Pos_Relator_Check_Do_Auts(unsigned int,unsigned int, unsigned int, 
-	unsigned int,unsigned int,unsigned int);										/* In Heegaard 28.c */
+				unsigned int,unsigned int,unsigned int);							/* In Heegaard 28.c */
 extern int 		Pos_Relator_Check_Min_Exp(char,char,char,char);						/* In Heegaard 28.c */	
 extern void		Print_Bdry_Comp_Info(int,int,int);									/* In Heegaard3.c	*/ 
 extern void		Print_Bdry_Data(unsigned int);										/* In Heegaard12.c	*/

@@ -2987,7 +2987,7 @@ int Do_Auts(unsigned int Source,unsigned int NumReps,unsigned int NumRelators)
         *p = EOS;
         q = *Temp5;
         HS = p + 1 - q;
-        if(HS > MAXLENGTH) return(TOO_LONG); 
+        if(HS > MAXLENGTH) return(TOO_LONG);       
         if(Relators[i] != NULL) DisposeHandle((char **) Relators[i]);
 		Relators[i] = (unsigned char **) NewHandle(HS);
 		if(Relators[i] == NULL) Mem_Error();

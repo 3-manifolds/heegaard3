@@ -329,12 +329,12 @@ _ALREADY_HAVE_DIAGRAM:
 
 int Genus_Two_Meridian_Reps_Sub(unsigned char* ptr1, unsigned char* ptr2)
 {
-    /******************************************************************************************
-        This routine is called by Genus_Two_Meridian_Reps_Sub(). The routine tries to find a 
-        simple closed curve on the genus-two Heegaard surface that is disjoint from a wave 
-        based at Relators[1]. If successful, it returns the word representing the disjoint 
-        curve in the string pointed to by ptr.
-    ******************************************************************************************/
+    /********************************************************************************************
+        This routine is called by Genus_Two_Meridian_Reps(). The routine tries to find a pair 
+        of simple closed curves on the genus-two Heegaard surface that are disjoint from a wave 
+        based at Relators[1]. If successful, it returns the words representing the disjoint 
+        curves in the strings pointed to by ptr1 and ptr2.
+    *********************************************************************************************/
     
     unsigned char  	*p,
                     *q,

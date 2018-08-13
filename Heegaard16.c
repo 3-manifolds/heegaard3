@@ -314,7 +314,7 @@ _BEGIN:
 				else 
 					{
 					if(Flag1 != 2) printf("\n\n");
-					printf("The homology is trivial.");
+					printf("The homology is: Z/1");
 					}
 				}
 			else
