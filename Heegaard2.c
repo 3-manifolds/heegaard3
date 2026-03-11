@@ -33,8 +33,7 @@ int Get_Diagrams(void)
                     *q,
                     **Temp;
     
-    int           	DistinctNonEmpty,
-                    SMicro_Print_F,
+    int             DistinctNonEmpty,
                     SRNumGenerators,
                     SRNumRelators,
                     SRReadPres,
@@ -67,8 +66,6 @@ int Get_Diagrams(void)
                     SRLength,
                     SRSLength;                            
 
-    unsigned int 	Whitehead_Graph();
-    unsigned int 	Reduce_Genus();
 
 /**********************************************************************************************
                             THIS IS THE BEGINNING OF THE MAIN PROGRAM.
@@ -1050,7 +1047,6 @@ _RESET:
 							goto LIST_OPTIONS2;							
 						case 'r':
 						    SMicro_Print 	= FALSE;
-        					SMicro_Print_F 	= FALSE;
 							break; 
 						case 'T':
 							if(Check_for_1_HS || Check_for_1_HS2) return(QUIT_FLAG);	
@@ -1078,7 +1074,6 @@ _RESET:
 								{
 								case 's':
 									SMicro_Print = TRUE;
-									SMicro_Print_F = FALSE;
 									break;                            
 								case 'o':
 									if(!SMicro_Print)
@@ -1087,7 +1082,6 @@ _RESET:
 										goto GET_RESPONSE1;                                
 										}
 									SMicro_Print = FALSE;
-									SMicro_Print_F = FALSE;
 									break;                        
 								default:
 									SysBeep(5);
@@ -1155,7 +1149,7 @@ _RESET:
             	if(NumFilled - SSNumFilled > 100)
             		{          		
             		if(OnStack > MinOnStack && OnStack - MinOnStack > 100) MyMaxSavedPres = NumFilled;        			
-            		if(abs(OnStack - SOnStack) < 6 && SSReadPres > SSSNumFilled) MyMaxSavedPres = NumFilled;
+            		if(OnStack - SOnStack < 6 && SSReadPres > SSSNumFilled) MyMaxSavedPres = NumFilled;
             		if(OnStack < MinOnStack) MinOnStack = OnStack;
               		SOnStack = OnStack;
             		SSNumFilled = NumFilled;         			
@@ -2063,8 +2057,6 @@ int Find_Flow_A(int Input,int F1)
                     Sink,
                     Source;
                             
-    unsigned int    Get_MinExp();                      
-    
     if(NumGenerators == 0) return(TOO_LONG);
     
     if(Input == BANDSUM)
@@ -2314,9 +2306,7 @@ int Find_Primitives(int flag)
                             
     unsigned long   SLength1,
                     SLength2,
-                	SLength3;
-                            
-    unsigned int    Get_MinExp();                                                    
+               	    SLength3;
     
     /******************************************************************************************
                         Check whether Relators[1] is a defining relator.
@@ -3124,9 +3114,6 @@ int Test_New_Pres(void)
     unsigned long   HS,
                     SRLength;                        
 
-    unsigned int 	Whitehead_Graph();
-    unsigned int 	Reduce_Genus();
-    
     NumDiagrams ++;
     Input = NORMAL;
     UDV[ReadPres] = 1;
@@ -3814,7 +3801,7 @@ unsigned int Get_MinExp(unsigned int Source,int MyNumRelators)
     return(MinExp);    
 }
 
-void Mark_As_Found_Elsewhere(TheComp)
+void Mark_As_Found_Elsewhere(int TheComp)
 {
     int        i;
     

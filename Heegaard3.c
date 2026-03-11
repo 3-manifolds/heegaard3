@@ -139,14 +139,13 @@ int Get_Matrix(void)
         
 int Check_Connected(void)
 {    
-    unsigned char  	*p,
+    unsigned char   *p,
                     *q,
-                    *r,
                     **Temp,
                     x;
                             
-    int            	h,
-    				i,
+    int             h,
+    		    i,
                     j;
     
     unsigned int    SaveUDV;
@@ -388,9 +387,8 @@ int Check_Connected(void)
             if(SUR[NumFilled][i] == NULL) Mem_Error();
             p = *Relators[i];           
             q = *SUR[NumFilled][i];    
-	    	r = q;
-	   	 	while( (*q++ = *p++) ) ;
-	    	}
+	    while( (*q++ = *p++) ) ;
+	    }
             
         BytesUsed += Length;        
 
@@ -474,7 +472,6 @@ int Check_Connected(void)
             if(SUR[NumFilled][i] == NULL) Mem_Error();
             p = *Relators[i];            
             q = *SUR[NumFilled][i]; 
-            r = q;   
             while( (*q++ = *p++) ) ;            
             }
         
@@ -555,7 +552,7 @@ int Connected_(unsigned int i,unsigned int k)
     				                                                     
     ZZ[i] = 1;
     k ++;
-    for(r = UpDate,*r = i,p = r + 1; r < p; r++)
+    for(r = UpDate, *r = i,p = r + 1; r < p; r++)
         {
         i = *r;
         for(h = 0; (j = AJ1[i][h]) < VERTICES; h++)
@@ -769,7 +766,7 @@ int Sep_Pairs(int VI,int VJ,int FirstCall)
     return(FALSE);    
 }
 
-int Sep_Pairs_Sub(v1,v2)
+int Sep_Pairs_Sub(int v1, int v2)
 {
     /******************************************************************************************
         We have found a pair of distinct vertices v1 and v2 which separate the graph and both

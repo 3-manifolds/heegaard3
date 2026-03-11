@@ -3,7 +3,7 @@
  
 /*  sort elements "first" through "last"-1 */
 
-static void qksort1a(first, last)
+void qksort1a(int first, int last)
 {
 	static 		int i;		/*  "static" to save stack space  */
 	register 	int j;

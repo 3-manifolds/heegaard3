@@ -392,9 +392,7 @@ int qkst1a_compare(int i,int j)
     return(0);
 }						
 
-void qkst1a_swap(i,j)
-int       	i,
-            j;
+void qkst1a_swap(int i, int j)
 {
     int     	Temp;
     
@@ -1360,7 +1358,7 @@ void Print_SLR(int i,int Found_L_Annulus)
 
 }
         
-int Display_A_Diagram(F1,Pres,HS)
+int Display_A_Diagram(int F1, int Pres, int HS)
 {    
     int             Reply;
     

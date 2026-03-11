@@ -1456,9 +1456,6 @@ int Get_Initial_Diagram(int PrintFlag)
                                 
     unsigned long   HS;                        
     
-    unsigned int 	Whitehead_Graph();
-    unsigned int 	Reduce_Genus();        
-    
     Input 				= NORMAL;
     TestRealizability1 	= 3;
     TestRealizability2 	= FALSE;
@@ -2437,9 +2434,6 @@ int Non_Unique_Initial_Diagram(void)
                     
     unsigned int    AnnulusExists,
                     Flag1;                
-    
-    unsigned int 	Whitehead_Graph();
-    unsigned int 	Reduce_Genus();
     
     /******************************************************************************************
                             Check whether a valence-two annulus exists.
